@@ -10,6 +10,9 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   // 定义状态
   state: {
+    regserial:'10001',
+    permissions_id : '1',
+    tableUpdate:0,
     //菜单
    menu:[
      {menuId:'1',
@@ -39,6 +42,7 @@ const store = new Vuex.Store({
         states:'正常',
       },
     ],
+
   members:[
     {
     number: '1',
@@ -350,6 +354,26 @@ const store = new Vuex.Store({
     ],//消课表
   },
   actions:{
+    //会员吊动
+    moves:({ commit },coachData) => {
+      console.log('-------------------------')
+      console.log(coachData)
+      var data = {
+        methodUrl: "memberManagement/memberClickMove",
+        jsonParam: qs.stringify(coachData)
+      };
+      http.post(data,'selectMove',commit);
+
+    },
+    //添加会员
+    addMember:({ commit },memberData) => {
+      var data = {
+        methodUrl: "memberManagement/memberOperation",
+        jsonParam: qs.stringify(memberData)
+      };
+      http.post(data,'selectMember',commit);
+
+    },
     //axios请求菜单数据
     sMenu :({ commit }) => {
       var data = {
@@ -361,7 +385,6 @@ const store = new Vuex.Store({
     },
     //axios请求会员数据
     sMember :({ commit },postData) => {
-      console.log(postData);
       var data = {
         methodUrl: "memberManagement/memberClickQuery",
         jsonParam: qs.stringify(postData)
@@ -399,10 +422,10 @@ const store = new Vuex.Store({
       http.post(data,'selectRoom',commit);
     },
     //axios请求班级数据
-    sClass:({ commit }) => {
-
+    sClass:({ commit },department_serial) => {
       var d = {};
       d['dep_lx'] = 2;
+      d['department_serial']=department_serial
       console.log(qs.stringify(d))
       var data={
         methodUrl:"memberManagement/memberClass",
@@ -411,10 +434,10 @@ const store = new Vuex.Store({
       http.post(data,'selectClass',commit);
     },
     //axios请求教练数据
-    sCoach:({ commit }) => {
+    sCoach:({ commit },department_serial) => {
 
       var d = {};
-      d['department_serial'] = '';
+      d['department_serial'] =department_serial;
       d['role_id']=103
       var data={
         methodUrl:"memberManagement/memberTeacher",
@@ -423,9 +446,10 @@ const store = new Vuex.Store({
       http.post(data,'selectCoach',commit);
     },
     //axios请求老师数据
-    sTeacher:({ commit }) => {
+    sTeacher:({ commit },department_serial) => {
+
       var d = {};
-      d['department_serial'] = '';
+      d['department_serial'] = department_serial;
       d['role_id']=102
       var data={
         methodUrl:"memberManagement/memberTeacher",
@@ -460,6 +484,10 @@ const store = new Vuex.Store({
     // },
   },
   mutations:{
+    //将符合要求的数据存到全局菜单
+    selectMove:(state,{selectMove})=>{
+
+    },
     //将符合要求的数据存到全局菜单
     selectMenu:(state,{selectMenu})=>{
 

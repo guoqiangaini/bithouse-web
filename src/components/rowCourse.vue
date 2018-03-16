@@ -25,43 +25,43 @@
           </el-option>
         </el-select>
       </ul>
-    <ul>
-      <span>班级</span>
-      <el-select v-model="value" placeholder="请选择" class="select" size="small">
-        <el-option
-          v-for="item in options1"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value">
-        </el-option>
-      </el-select>
-    </ul>
-    <ul>
-      <span>状态</span>
-      <el-select v-model="value" placeholder="请选择" class="select" size="small">
-        <el-option
-          v-for="item in options2"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value">
-        </el-option>
-      </el-select>
-    </ul>
-    <ul>
-      <span>教练</span>
-      <el-select v-model="value" placeholder="请选择" class="select" size="small">
-        <el-option
-          v-for="item in options3"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value">
-        </el-option>
-      </el-select>
-    </ul>
-    <ul>
-      <span>姓名</span>
-      <el-input v-model="input" placeholder="请输入内容" class="input" size="small"></el-input>
-    </ul>
+      <ul>
+        <span>班级</span>
+        <el-select v-model="value" placeholder="请选择" class="select" size="small">
+          <el-option
+            v-for="item in options1"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+      </ul>
+      <ul>
+        <span>状态</span>
+        <el-select v-model="value" placeholder="请选择" class="select" size="small">
+          <el-option
+            v-for="item in options2"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+      </ul>
+      <ul>
+        <span>教练</span>
+        <el-select v-model="value" placeholder="请选择" class="select" size="small">
+          <el-option
+            v-for="item in options3"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+      </ul>
+      <ul>
+        <span>姓名</span>
+        <el-input v-model="input" placeholder="请输入内容" class="input" size="small"></el-input>
+      </ul>
       <ul>
         <el-button size="small" type="info">查询</el-button>
         <el-button size="small" type="info">导出</el-button>
@@ -81,7 +81,6 @@
           type="selection"
           width="55">
         </el-table-column>
-
         <el-table-column
           align="center"
           prop="number"
@@ -138,7 +137,6 @@
           label="消课日期"
           width="140">
         </el-table-column>
-
         <el-table-column
 
           align="center"
@@ -152,26 +150,23 @@
           label="状态"
           width="170">
           <!--:formatter="formatter">-->
-
         </el-table-column>
-        <div class="block">
-          <span class="demonstration">页数较少时的效果</span>
-          <el-pagination
-            layout="prev, pager, next"
-            :total="50">
-          </el-pagination>
-        </div>
       </el-table>
-      <div class="block" >
-        <el-pagination
-          layout="prev, pager, next"
-          :total="1000">
+      <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="[20, 40, 60]"
+          :page-size="pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="total">
         </el-pagination>
-      </div>
     </div>
   </div>
 </template>
 <script>
+  import axios from 'axios'
+  import qs from 'qs'
   import {mapState} from 'vuex'
   import ElButton from "../../node_modules/element-ui/packages/button/src/button";
   export default {
@@ -181,7 +176,9 @@
 
         value5: '',
         input: '',
-        value: ''
+        value: '',
+        total:'',
+        fireClass:[],
       };
     },
     computed: {
@@ -201,9 +198,28 @@
     return this.$store.state.options3;
   },//教练
 
-      fireClass(){
-        return this.$store.state.fireClass;
-      },//消课表
+    },
+    mounted(){
+      var fireData = {
+        count:true,
+        pageindex:1,
+        pagesize:20,
+        regserial:this.$store.state.regserial,
+        permissions_id:this.$store.state.permissions_id
+      }
+      var fireParams = {
+        methodUrl:'courseManagement/fireClassInformation',
+        jsonParam:qs.stringify(fireData)
+      }
+      var that = this
+      this.$axios.postRequest(fireParams).then(function(res) {
+        //成功之后处理逻辑
+        that.fireClass=res.data.list
+        that.total=res.data.list.length
+      }, function(res) {
+        //失败之后处理逻辑
+        console.log("error:" + res)
+      })
     },
   };
 </script>

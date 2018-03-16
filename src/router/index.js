@@ -12,6 +12,7 @@ import curriculum from '../components/curriculum.vue'
 import people from '../components/people.vue'
 import rowCourse from '../components/rowCourse.vue'
 import gradeTest from '../components/gradeTest.vue'
+import blackBelt from '../components/blackBelt'
 
 Vue.use(Router)
 
@@ -40,7 +41,7 @@ export default new Router({
           ]
         },//课程管理
         {
-          path:'/17',
+          path:'/23',
           component:curriculum
         },//课程管理
         {
@@ -48,12 +49,16 @@ export default new Router({
           component:people
         },//人事管理
         {
-          path:'/rowCourse',
+          path:'/24',
           component:rowCourse
         },
         {
-          path:'/gradeTest',
+          path:'/25',
           component:gradeTest
+        },
+        {
+          path:'/26',
+          component:blackBelt
         },
 
       ]

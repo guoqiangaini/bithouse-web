@@ -25,7 +25,7 @@
         </ul>
         <ul>
           <span class="size">道馆</span>
-          <el-select v-model="value3" clearable placeholder="全部" size="mini" style="width: 90px">
+          <el-select v-model="value3" clearable placeholder="全部" size="mini" style="width: 90px" @change="changes">
             <el-option
               v-for="item in rooms"
               :key="item.department_serial"
@@ -36,7 +36,7 @@
         </ul>
         <ul>
           <span class="size">班级</span>
-          <el-select v-model="value4" clearable placeholder="全部" size="mini" style="width: 90px">
+          <el-select v-model="value4" clearable placeholder="全部" size="mini" style="width: 90px" @change="changess">
             <el-option
               v-for="item in classes"
               :key="item.department_serial"
@@ -108,25 +108,25 @@
         </ul>
         <ul>
           <span class="size">报名时间</span>
-          <el-input v-model="value11" placeholder="单行输入" size="mini" style="width: 90px">
-            <el-option
-              v-for="item in times"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value" >
-            </el-option>
-          </el-input>
-
+          <el-date-picker
+            v-model="date"
+            type="date"
+            size="mini"
+            style="width:140px"
+            @change="getSTime"
+            value-format="yyyy-MM-dd"
+            placeholder="选择日期">
+          </el-date-picker>
         </ul>
         <ul>
           <el-button size="mini"  type="info" class="btn" @click="find">查询</el-button>
           <el-button size="mini"  type="info" class="btn">生成报名二维码</el-button>
-          <el-button size="mini"  type="info" class="btn" @click="dialogVisible = true">新增</el-button>
+          <el-button size="mini"  type="info" class="btn" @click="dialogVisible= true">新增</el-button>
           <el-button size="mini"  type="info" class="btn">修改</el-button>
-          <el-button size="mini"  type="info" class="btn">删除</el-button>
+          <el-button size="mini"  type="info" class="btn"@click="deleteMember">删除</el-button>
           <el-button size="mini"  type="info" class="btn">导入</el-button>
           <el-button size="mini"  type="info" class="btn">导出</el-button>
-          <el-button size="mini"  type="info" class="btn" @click="dialogVisible4 = true">调动</el-button>
+          <el-button size="mini"  type="info" class="btn" @click="transfers">调动</el-button>
           <el-button size="mini"  type="info" class="btn">退卡</el-button>
         </ul>
         <!--新增弹出框-->
@@ -145,42 +145,42 @@
                   <el-select v-model="value12" placeholder="请选择" size="mini" style="width: 120px">
                     <el-option
                       v-for="item in source"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value" >
+                      :key="item.id"
+                      :label="item.name"
+                      :value="item.id" >
                     </el-option>
                   </el-select>
                 </ul>
                 <ul>
                   <span class="size">状态</span>
-                  <el-select v-model="value13" placeholder="请选择" size="mini" style="width:120px">
+                  <el-select v-model="value13" clearable placeholder="请选择" size="mini" style="width:120px">
                     <el-option
                       v-for="item in statuses"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value" >
+                      :key="item.id"
+                      :label="item.name"
+                      :value="item.id" >
                     </el-option>
                   </el-select>
                 </ul>
                 <ul>
                   <span class="size">卡型</span>
-                  <el-select v-model="value14" placeholder="请选择" size="mini" style="width:120px">
+                  <el-select v-model="value14" clearable placeholder="请选择" size="mini" style="width:120px">
                     <el-option
                       v-for="item in cardType"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value" >
+                      :key="item.id"
+                      :label="item.name"
+                      :value="item.id" >
                     </el-option>
                   </el-select>
                 </ul>
                 <ul>
                   <span class="size">老师</span>
-                  <el-select v-model="value15" placeholder="请选择" size="mini" style="width:120px">
+                  <el-select v-model="value15" clearable placeholder="请选择" size="mini" style="width:120px">
                     <el-option
                       v-for="item in teachers"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value" >
+                      :key="item.employee_serial"
+                      :label="item.employee_name"
+                      :value="item.employee_serial" >
                     </el-option>
                   </el-select>
                 </ul>
@@ -217,12 +217,12 @@
                 </ul>
                 <ul>
                   <span class="size">级别</span>
-                  <el-select v-model="value21" placeholder="请选择" size="mini" style="width:120px">
+                  <el-select v-model="value21" clearable placeholder="请选择" size="mini" style="width:120px">
                     <el-option
                       v-for="item in levels"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value" >
+                      :key="item.id"
+                      :label="item.name"
+                      :value="item.id" >
                     </el-option>
                   </el-select>
                 </ul>
@@ -323,9 +323,9 @@
                   <el-select v-model="value39" placeholder="请选择" size="mini" style="width: 120px">
                     <el-option
                       v-for="item in rooms"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value" >
+                      :key="item.department_serial"
+                      :label="item.department_name"
+                      :value="item.department_serial" >
                     </el-option>
                   </el-select>
                 </ul>
@@ -334,9 +334,9 @@
                   <el-select v-model="value40" placeholder="请选择" size="mini" style="width:120px">
                     <el-option
                       v-for="item in classes"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value" >
+                      :key="item.department_serial"
+                      :label="item.department_name"
+                      :value="item.department_serial" >
                     </el-option>
                   </el-select>
                 </ul>
@@ -345,9 +345,9 @@
                   <el-select v-model="value41" placeholder="请选择" size="mini" style="width:120px">
                     <el-option
                       v-for="item in coachs"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value" >
+                      :key="item.employee_serial"
+                      :label="item.employee_name"
+                      :value="item.employee_serial" >
                     </el-option>
                   </el-select>
                 </ul>
@@ -404,62 +404,49 @@
           </div>
           <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false" size="mini">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false" size="mini">提交</el-button>
+        <el-button type="primary" @click="addMember" size="mini">提交</el-button>
         <el-button type="primary" @click="dialogVisible = false" size="mini">继续添加</el-button>
   </span>
         </el-dialog>
         <!--调动弹出框-->
         <el-dialog
-
-          title="学员调动"
+           title="学员调动"
           :visible.sync="dialogVisible4"
-          width="40%"
+           width="40%"
           :before-close="handleClose"
         center>
           <div>
             <ul class="adjust">
               <span>所在道馆</span>
-              <el-input v-model="input" placeholder="请输入内容" style="width: 30%"></el-input>
+              <el-input v-model="ucs" :disabled="true" style="width: 30%"></el-input>
               <span>→</span>
-              <el-select v-model="value5" placeholder="请选择">
+              <el-select v-model="uc" placeholder="全部" @change="chang1">
                 <el-option
-                  v-for="item in options5"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
+                  v-for="item in rooms"
+                  :key="item.department_serial"
+                  :label="item.department_name"
+                  :value="item.department_serial" >
                 </el-option>
               </el-select>
             </ul>
+            <ul></ul>
             <ul class="adjust">
-              <span>关联教练</span>
-              <el-input v-model="input" placeholder="请输入内容" style="width: 30%"></el-input>
+              <span>所在班级</span>
+              <el-input v-model="uss" :disabled="true" style="width: 30%"></el-input>
               <span>→</span>
-              <el-select v-model="value5" placeholder="请选择">
+              <el-select v-model="us" placeholder="全部" @change="changeValue">
                 <el-option
-                  v-for="item in options5"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-            </ul>
-            <ul class="adjust">
-              <span>关联老师</span>
-              <el-input v-model="input" placeholder="请输入内容" style="width: 30%"></el-input>
-              <span>→</span>
-              <el-select v-model="value5" placeholder="请选择">
-                <el-option
-                  v-for="item in options5"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
+                  v-for="item in classes"
+                  :key="item.department_serial"
+                  :label="item.department_name"
+                  :value="item.department_serial" >
                 </el-option>
               </el-select>
             </ul>
           </div>
           <span slot="footer" class="dialog-footer">
               <el-button @click="dialogVisible4 = false" size="small">取 消</el-button>
-              <el-button type="primary" @click="dialogVisible4 = false" size="small">提交</el-button>
+              <el-button type="primary" @click="submit1" size="small">提交</el-button>
           </span>
         </el-dialog>
       </div>
@@ -477,7 +464,6 @@
              align="center"
              >
            </el-table-column>
-
            <el-table-column
              align="center"
              prop="index"
@@ -609,68 +595,32 @@
   </div>
 </template>
 <script>
+  import axios from 'axios'
+  import qs from 'qs'
   import ElRow from "element-ui/packages/row/src/row";
   import ElCol from "element-ui/packages/col/src/col";
   import {mapState} from 'vuex'
   export default {
-      computed:{
-        //获取条数
-        total(){
-          return this.$store.state.members.totalcount
-        },
-        //获取请求的会员信息展示在页面
-        members(){
-          return this.$store.state.members.list;
-        },
-        //获取请求的来源信息展示在页面
-       source(){
-         return this.$store.state.sources;
-       },
-        //获取请求的卡型信息展示在下拉选
-        cardType(){
-          return this.$store.state.cardType
-        },
-        //获取请求的道馆信息展示在下拉选
-        rooms(){
-          return this.$store.state.rooms
-        },
-        //获取请求的班级信息展示在下拉选
-        classes(){
-          return this.$store.state.classes
-        },
-        //获取请求的教练信息展示在下拉选
-        coachs(){
-          return this.$store.state.coachs
-        },
-        //获取请求的教师信息展示在下拉选
-        teachers(){
-          return this.$store.state.teachers
-        },
-        //获取请求的级别信息展示在下拉选
-        levels(){
-          return this.$store.state.levels
-        },
-        //获取请求的状态信息展示在下拉选
-        statuses(){
-          return this.$store.state.statuses
-        },
-        //获取性别信息
-        gender(){
-          return this.$store.state.genders
-        },
-        //获取课程信息
-        course(){
-          return this.$store.state.courses
-        },
-        //获取时间信息
-
-        times(){
-          return this.$store.state.times
-        }
-    },
+    components: {
+      ElCol,
+      ElRow},
     data() {
       return {
-        pageSize:30,
+        total:'',
+        source:[],
+        cardType:[],
+        rooms:[],
+        classes:[],
+        coachs:[],
+        teachers:[],
+        levels:[],
+        statuses:[],
+        course:[],
+        ucs:'',
+        uc:'',
+        uss:'',
+        us:'',
+        pageSize:20,
         currentPage:1,
         imageUrl: '',
         dialogVisible4: false,
@@ -740,13 +690,28 @@
         dialogVisible: false,
         value: '',
         multipleSelection: [],
+        obj :{},
+        obj1:{},
+        date:'',
+        members:[],
       }
     },
-
-    components: {
-      ElCol,
-      ElRow},
+    computed:{
+        regserial(){
+          return this.$store.state.regserial
+        },
+        permissions_id(){
+          return this.$store.state.permissions_id
+        },
+        //获取性别信息
+        gender(){
+          return this.$store.state.genders
+        },
+    },
     methods: {
+      getSTime(val) {
+        this.date=val;//这个sTime是在data中声明的，也就是v-model绑定的值
+      },
       handleOpen(key, keyPath) {
         console.log(key, keyPath);
       },
@@ -764,6 +729,7 @@
       },
       handleSelectionChange(val) {
         this.multipleSelection = val;
+        console.log(val)
       },
       formatter(row, column) {
         return row.address;
@@ -790,6 +756,7 @@
           }
           return isJPG && isLt2M;
         },
+      //查询
       find(){
         var department = "";
         if(this.value3!==''&& this.value4===''){
@@ -798,6 +765,11 @@
           department=this.value4
         }
         var postData = {
+          count:true,
+          pageindex:1,
+          pagesize:this.pageSize,
+          regserial:this.$store.state.regserial,
+          permissions_id:this.$store.state.permissions_id,
           department_serial:department,
           source_id:this.value1,
           membertype_id:this.value2,
@@ -807,60 +779,460 @@
           status_id:this.value8,
           student_name:this.value9 ,
           student_no:this.value10 ,
-          create_date: this.value11
+          create_date: this.date,
         }
-        this.$store.dispatch('sMember',postData)
+        var params = {
+          methodUrl:'memberManagement/memberClickQuery',
+          jsonParam:qs.stringify(postData)
+        }
+        var that = this
+        this.$axios.postRequest(params).then(function(res) {
+          //成功之后处理逻辑
+          that.members=res.data.list
+          that.total=res.data.totalcount
+        }, function(res) {
+          //失败之后处理逻辑
+          console.log("error:" + res)
+        })
 
       },
       handleSizeChange(val) {
         console.log(`每页 ${val} 条`);
         this.pageSize=val
         var postData = {
+          regserial:this.$store.state.regserial,
+          permissions_id:this.$store.state.permissions_id,
           count:true,
           pageindex:this.currentPage,
           pagesize:val
         }
-        this.$store.dispatch('sMember',postData);
+        var params = {
+          methodUrl:'memberManagement/memberClickQuery',
+          jsonParam:qs.stringify(postData)
+        }
+        var that = this
+        this.$axios.postRequest(params).then(function(res) {
+          //成功之后处理逻辑
+          that.members=res.data.list
+          that.total=res.data.totalcount
+        }, function(res) {
+          //失败之后处理逻辑
+          console.log("error:" + res)
+        })
       },
       handleCurrentChange(val) {
         console.log(`当前页: ${val}`);
         this.currentPage=val
         var postData = {
+          regserial:this.$store.state.regserial,
+          permissions_id:this.$store.state.permissions_id,
           count:true,
           pageindex:val,
           pagesize:this.pageSize
         }
-        this.$store.dispatch('sMember',postData);
-      }
+        var params = {
+          methodUrl:'memberManagement/memberClickQuery',
+          jsonParam:qs.stringify(postData)
+        }
+        var that = this
+        this.$axios.postRequest(params).then(function(res) {
+          //成功之后处理逻辑
+          that.members=res.data.list
+          that.total=res.data.totalcount
+        }, function(res) {
+          //失败之后处理逻辑
+          console.log("error:" + res)
+        })
+      },
+      //添加
+      addMember(){
+        this.dialogVisible=false
+        var memberData={
+          jlx:2,
+          jdolx:1,
+          source_id:this.value12,
+          status_id:this.value13,
+          membertype_id:this.value14,
+          jteacher_serial:this.value15,
+          student_name:this.value16,
+          student_no:this.value17,
+          jtext:[{value:this.value18,value1:this.value19,value2:this.value20,value3:this.value21,value4:this.value22,
+               value5:this.value23,value6:this.value24,value7:this.value25,value8:this.value26,value9:this.value27,value10:this.value28,
+               value11:this.value29, value12:this.value30,value13:this.value31,value14:this.value32,value15:this.value33,value16:this.value34,
+            value17:this.value35,value18:this.value36,
+              value19:this.value37,value20:this.value38,value21:this.value39,value22:this.value40,value23:this.value41,value24:this.value42,value25:this.value43,
+              value26:this.value44,value27:this.value45,value28:this.checkList
+              }]
+        }
+        this.$store.dispatch('addMember',memberData)
+      },
+      //删除
+      deleteMember(){
+        if(this.multipleSelection.length>0){
+          var arrvalue;//用于存放取出的数组的值
+          for(var i=0;i<this.multipleSelection.length;i++){
+
+            arrvalue=this.multipleSelection[i];//数组的索引是从0开始的
+
+            console.log(arrvalue.student_serial.value)
+
+          }
+            var deleteData={
+              jlx:2,
+              jdolx:3,
+              jSerial:this.multipleSelection['student_serial']
+
+            }
+        }
+      },
+      transfers(){
+        if(this.multipleSelection.length<1){
+          this.$message({
+            message: '请选择数据',
+            showClose: true,
+            type: 'warning'
+          });
+          this.dialogVisible4 = false
+        }else if(this.multipleSelection.length>1){
+          this.$message({
+            message: '只能选择一条数据',
+            showClose: true,
+            type: 'warning'
+          });
+          this.dialogVisible4 = false
+        }else{
+          var arr1=[];
+          this.multipleSelection.forEach(function(v){ arr1.push(v.dep_parent_name,v.department_name,v.student_serial);});
+          this.ucs=arr1[0]
+          this.uss=arr1[1]
+          this.id=arr1[2]
+          this.dialogVisible4 = true
+        }
+
+      },
+      changes(){
+        var that = this
+        var departments=this.value3
+        //加载班级信息
+        var classData={
+          regserial:this.$store.state.regserial,
+          dep_lx:'2',
+          department_serial:departments,
+          permissions_id:this.$store.state.permissions_id
+        }
+        var classParams={
+          methodUrl:'memberManagement/memberClass',
+          jsonParam:qs.stringify(classData)
+        }
+        this.$axios.postRequest(classParams).then(function(res) {
+          //成功之后处理逻辑
+          that.classes = res.data
+        }, function(res) {
+          //失败之后处理逻辑
+          console.log("error:" + res)
+        })
+
+        //加载教练信息
+        var coachData={
+          regserial:this.$store.state.regserial,
+          department_serial:departments,
+          role_id:'102'
+        }
+        var coachParams={
+          methodUrl:'memberManagement/memberTeacher',
+          jsonParam:qs.stringify(coachData)
+        }
+        this.$axios.postRequest(coachParams).then(function(res) {
+          //成功之后处理逻辑
+          that.coachs = res.data
+        }, function(res) {
+          //失败之后处理逻辑
+          console.log("error:" + res)
+        })
+
+        //加载老师信息
+        var teacherData={
+          regserial:this.$store.state.regserial,
+          department_serial:departments,
+          role_id:'103'
+        }
+        var teacherParams={
+          methodUrl:'memberManagement/memberTeacher',
+          jsonParam:qs.stringify(teacherData)
+        }
+        this.$axios.postRequest(teacherParams).then(function(res) {
+          //成功之后处理逻辑
+          that.teachers = res.data
+        }, function(res) {
+          //失败之后处理逻辑
+          console.log("error:" + res)
+        })
+      },
+      changess(){
+        var that = this
+        var departmentss=this.value4
+        //加载教练信息
+        var coachData={
+          regserial:this.$store.state.regserial,
+          department_serial:departmentss,
+          role_id:'102'
+        }
+        var coachParams={
+          methodUrl:'memberManagement/memberTeacher',
+          jsonParam:qs.stringify(coachData)
+        }
+        this.$axios.postRequest(coachParams).then(function(res) {
+          //成功之后处理逻辑
+          that.coachs = res.data
+        }, function(res) {
+          //失败之后处理逻辑
+          console.log("error:" + res)
+        })
+
+        //加载老师信息
+        var teacherData={
+          regserial:this.$store.state.regserial,
+          department_serial:departmentss,
+          role_id:'103'
+        }
+        var teacherParams={
+          methodUrl:'memberManagement/memberTeacher',
+          jsonParam:qs.stringify(teacherData)
+        }
+        this.$axios.postRequest(teacherParams).then(function(res) {
+          //成功之后处理逻辑
+          that.teachers = res.data
+        }, function(res) {
+          //失败之后处理逻辑
+          console.log("error:" + res)
+        })
+      },
+      chang1(value){
+        var that = this
+        this.obj1=this.rooms.find((item)=>{
+          return item.department_serial === value;
+        });
+        var departmentsss=this.uc
+        //加载班级信息
+        var classData={
+          regserial:this.$store.state.regserial,
+          dep_lx:'2',
+          department_serial:departmentsss,
+          permissions_id:this.$store.state.permissions_id
+        }
+        var classParams={
+          methodUrl:'memberManagement/memberClass',
+          jsonParam:qs.stringify(classData)
+        }
+        this.$axios.postRequest(classParams).then(function(res) {
+          //成功之后处理逻辑
+          that.classes = res.data
+        }, function(res) {
+          //失败之后处理逻辑
+          console.log("error:" + res)
+        })
+      },
+      changeValue(value) {
+        this.obj = this.classes.find((item)=>{
+          return item.department_serial === value;
+        });
+      },
+      submit1(){
+        if(this.us===''){
+          this.$message({
+            message: '班级不能为空',
+            showClose: true,
+            type: 'warning'
+          });
+        }else{
+          var coachData={
+            dep_parent_serial:this.uc,
+            dep_parent_name:this.obj1.department_name,
+            department_serial:this.us,
+            department_name:this.obj.department_name,
+            student_serial:this.id,
+            regserial:'10001',
+          permissions_id:'1'
+          }
+          var params={
+            methodUrl:'memberManagement/memberClickMove',
+            jsonParam:qs.stringify(coachData)
+
+          }
+          this.dialogVisible4=false
+          var coachParams = qs.parse(qs.stringify(coachData));
+          var that = this
+          this.$axios.postRequest( params).then(function(res) {
+            //成功之后处理逻辑
+           that.find()
+          }, function(res) {
+            //失败之后处理逻辑
+            console.log("error:" + res)
+          })
+
+        }
+      },
+
     },
     mounted(){
+      var department = "";
+      if(this.value3!==''&& this.value4===''){
+        department=this.value3
+      }else if(this.value4!==''){
+        department=this.value4
+      }
         //加载会员信息
       var postData = {
         count:true,
         pageindex:1,
-        pagesize:20
+        pagesize:20,
+        regserial:this.$store.state.regserial,
+        permissions_id:this.$store.state.permissions_id
       }
-      this.$store.dispatch('sMember',postData);
-      //加载来源信息
-      this.$store.dispatch('sSources');
-      //加载卡类型
-      this.$store.dispatch('sCard');
-      //加载道馆信息
-      this.$store.dispatch('sRoom');
-      //加载班级信息
-      this.$store.dispatch('sClass');
-      //加载教练信息
-      this.$store.dispatch('sCoach');
-      //加载老师信息
-      this.$store.dispatch('sTeacher');
-      //加载级别信息
-      this.$store.dispatch('sLevel');
-      //加载状态信息
-      this.$store.dispatch('sStatus');
-      // //加载课程信息
-      // this.$store.dispatch('sCourse');
+      var params = {
+        methodUrl:'memberManagement/memberClickQuery',
+        jsonParam:qs.stringify(postData)
+      }
+      var that = this
+      this.$axios.postRequest(params).then(function(res) {
+        //成功之后处理逻辑
+        console.log()
+        that.members=res.data.list
+        that.total=res.data.totalcount
+      }, function(res) {
+        //失败之后处理逻辑
+        console.log("error:" + res)
+      })
 
-    }
+      var companyData = {
+        regserial:this.$store.state.regserial,
+      }
+      var mustParams = {
+        methodUrl:'memberManagement/memberSource',
+        jsonParam:qs.stringify(companyData)
+      }
+      //加载来源信息
+      this.$axios.postRequest(mustParams).then(function(res) {
+        //成功之后处理逻辑
+        that.source = res.data
+      }, function(res) {
+        //失败之后处理逻辑
+        console.log("error:" + res)
+      })
+      //加载卡类型
+      var cardParams={
+        methodUrl:'memberManagement/memberCard',
+        jsonParam:qs.stringify(companyData)
+      }
+      this.$axios.postRequest(cardParams).then(function(res) {
+        //成功之后处理逻辑
+        that.cardType = res.data
+      }, function(res) {
+        //失败之后处理逻辑
+        console.log("error:" + res)
+      })
+      //加载道馆信息
+      var roomData={
+        regserial:this.$store.state.regserial,
+        dep_lx:'1',
+        permissions_id:this.$store.state.permissions_id
+      }
+      var roomParams={
+        methodUrl:'memberManagement/memberClass',
+        jsonParam:qs.stringify(roomData)
+      }
+      this.$axios.postRequest(roomParams).then(function(res) {
+        //成功之后处理逻辑
+        that.rooms = res.data
+      }, function(res) {
+        //失败之后处理逻辑
+        console.log("error:" + res)
+      })
+      //加载班级信息
+      var classData={
+        regserial:this.$store.state.regserial,
+        dep_lx:'2',
+        department_serial:this.value3,
+        permissions_id:this.$store.state.permissions_id
+      }
+      var classParams={
+        methodUrl:'memberManagement/memberClass',
+        jsonParam:qs.stringify(classData)
+      }
+      this.$axios.postRequest(classParams).then(function(res) {
+        //成功之后处理逻辑
+        that.classes = res.data
+      }, function(res) {
+        //失败之后处理逻辑
+        console.log("error:" + res)
+      })
+
+      //加载教练信息
+      var coachData={
+        regserial:this.$store.state.regserial,
+        department_serial:department,
+        role_id:'102'
+      }
+      var coachParams={
+        methodUrl:'memberManagement/memberTeacher',
+        jsonParam:qs.stringify(coachData)
+      }
+      this.$axios.postRequest(coachParams).then(function(res) {
+        //成功之后处理逻辑
+        that.coachs = res.data
+      }, function(res) {
+        //失败之后处理逻辑
+        console.log("error:" + res)
+      })
+
+      //加载老师信息
+      var teacherData={
+        regserial:this.$store.state.regserial,
+        department_serial:department,
+        role_id:'103'
+      }
+      var teacherParams={
+        methodUrl:'memberManagement/memberTeacher',
+        jsonParam:qs.stringify(teacherData)
+      }
+      this.$axios.postRequest(teacherParams).then(function(res) {
+        //成功之后处理逻辑
+        that.teachers = res.data
+      }, function(res) {
+        //失败之后处理逻辑
+        console.log("error:" + res)
+      })
+      //加载级别信息
+      var levelData={
+        regserial:this.$store.state.regserial,
+      }
+      var levelParams={
+        methodUrl:'memberManagement/memberLevel',
+        jsonParam:qs.stringify(levelData)
+      }
+      this.$axios.postRequest(levelParams).then(function(res) {
+        //成功之后处理逻辑
+        that.levels = res.data
+      }, function(res) {
+        //失败之后处理逻辑
+        console.log("error:" + res)
+      })
+      //加载状态信息
+      var statusData={
+        regserial:this.$store.state.regserial,
+      }
+      var statusParams={
+        methodUrl:'memberManagement/memberState',
+        jsonParam:qs.stringify(statusData)
+      }
+      this.$axios.postRequest(statusParams).then(function(res) {
+        //成功之后处理逻辑
+        that.statuses = res.data
+      }, function(res) {
+        //失败之后处理逻辑
+        console.log("error:" + res)
+      })
+    },
   }
 </script>
 <style scoped>

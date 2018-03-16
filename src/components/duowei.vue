@@ -16,16 +16,16 @@
             <template slot="title">
               <span>{{item.menu_name}}</span>
             </template>
-            <el-menu-item-group v-for="(items,index) in item.child_menus" class="group" :key="item.menu_id" >
+            <el-menu-item-group v-for="(items,index) in item.child_menus" class="group"  >
               <el-menu-item :index="items.menu_id" style="width: 100px">{{items.menu_name}}</el-menu-item>
             </el-menu-item-group>
           </el-submenu>
-          <el-menu-item index="2" v-else>
+          <el-menu-item index="16" v-else>
             <template slot="title">
               <span>{{item.menu_name}}</span>
             </template>
             <el-menu-item-group v-for="(items,index) in item.child_menus" class="group"  >
-              <el-menu-item :index="items.menu_id" style="width: 100px">{{items.menu_name}}</el-menu-item>
+              <el-menu-item :index="items.menu_name" style="width: 100px">{{items.menu_name}}</el-menu-item>
             </el-menu-item-group>
           </el-menu-item>
         </el-menu>

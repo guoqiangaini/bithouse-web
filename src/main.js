@@ -7,8 +7,14 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import Vuex from 'vuex'
 import store from './vuex/store'
-import axios from 'axios'
-Vue.prototype.$ajax = axios
+import axios from './axios'
+import VueContextMenu from 'vue-contextmenu'
+import 'vue-contextmenu/style/css/font-awesome.min.css'
+import contentmenu from 'v-contextmenu'
+import 'v-contextmenu/dist/index.css'
+Vue.use(contentmenu)
+Vue.use(VueContextMenu)
+Vue.prototype.$axios = axios
 Vue.use(Vuex)
 Vue.config.productionTip = false
 Vue.use(ElementUI)

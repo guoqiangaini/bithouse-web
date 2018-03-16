@@ -59,10 +59,12 @@ export default {
       }
     }).then(
       (response) => {
-        console.log(mmethod)
-        console.log(response.data)
+
         var data = {};
         data[mmethod] = response.data.data;
+        console.log(response.data)
+        console.log('------------25588--------------')
+        console.log(data[mmethod])
         commit(mmethod, data)
 
       }
