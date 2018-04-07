@@ -1,0 +1,170 @@
+<template>
+  <el-row>
+    <el-header class="wai" style="height:90px">
+      <el-col :span="4" class="user" style="padding-left: 13px;"><img src="https://pro.modao.cc/uploads3/images/1751/17519267/raw_1520225943.png">
+      </el-col>
+      <el-col :span="15" class="title">{{CorporateName}}</el-col>
+      <!--<el-col :span="7" style="width: 390px">-->
+      <!---->
+      <!--<el-button size="mini" v-show="false"><span style="color:#1b96a9;font-weight: 600; " >切换</span></el-button>-->
+      <!--</el-col>-->
+      <el-col :span="4" class="font" style="padding-left: 30px;margin-top: 35px">今天是：{{todayTime}}</el-col>
+      <el-col :span="1" style="text-align:center;">
+
+        <el-popover @hide="dotCondition"
+          ref="popover3"
+          placement="bottom"
+          width="300"
+          style="background-color:#1b96a9 "
+          trigger="click">
+          <el-row type="flex" align="middle" v-for="infor in information">
+            <el-col :span="18">{{infor.name}}</el-col><el-col :span="6"><el-button type="text">忽略</el-button></el-col>
+          </el-row>
+
+        </el-popover>
+        <!--<el-badge :is-dot="infomation.length>0" class="item"><img src="https://pro.modao.cc//uploads3/images/1783/17836132/raw_1521017810.png-->
+
+        <!--" style="-->
+        <!--width: 32px;height: 32px;padding-top: 29px" v-popover:popover3></el-badge>-->
+        <img
+        src="https://pro.modao.cc//uploads3/images/1783/17836132/raw_1521017810.png"
+        style="width: 32px;height: 32px;padding-top: 29px"  v-popover:popover3 @click="dotState" >
+        <div class="tip" v-show="dot" ></div>
+      </el-col>
+      <el-col :span="1" style="padding-left: 20px">
+        <el-popover
+          ref="popover4"
+          placement="bottom"
+          width="200"
+          trigger="click">
+          <el-col>
+            <el-button>退出</el-button>
+          </el-col>
+        </el-popover>
+        <img src="https://pro.modao.cc//uploads3/images/1783/17836137/raw_1521017812.png
+" style="width: 32px;height: 32px;padding-top: 29px;cursor: pointer" v-popover:popover4>
+
+
+      </el-col>
+
+    </el-header>
+  </el-row>
+</template>
+<script>
+  import axios from 'axios'
+  import qs from 'qs'
+  import echarts from 'echarts'
+  import ElRow from "element-ui/packages/row/src/row";
+  import ElCol from "element-ui/packages/col/src/col";
+  export default {
+    components: {
+      ElCol,
+      ElRow
+    },
+    name: 'hello',
+    data () {
+      return {
+        CorporateName: '',//公司名称
+        todayTime: '',//获取时间
+        dot:false,
+        information:[
+          {name:'中美贸易为何而战?'},
+          {name:'人民币中间价上调117个基点！'},
+          {name:'创业板持续大热'},
+          {name:'美国或于本周公布对华产品征税建议清单'}
+
+        ]
+      }
+    },
+    mounted(){
+      if(this.information != ''){
+          this.dot=true
+      } else{
+        this.dot=false
+      }
+      var that = this
+      //获取时间
+      var timeParams = {
+        methodUrl: 'date/getDate',
+        jsonParam: qs.stringify()
+      }
+      this.$axios.postRequest(timeParams).then(function (res) {
+        //成功之后处理逻辑
+        that.todayTime = res.data.time
+
+      }, function (res) {
+        //失败之后处理逻辑
+        console.log("error:" + res)
+      })
+
+      //请求公司名称
+      var userData = qs.parse(sessionStorage.getItem("userData"));
+      that.CorporateName = userData.company_name;
+      console.log(userData.company_name)
+    },
+    methods:{
+      dotState(){
+        this.dot=false;
+      },
+      dotCondition(){
+
+        this.dot=true;
+      }
+    }
+
+
+  }
+</script>
+<style scoped>
+  .wai {
+    background-color: #1b96a9;
+
+  }
+
+  .user {
+    width: 150px;
+    background-color: #1b96a9;
+  }
+
+  .user img {
+    width: 64px;
+    height: 64px;
+
+    padding: 10px 0 10px 0;
+    vertical-align: middle;
+    margin-left: 20%;
+
+  }
+
+  .title {
+    color: white;
+    font-size: 28px;
+    font-weight: 600;
+    margin-top: 20px
+  }
+
+  .font {
+    color: white;
+    font-size: 14px;
+
+  }
+  .tip {
+    min-width: 14px;
+    height: 14px;
+    background: red;
+    box-sizing: border-box;
+  color: white;
+    font-size: 10px;
+    text-align: center;
+    line-height: 20px;
+    padding: 0 5px;
+    border-radius: 10px;
+    display: inline-block;
+    position: inherit;
+    z-index: 1111;
+    margin-bottom: 20px;
+    margin-left: -12px;
+
+  }
+
+</style>

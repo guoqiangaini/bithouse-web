@@ -1,28 +1,38 @@
 <template>
-  <el-row>
-  <el-container id="app" direction="vertical">
-    <headly/>
+  <div id="app">
+
     <router-view/>
-  </el-container>
-  </el-row>
+  </div>
 </template>
 
 <script>
-  import headly from './head/Header.vue'
-  export default {
+  import headly from './loginAndRegister/Header.vue'
+  import qs from 'qs'
+  export  default{
     name: 'App',
 
     components:{
       headly,
+    },
+    mounted(){
+      var userData={
+        company_name:'多维跆拳道综合管理系统',
+        employee_serial:'20000001',
+        permissions_id:'1',
+        studentDepartment_serial:'10008',
+        company_serial:'10001'
+      }
+      sessionStorage.setItem('userData',qs.stringify(userData));
+
     }
   }
 </script>
 
 <style>
-  div{margin: 0;padding:0}
   ul{
     margin: 0;padding: 0;
   }
+
   li {list-style-type:none;}
   #app {
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
@@ -30,6 +40,62 @@
     -moz-osx-font-smoothing: grayscale;
 
     color: #2c3e50;
+    width: 100%;
+    height: 100%;
 
+  }
+  .dialogCancelButton{
+    margin-right: 80px !important;
+  }
+
+  #app>div{
+    height: 100%;
+  }
+  .elTableBorder{
+    border-top: 1px solid #c1c3c9 !important;
+    border-left: 1px solid #c1c3c9 !important;
+    border-bottom: 1px solid #c1c3c9 !important;
+  }
+  /*#app>div>div:nth-child(2){*/
+   /*height:100%;*/
+  /*}*/
+  /*以下为覆盖vue原来样式*/
+  .el-form-item__label {
+    text-align: left !important;
+    vertical-align: middle !important;
+    float: left !important;
+    font-size: 12px !important;
+    color: #303133 !important;
+    line-height: 40px !important;
+    padding: 0 12px 0 0 !important;
+    -webkit-box-sizing: border-box !important;
+    box-sizing: border-box !important;
+  }
+  .el-input__inner{
+    border: 1px solid #c1c3c9 !important;
+  }
+  .el-header{
+    padding: 0 !important;
+  }
+  .el-submenu .el-menu-item{
+    min-width: 150px !important;
+    padding-right: 0 !important;
+
+  }
+  .el-form-item{
+    margin: 0 !important;
+  }
+  .el-tabs__header{
+    margin:0 !important;
+  }
+  .el-dialog__title{
+    font-size: 14px !important;
+    font-weight: 600 !important;
+  }
+  .el-dialog--center .el-dialog__body{
+    padding: 0 20px 30px 20px !important;
+  }
+  .el-dialog__body{
+    padding: 0 20px 30px 20px !important;
   }
 </style>

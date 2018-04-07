@@ -2,17 +2,25 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 
-import signIn from '../components/signIn.vue'
-import shiyan from '../components/shiyan.vue'
-import member from '../components/member.vue'
-import personalList from '../components/personalList.vue'
-import duowei from '../components/duowei.vue'
-import homepage from '../components/homepage.vue'
-import curriculum from '../components/curriculum.vue'
-import people from '../components/people.vue'
-import rowCourse from '../components/rowCourse.vue'
-import gradeTest from '../components/gradeTest.vue'
-import blackBelt from '../components/blackBelt'
+
+
+import MemberManage from '../components/memberManage.vue'
+import menu from '../components/menu.vue'
+import homepage from '../components/homePage.vue'
+import arrangingCourses from '../courseManagement/arrangingCourses'
+
+import fireClass from '../courseManagement/fireClass.vue'
+import levelExamination from '../courseManagement/levelExamination.vue'
+import blackBelt from '../courseManagement/blackBelt'
+import login from '../loginAndRegister/login'
+import Logon from '../loginAndRegister/Logon'
+import personnelCount from '../personnelManagement/personnelCount.vue'
+import Payroll from '../personnelManagement/Payroll.vue'
+import AttendanceManagement from '../personnelManagement/AttendanceManagement.vue'
+import postSetting from '../personnelManagement/postSetting.vue'
+import fireClassTimeDetail from '../courseManagement/fireClassTimeDetail'
+import fireClassStudentList from '../courseManagement/fireClassStudentList'
+import activeMemberList from '../courseManagement/activeMemberList'
 
 Vue.use(Router)
 
@@ -21,58 +29,85 @@ export default new Router({
 
 
     {
-      path:'/',
-      component:duowei,
-      children:[
+      path: '/menu',
+      component: menu,
+      children: [
         {
-          path:'/1',
-          component:homepage,//首页
-          alias: '/homepage'
+          path: '/15',
+          component: homepage,//首页
+         // alias: '/homepage'
         },
         {
-          path:'/16',
-          component:member,//会员管理
-          alise:'/member',
-          children:[
-            {
-              path:'/personalList',
-              component:personalList
-            },
-          ]
-        },//课程管理
+          path: '/16',
+          component: MemberManage,//会员管理
+          alise: '/MemberManage',
+          // meta: { requiresAuth: true }
+
+        },
+        //课程管理
         {
-          path:'/23',
-          component:curriculum
-        },//课程管理
+          path: '/23',
+          component: arrangingCourses
+        },//排课管理
         {
-          path:'/people',
-          component:people
-        },//人事管理
+          path: '/24',
+          component: fireClass,
+        },//消课记录
         {
-          path:'/24',
-          component:rowCourse
+          path:'/activeMemberList',
+          name:'activeMemberList',
+          component:activeMemberList
         },
         {
-          path:'/25',
-          component:gradeTest
+          path:'/fireClassTimeDetail',
+          name:'fireClassTimeDetail',
+          component:fireClassTimeDetail,
         },
         {
-          path:'/26',
-          component:blackBelt
+          path:'/fireClassStudentList',
+          name:'fireClassStudentList',
+          component:fireClassStudentList,
         },
+        {
+          path: '/25',
+          component: levelExamination
+        },//考级之路
+        {
+          path: '/26',
+          component: blackBelt
+        },//黑带之路
+
+        //人事管理
+        {
+          path: '/27',
+          component: personnelCount
+        },//人事统计
+        {
+          path: '/28',
+          component: AttendanceManagement
+        },//考勤管理
+        {
+          path: '/29',
+          component: Payroll
+        },//工资发放
+        {
+          path: '/30',
+          component: postSetting
+        },//岗位设置
 
       ]
     },//首页
+
     {
-      path:'shiyan',
-      component:shiyan
+      path: '/',
+      component: login
     },
     {
-      path:'/signIn',
-      component:signIn
+      path: '/Logon',
+      component: Logon,
+      meta: { requiresAuth: true }
+
     },
-
-
   ]
 })
 // export default new Router({

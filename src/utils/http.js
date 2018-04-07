@@ -42,14 +42,18 @@ function checkCode (res) {
 }
 
 export default {
+  getUrlKey:function(name){
+    return decodeURIComponent((new RegExp('[?|&]'+name+'='+'([^&;]+?)(&|#|;|$)').exec(location.href)||[,""])[1].replace(/\+/g,'%20'))||null;
+  },
   post (data,mmethod,commit) {
 
     var b = qs.parse(data.jsonParam);
-    b['regserial'] = '10001';
-    b['permissions_id'] = '1';
+    // b['regserial'] = '10001';
+    // b['permissions_id'] = '1';
     axios({
       method: 'post',
-      baseURL: 'http://192.168.1.162:8080/dowinsysws/services/',
+     baseURL: 'https://wx.jpbvip.com/dowinsysws/services/',
+     //  baseURL: 'http://192.168.199.228:8080/dowinsysws/services/',
       url:data.methodUrl,
       data: b,
       timeout: 10000,

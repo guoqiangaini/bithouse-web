@@ -10,350 +10,433 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   // 定义状态
   state: {
+
     regserial:'10001',
+    role_id:'',
     permissions_id : '1',
     tableUpdate:0,
+    company_serial:'10001',
+    studentDepartment_serial:'10008',
     //菜单
-   menu:[
-     {menuId:'1',
-     menuName:'首页'
-     },
-     {menuId:'2',
-       menuName:'会员管理'
-     },
 
-   ],
-    //会员
-
-    grades:[
-        {
-        number: '1',
-        Fullname: '张继科',
-        gender: '男',
-        roadMuseum:'新桥',
-        classes:'成人班',
-        coach:'刘国梁',
-        teacher:'孔令辉',
-        level:'白黄带',
-        rowcourse:'2018.03.08',
-
-        fireClass:'120/次',
-
-        states:'正常',
-      },
-    ],
-
-  members:[
-    {
-    number: '1',
-    Fullname: '张继科',
-    gender: '男',
-    coach:'刘国梁',
-    teacher:'孔令辉',
-    level:'白黄带',
-    enrollTime:'2018.03.08',
-    payTime:'2018.03.08',
-    payMethod:'分段',
-    renewTime:'2018.03.08',
-    roadMuseum:'新桥',
-    classes:'成人班',
-    switches:'无',
-    fireClass:'120/次',
-    card:'年卡',
-    states:'正常',
-  },
-    {
-      number: '2',
-      Fullname: '张怡宁',
-      gender: '女',
-      coach:'刘国梁',
-      teacher:'孔令辉',
-      level:'白黄带',
-      enrollTime:'2018.03.08',
-      payTime:'2018.03.08',
-      payMethod:'一次性',
-      renewTime:'2018.03.08',
-      roadMuseum:'新桥',
-      classes:'成人班',
-      switches:'无',
-      fireClass:'120/次',
-      card:'年卡',
-      states:'代缴费',
-    },
-    {
-      number: '3',
-      Fullname: '张怡宁',
-      gender: '女',
-      coach:'刘国梁',
-      teacher:'孔令辉',
-      level:'白黄带',
-      enrollTime:'2018.03.08',
-      payTime:'2018.03.08',
-      payMethod:'一次性',
-      renewTime:'2018.03.08',
-      roadMuseum:'新桥',
-      classes:'成人班',
-      switches:'无',
-      fireClass:'120/次',
-      card:'年卡',
-      states:'代缴费',
-    },
-    {
-      number: '4',
-      Fullname: '张怡宁',
-      gender: '女',
-      coach:'刘国梁',
-      teacher:'孔令辉',
-      level:'白黄带',
-      enrollTime:'2018.03.08',
-      payTime:'2018.03.08',
-      payMethod:'一次性',
-      renewTime:'2018.03.08',
-      roadMuseum:'新桥',
-      classes:'成人班',
-      switches:'无',
-      fireClass:'120/次',
-      card:'年卡',
-      states:'代缴费',
-    },
-    {
-      number: '5',
-      Fullname: '张怡宁',
-      gender: '女',
-      coach:'刘国梁',
-      teacher:'孔令辉',
-      level:'白黄带',
-      enrollTime:'2018.03.08',
-      payTime:'2018.03.08',
-      payMethod:'一次性',
-      renewTime:'2018.03.08',
-      roadMuseum:'新桥',
-      classes:'成人班',
-      switches:'无',
-      fireClass:'120/次',
-      card:'年卡',
-      states:'代缴费',
-    },
-    {
-      number: '6',
-      Fullname: '张怡宁',
-      gender: '女',
-      coach:'刘国梁',
-      teacher:'孔令辉',
-      level:'白黄带',
-      enrollTime:'2018.03.08',
-      payTime:'2018.03.08',
-      payMethod:'一次性',
-      renewTime:'2018.03.08',
-      roadMuseum:'新桥',
-      classes:'成人班',
-      switches:'无',
-      fireClass:'120/次',
-      card:'年卡',
-      states:'代缴费',
-    },
-    {
-      number: '7',
-      Fullname: '张怡宁',
-      gender: '女',
-      coach:'刘国梁',
-      teacher:'孔令辉',
-      level:'白黄带',
-      enrollTime:'2018.03.08',
-      payTime:'2018.03.08',
-      payMethod:'一次性',
-      renewTime:'2018.03.08',
-      roadMuseum:'新桥',
-      classes:'成人班',
-      switches:'无',
-      fireClass:'120/次',
-      card:'年卡',
-      states:'代缴费',
-    },
-    {
-      number: '8',
-      Fullname: '张怡宁',
-      gender: '女',
-      coach:'刘国梁',
-      teacher:'孔令辉',
-      level:'白黄带',
-      enrollTime:'2018.03.08',
-      payTime:'2018.03.08',
-      payMethod:'一次性',
-      renewTime:'2018.03.08',
-      roadMuseum:'新桥',
-      classes:'成人班',
-      switches:'无',
-      fireClass:'120/次',
-      card:'年卡',
-      states:'代缴费',
-    },
-    {
-      number: '9',
-      Fullname: '张怡宁',
-      gender: '女',
-      coach:'刘国梁',
-      teacher:'孔令辉',
-      level:'白黄带',
-      enrollTime:'2018.03.08',
-      payTime:'2018.03.08',
-      payMethod:'一次性',
-      renewTime:'2018.03.08',
-      roadMuseum:'新桥',
-      classes:'成人班',
-      switches:'无',
-      fireClass:'120/次',
-      card:'年卡',
-      states:'代缴费',
-    },
-    {
-      number: '10',
-      Fullname: '张怡宁',
-      gender: '女',
-      coach:'刘国梁',
-      teacher:'孔令辉',
-      level:'白黄带',
-      enrollTime:'2018.03.08',
-      payTime:'2018.03.08',
-      payMethod:'一次性',
-      renewTime:'2018.03.08',
-      roadMuseum:'新桥',
-      classes:'成人班',
-      switches:'无',
-      fireClass:'120/次',
-      card:'年卡',
-      states:'代缴费',
-    }],
-    //来源
-    sources:[],
-    //卡型
-    cardType:[],
-    //道馆
-    rooms:[{
-      value: '',
-      label: ''
-    }],
-    //班级
-    classes:[{
-      value: '选项2',
-      label: '招生活动'
-    }],
-    //教练
-    coachs:[{
-      value: '选项2',
-      label: '招生活动'
-    }],
-    //老师
-    teachers:[{
-      value: '选项2',
-      label: '招生活动'
-    }],
-    //级别
-    levels:[{
-      value: '选项2',
-      label: '招生活动'
-    }],
-    //状态
-    statuses:[{
-      value: '选项2',
-      label: '招生活动'
-    }],
-    //性别
-    genders:[
+    medicalHistory:[
       {
-        value: '选项1',
-        label: '男'
+        label:'有',
+        value:'选项1'        
       },
       {
-        value: '选项2',
-        label: '女'
+        label:'无',
+        value:'选项2'        
       }
     ],
+    //
+    //   //岗位
+    //   poster:[
+    //
+    //
+    //     {
+    //       id:'1',
+    //       select: '通用',
+    //     },
+    //     {  id:'2',select: '总监'},
+    //     {  id:'3',select: '教练'},
+    //     {  id:'4',select: '馆长'},
+    //     {  id:'5',select: '人事'},
+    //     {  id:'6',select: '行政'}
+    //
+    //
+    //   ],
+    //   posters:[
+    //       {
+    //         id:'1',
+    //         title:'通用',
+    //         value:[
+    //           {
+    //             name:'底薪',
+    //             content:''
+    //           },
+    //           {
+    //             name:'底薪',
+    //             content:''
+    //           },
+    //         ],//通用
+    //       },
+    //       {
+    //         id:'2',
+    //         title:'总监',
+    //         value:[
+    //           {
+    //             name:'底薪',
+    //             content:''
+    //           }
+    //           ]
+    //       },
+    //       {
+    //         id:'3',
+    //         title:'教练',
+    //         value:[
+    //           {
+    //             name:'底薪',
+    //             content:''
+    //           }
+    //         ],//教练
+    //
+    //       },
+    //       {
+    //         id:'4',
+    //         title:'馆长',
+    //         value:[
+    //
+    //           {name:'续费高手会'},
+    //         ],//馆长
+    //
+    //       },
+    //       {
+    //         id:'5',
+    //         title:'人事',
+    //         value:[
+    //           {
+    //             name:'底薪',
+    //             content:''
+    //           }
+    //         ]//人事
+    //
+    //       },
+    //       {
+    //         id:'6',
+    //         title:'行政',
+    //         value:[
+    //           {
+    //             name:'底薪',
+    //             content:''
+    //           }
+    //         ], //行政
+    //       }
+    //   ],
+    //
+    //   //会员
+    //
+    //   grades:[
+    //       {
+    //       number: '1',
+    //       Fullname: '张继科',
+    //       gender: '男',
+    //       roadMuseum:'新桥',
+    //       classes:'成人班',
+    //       coach:'刘国梁',
+    //       teacher:'孔令辉',
+    //       level:'白黄带',
+    //       rowcourse:'2018.03.08',
+    //
+    //       fireClass:'120/次',
+    //
+    //       states:'正常',
+    //     },
+    //   ],
+    //
+    // members:[
+    //   {
+    //   number: '1',
+    //   Fullname: '张继科',
+    //   gender: '男',
+    //   coach:'刘国梁',
+    //   teacher:'孔令辉',
+    //   level:'白黄带',
+    //   enrollTime:'2018.03.08',
+    //   payTime:'2018.03.08',
+    //   payMethod:'分段',
+    //   renewTime:'2018.03.08',
+    //   roadMuseum:'新桥',
+    //   classes:'成人班',
+    //   switches:'无',
+    //   fireClass:'120/次',
+    //   card:'年卡',
+    //   states:'正常',
+    // },
+    //   {
+    //     number: '2',
+    //     Fullname: '张怡宁',
+    //     gender: '女',
+    //     coach:'刘国梁',
+    //     teacher:'孔令辉',
+    //     level:'白黄带',
+    //     enrollTime:'2018.03.08',
+    //     payTime:'2018.03.08',
+    //     payMethod:'一次性',
+    //     renewTime:'2018.03.08',
+    //     roadMuseum:'新桥',
+    //     classes:'成人班',
+    //     switches:'无',
+    //     fireClass:'120/次',
+    //     card:'年卡',
+    //     states:'代缴费',
+    //   },
+    //   {
+    //     number: '3',
+    //     Fullname: '张怡宁',
+    //     gender: '女',
+    //     coach:'刘国梁',
+    //     teacher:'孔令辉',
+    //     level:'白黄带',
+    //     enrollTime:'2018.03.08',
+    //     payTime:'2018.03.08',
+    //     payMethod:'一次性',
+    //     renewTime:'2018.03.08',
+    //     roadMuseum:'新桥',
+    //     classes:'成人班',
+    //     switches:'无',
+    //     fireClass:'120/次',
+    //     card:'年卡',
+    //     states:'代缴费',
+    //   },
+    //   {
+    //     number: '4',
+    //     Fullname: '张怡宁',
+    //     gender: '女',
+    //     coach:'刘国梁',
+    //     teacher:'孔令辉',
+    //     level:'白黄带',
+    //     enrollTime:'2018.03.08',
+    //     payTime:'2018.03.08',
+    //     payMethod:'一次性',
+    //     renewTime:'2018.03.08',
+    //     roadMuseum:'新桥',
+    //     classes:'成人班',
+    //     switches:'无',
+    //     fireClass:'120/次',
+    //     card:'年卡',
+    //     states:'代缴费',
+    //   },
+    //   {
+    //     number: '5',
+    //     Fullname: '张怡宁',
+    //     gender: '女',
+    //     coach:'刘国梁',
+    //     teacher:'孔令辉',
+    //     level:'白黄带',
+    //     enrollTime:'2018.03.08',
+    //     payTime:'2018.03.08',
+    //     payMethod:'一次性',
+    //     renewTime:'2018.03.08',
+    //     roadMuseum:'新桥',
+    //     classes:'成人班',
+    //     switches:'无',
+    //     fireClass:'120/次',
+    //     card:'年卡',
+    //     states:'代缴费',
+    //   },
+    //   {
+    //     number: '6',
+    //     Fullname: '张怡宁',
+    //     gender: '女',
+    //     coach:'刘国梁',
+    //     teacher:'孔令辉',
+    //     level:'白黄带',
+    //     enrollTime:'2018.03.08',
+    //     payTime:'2018.03.08',
+    //     payMethod:'一次性',
+    //     renewTime:'2018.03.08',
+    //     roadMuseum:'新桥',
+    //     classes:'成人班',
+    //     switches:'无',
+    //     fireClass:'120/次',
+    //     card:'年卡',
+    //     states:'代缴费',
+    //   },
+    //   {
+    //     number: '7',
+    //     Fullname: '张怡宁',
+    //     gender: '女',
+    //     coach:'刘国梁',
+    //     teacher:'孔令辉',
+    //     level:'白黄带',
+    //     enrollTime:'2018.03.08',
+    //     payTime:'2018.03.08',
+    //     payMethod:'一次性',
+    //     renewTime:'2018.03.08',
+    //     roadMuseum:'新桥',
+    //     classes:'成人班',
+    //     switches:'无',
+    //     fireClass:'120/次',
+    //     card:'年卡',
+    //     states:'代缴费',
+    //   },
+    //   {
+    //     number: '8',
+    //     Fullname: '张怡宁',
+    //     gender: '女',
+    //     coach:'刘国梁',
+    //     teacher:'孔令辉',
+    //     level:'白黄带',
+    //     enrollTime:'2018.03.08',
+    //     payTime:'2018.03.08',
+    //     payMethod:'一次性',
+    //     renewTime:'2018.03.08',
+    //     roadMuseum:'新桥',
+    //     classes:'成人班',
+    //     switches:'无',
+    //     fireClass:'120/次',
+    //     card:'年卡',
+    //     states:'代缴费',
+    //   },
+    //   {
+    //     number: '9',
+    //     Fullname: '张怡宁',
+    //     gender: '女',
+    //     coach:'刘国梁',
+    //     teacher:'孔令辉',
+    //     level:'白黄带',
+    //     enrollTime:'2018.03.08',
+    //     payTime:'2018.03.08',
+    //     payMethod:'一次性',
+    //     renewTime:'2018.03.08',
+    //     roadMuseum:'新桥',
+    //     classes:'成人班',
+    //     switches:'无',
+    //     fireClass:'120/次',
+    //     card:'年卡',
+    //     states:'代缴费',
+    //   },
+    //   {
+    //     number: '10',
+    //     Fullname: '张怡宁',
+    //     gender: '女',
+    //     coach:'刘国梁',
+    //     teacher:'孔令辉',
+    //     level:'白黄带',
+    //     enrollTime:'2018.03.08',
+    //     payTime:'2018.03.08',
+    //     payMethod:'一次性',
+    //     renewTime:'2018.03.08',
+    //     roadMuseum:'新桥',
+    //     classes:'成人班',
+    //     switches:'无',
+    //     fireClass:'120/次',
+    //     card:'年卡',
+    //     states:'代缴费',
+    //   }],
+    //   //来源
+    //   sources:[],
+    //   //卡型
+    //   cardType:[],
+    //   //道馆
+    //   rooms:[{
+    //     value: '',
+    //     label: ''
+    //   }],
+    //   //班级
+    //   classes:[{
+    //     value: '选项2',
+    //     label: '招生活动'
+    //   }],
+    //   //教练
+    //   coachs:[{
+    //     value: '选项2',
+    //     label: '招生活动'
+    //   }],
+    //   //老师
+    //   teachers:[{
+    //     value: '选项2',
+    //     label: '招生活动'
+    //   }],
+    //   //级别
+    //   levels:[{
+    //     value: '选项2',
+    //     label: '招生活动'
+    //   }],
+    //   //状态
+    //   statuses:[{
+    //     value: '选项2',
+    //     label: '招生活动'
+    //   }],
+    //性别
+
     //课程
-    courses:[],
-    //报名时间
-    times:[],
-
-    //消课
-    rows:[
-      {
-        number: '1',
-        Fullname: '张继科',
-       gender:'男',
-        roadMuseum:'新桥',
-        classes:'成人班',
-        coach:'刘国梁',
-        teacher:'孔令辉',
-        level:'白黄带',
-        rowcourse:'2018.03.08',
-
-        fireClass:'120/次',
-
-        states:'正常',
-      },
-      {
-        number: '1',
-        Fullname: '张继科',
-        gender: '男',
-        roadMuseum:'新桥',
-        classes:'成人班',
-        coach:'刘国梁',
-        teacher:'孔令辉',
-        level:'白黄带',
-        rowcourse:'2018.03.08',
-
-        fireClass:'120/次',
-
-        states:'正常',
-      },
-      {
-        number: '1',
-        Fullname: '张继科',
-        gender: '男',
-        roadMuseum:'新桥',
-        classes:'成人班',
-        coach:'刘国梁',
-        teacher:'孔令辉',
-        level:'白黄带',
-        rowcourse:'2018.03.08',
-
-        fireClass:'120/次',
-
-        states:'正常',
-      },
-      {
-        number: '1',
-        Fullname: '张继科',
-        gender: '男',
-        roadMuseum:'新桥',
-        classes:'成人班',
-        coach:'刘国梁',
-        teacher:'孔令辉',
-        level:'白黄带',
-        rowcourse:'2018.03.08',
-
-        fireClass:'120/次',
-
-        states:'正常',
-      },
-      {
-        number: '1',
-        Fullname: '张继科',
-        gender: '男',
-        roadMuseum:'新桥',
-        classes:'成人班',
-        coach:'刘国梁',
-        teacher:'孔令辉',
-        level:'白黄带',
-        rowcourse:'2018.03.08',
-
-        fireClass:'120/次',
-
-        states:'正常',
-      },
-    ],//消课表
+    // courses:[],
+    // //报名时间
+    // times:[],
+    //
+    // //消课
+    // rows:[
+    //   {
+    //     number: '1',
+    //     Fullname: '张继科',
+    //    gender:'男',
+    //     roadMuseum:'新桥',
+    //     classes:'成人班',
+    //     coach:'刘国梁',
+    //     teacher:'孔令辉',
+    //     level:'白黄带',
+    //     rowcourse:'2018.03.08',
+    //
+    //     fireClass:'120/次',
+    //
+    //     states:'正常',
+    //   },
+    //   {
+    //     number: '1',
+    //     Fullname: '张继科',
+    //     gender: '男',
+    //     roadMuseum:'新桥',
+    //     classes:'成人班',
+    //     coach:'刘国梁',
+    //     teacher:'孔令辉',
+    //     level:'白黄带',
+    //     rowcourse:'2018.03.08',
+    //
+    //     fireClass:'120/次',
+    //
+    //     states:'正常',
+    //   },
+    //   {
+    //     number: '1',
+    //     Fullname: '张继科',
+    //     gender: '男',
+    //     roadMuseum:'新桥',
+    //     classes:'成人班',
+    //     coach:'刘国梁',
+    //     teacher:'孔令辉',
+    //     level:'白黄带',
+    //     rowcourse:'2018.03.08',
+    //
+    //     fireClass:'120/次',
+    //
+    //     states:'正常',
+    //   },
+    //   {
+    //     number: '1',
+    //     Fullname: '张继科',
+    //     gender: '男',
+    //     roadMuseum:'新桥',
+    //     classes:'成人班',
+    //     coach:'刘国梁',
+    //     teacher:'孔令辉',
+    //     level:'白黄带',
+    //     rowcourse:'2018.03.08',
+    //
+    //     fireClass:'120/次',
+    //
+    //     states:'正常',
+    //   },
+    //   {
+    //     number: '1',
+    //     Fullname: '张继科',
+    //     gender: '男',
+    //     roadMuseum:'新桥',
+    //     classes:'成人班',
+    //     coach:'刘国梁',
+    //     teacher:'孔令辉',
+    //     level:'白黄带',
+    //     rowcourse:'2018.03.08',
+    //
+    //     fireClass:'120/次',
+    //
+    //     states:'正常',
+    //   },
+    // ],//消课表
   },
   actions:{
+
     //会员吊动
     moves:({ commit },coachData) => {
       console.log('-------------------------')
@@ -484,6 +567,9 @@ const store = new Vuex.Store({
     // },
   },
   mutations:{
+
+
+
     //将符合要求的数据存到全局菜单
     selectMove:(state,{selectMove})=>{
 
