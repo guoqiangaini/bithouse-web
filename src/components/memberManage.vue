@@ -137,376 +137,403 @@
       :visible.sync="dialogVisible"
       @close="closeDialog"
       width="900px" style="font-size:10px"
-      >
+    >
       <el-form label-width="50px" :show-message="false"  class="demo-ruleForm" :model="addForm" :rules="rules" ref="addForm">
         <fieldset style="border: 1px solid #c1c3c9;">
           <legend style="font-weight: 600">基础资料</legend>
-        <div class="basicData">
-          <el-row >
-            <el-col :xs="20" :sm="20" :md="20" :lg="20" :xl="20" >
-              <el-row>
-                <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8" >
-                  <el-form-item label="来　　源" prop="addValue1" labelWidth="75px">
-                    <el-select v-model="addForm.addValue1" placeholder="请选择" clearable size="mini" style="width: 135px;height: 30px">
-                      <el-option
-                        v-for="item in source"
-                        :key="item.id"
-                        :label="item.name"
-                        :value="item.id">
-                      </el-option>
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-                <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8"  >
-                  <el-form-item label='卡　　型' prop="addValue2" style="text-indent: 1px;" labelWidth="75px">
-                    <el-select v-model="addForm.addValue2" clearable placeholder="请选择" size="mini" style="width:135px">
-                      <el-option
-                        v-for="item in cardType"
-                        :key="item.id"
-                        :label="item.name"
-                        :value="item.id">
-                      </el-option>
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-                <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8" >
-                  <el-form-item label="道　　馆" prop="addValue3" labelWidth="75px">
-                    <el-select v-model="addForm.addValue3" placeholder="请选择" size="mini" style="width: 135px">
-                      <el-option
-                        v-for="item in rooms"
-                        :key="item.department_serial"
-                        :label="item.department_name"
-                        :value="item.department_serial">
-                      </el-option>
-                    </el-select>
-                  </el-form-item>
-                </el-col>
+          <div class="basicData">
+            <el-row >
+              <el-col :xs="20" :sm="20" :md="20" :lg="20" :xl="20" >
+                <el-row>
+                  <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8" >
+                    <el-form-item label="来　　源" prop="addValue1" labelWidth="75px">
+                      <el-select v-model="addForm.addValue1" placeholder="请选择" clearable size="mini" style="width: 135px;height: 30px">
+                        <el-option
+                          v-for="item in source"
+                          :key="item.id"
+                          :label="item.name"
+                          :value="item.id">
+                        </el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8"  >
+                    <el-form-item label='卡　　型' prop="addValue2" style="text-indent: 1px;" labelWidth="75px">
+                      <el-select v-model="addForm.addValue2" clearable placeholder="请选择" size="mini" style="width:135px">
+                        <el-option
+                          v-for="item in cardType"
+                          :key="item.id"
+                          :label="item.name"
+                          :value="item.id">
+                        </el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8" >
+                    <el-form-item label="道　　馆" prop="addValue3" labelWidth="75px">
+                      <el-select v-model="addForm.addValue3" placeholder="请选择" size="mini" style="width: 135px">
+                        <el-option
+                          v-for="item in rooms"
+                          :key="item.department_serial"
+                          :label="item.department_name"
+                          :value="item.department_serial">
+                        </el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
 
-              </el-row><!--来源卡型道馆-->
-              <el-row >
-                <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-                  <el-form-item label="姓　　名" prop="addValue4" labelWidth="75px">
-                    <el-input v-model="addForm.addValue4" placeholder="" size="mini" style="width:135px"></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-                  <el-form-item label="病　　史" prop="addValue5" labelWidth="75px">
-                    <el-select v-model="addForm.addValue5" clearable placeholder="请选择" size="mini" style="width:135px">
-                      <el-option
-                        v-for="item in medicalHistory"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
-                      </el-option>
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-                <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-                  <el-form-item label="身　　高" prop="addValue6" labelWidth="75px">
-                    <el-input v-model="addForm.addValue6" placeholder="" size="mini" style="width:135px"></el-input>
-                  </el-form-item>
-                </el-col>
+                </el-row><!--来源卡型道馆-->
+                <el-row >
+                  <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
+                    <el-form-item label="姓　　名" prop="addValue4" labelWidth="75px">
+                      <el-input v-model="addForm.addValue4" placeholder="" size="mini" style="width:135px" clearable></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
+                    <el-form-item label="病　　史" prop="addValue5" labelWidth="75px">
+                      <el-select v-model="addForm.addValue5" clearable placeholder="请选择" size="mini" style="width:135px">
+                        <el-option
+                          v-for="item in medicalHistory"
+                          :key="item.value"
+                          :label="item.label"
+                          :value="item.value">
+                        </el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
+                    <el-form-item label="身　　高" prop="addValue6" labelWidth="75px">
+                      <el-input v-model="addForm.addValue6" placeholder="" size="mini" style="width:135px" clearable></el-input>
+                    </el-form-item>
+                  </el-col>
 
-              </el-row><!--姓名病史身高-->
-              <el-row >
-                <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-                  <el-form-item label="性　　别" prop="addValue7" labelWidth="75px">
-                    <el-select v-model="addForm.addValue7" placeholder="请选择" size="mini" style="width:135px">
-                      <el-option
-                        v-for="item in genders"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
-                      </el-option>
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-                <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-                  <el-form-item label="物理卡号" prop="addValue8" label-width="75px">
-                    <el-input v-model="addForm.addValue8" placeholder="" size="mini" style="width:135px"></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-                  <el-form-item label="出生日期" prop="addValue9" label-width="75px">
-                    <el-date-picker
-                      value-format="yyyy-MM-dd"
-                      format="yyyy-MM-dd"
-                      v-model="addForm.addValue9"
-                      type="date"
-                      size="mini"
-                      placeholder="选择日期" style="width:135px">
-                    </el-date-picker>
-                  </el-form-item>
-                </el-col>
-              </el-row><!--性别物理卡号出生日期-->
-              <el-row >
-                <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-                  <el-form-item label="级　　别" prop="addValue10" labelWidth="75px">
-                    <el-select v-model="addForm.addValue10" clearable placeholder="请选择" size="mini" style="width:135px">
-                      <el-option
-                        v-for="item in levels"
-                        :key="item.id"
-                        :label="item.name"
-                        :value="item.id">
-                      </el-option>
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-                <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-                  <el-form-item label="身份证号" prop="addValue11" label-width="75px">
-                    <el-input v-model="addForm.addValue11" placeholder="" size="mini" style="width:135px"></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-                  <el-form-item label="联系电话" prop="addValue12" label-width="75px">
-                    <el-input v-model="addForm.addValue12" placeholder="" size="mini" style="width:135px"></el-input>
-                  </el-form-item>
-                </el-col>
-              </el-row><!--级别身份证号联系电话-->
-              <el-row >
-                <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
-                  <el-form-item label="所在学校" prop="addValue13" label-width="75px">
-                    <el-input v-model="addForm.addValue13" placeholder="" size="mini" style="width:250px"></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
-                  <el-form-item label="学员证号" prop="addValue14" label-width="75px">
-                    <el-input v-model="addForm.addValue14" placeholder="" size="mini" style="width:250px"></el-input>
-                  </el-form-item>
-                </el-col>
+                </el-row><!--姓名病史身高-->
+                <el-row >
+                  <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
+                    <el-form-item label="性　　别" prop="addValue7" labelWidth="75px">
+                      <el-select v-model="addForm.addValue7" placeholder="请选择" size="mini" style="width:135px" clearable>
+                        <el-option
+                          v-for="item in genders"
+                          :key="item.value"
+                          :label="item.label"
+                          :value="item.value">
+                        </el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
+                    <el-form-item label="物理卡号" prop="addValue8" label-width="75px">
+                      <el-input v-model="addForm.addValue8" placeholder="" size="mini" style="width:135px" clearable></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
+                    <el-form-item label="出生日期" prop="addValue9" label-width="75px">
+                      <el-date-picker
+                        value-format="yyyy-MM-dd"
+                        format="yyyy-MM-dd"
+                        v-model="addForm.addValue9"
+                        type="date"
+                        size="mini"
+                        placeholder="选择日期" style="width:135px">
+                      </el-date-picker>
+                    </el-form-item>
+                  </el-col>
+                </el-row><!--性别物理卡号出生日期-->
+                <el-row >
+                  <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
+                    <el-form-item label="级　　别" prop="addValue10" labelWidth="75px">
+                      <el-select v-model="addForm.addValue10" clearable placeholder="请选择" size="mini" style="width:135px">
+                        <el-option
+                          v-for="item in levels"
+                          :key="item.id"
+                          :label="item.name"
+                          :value="item.id">
+                        </el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
+                    <el-form-item label="身份证号" prop="addValue11" label-width="75px">
+                      <el-input v-model="addForm.addValue11" clearable placeholder="" size="mini" style="width:135px" ></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
+                    <el-form-item label="联系电话" prop="addValue12" label-width="75px">
+                      <el-input v-model="addForm.addValue12" clearable placeholder="" size="mini" style="width:135px"></el-input>
+                    </el-form-item>
+                  </el-col>
+                </el-row><!--级别身份证号联系电话-->
+                <el-row >
+                  <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+                    <el-form-item label="所在学校" prop="addValue13" label-width="75px">
+                      <el-input v-model="addForm.addValue13" placeholder="" size="mini" style="width:250px" clearable></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+                    <el-form-item label="学员证号" prop="addValue14" label-width="75px">
+                      <el-input v-model="addForm.addValue14" placeholder="" size="mini" style="width:250px" clearable></el-input>
+                    </el-form-item>
+                  </el-col>
 
-              </el-row><!--所在学校学员证号-->
-              <el-row>
-                <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
-                  <el-form-item label="微　　信" prop="addValue15" labelWidth="75px">
-                    <el-input v-model="addForm.addValue15" placeholder="" size="mini" style="width:250px"></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
-                  <el-form-item label="家庭住址" prop="addValue16" label-width="75px">
-                    <el-input v-model="addForm.addValue16" placeholder="" size="mini" style="width:250px"></el-input>
-                  </el-form-item>
-                </el-col>
+                </el-row><!--所在学校学员证号-->
+                <el-row>
+                  <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+                    <el-form-item label="微　　信" prop="addValue15" labelWidth="75px">
+                      <el-input v-model="addForm.addValue15" placeholder="" size="mini" style="width:250px" clearable></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+                    <el-form-item label="家庭住址" prop="addValue16" label-width="75px">
+                      <el-input v-model="addForm.addValue16" placeholder="" size="mini" style="width:250px" clearable></el-input>
+                    </el-form-item>
+                  </el-col>
 
-              </el-row><!--微信家庭住址-->
-              <el-row >
-                <el-row labelWidth="80px">
-                  <div  style="font-size: 12px;color: #303133;"><b>家长信息</b></div>
-                </el-row>
-                <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
+                </el-row><!--微信家庭住址-->
+                <el-row >
+                  <el-row labelWidth="80px">
+                    <div  style="font-size: 12px;color: #303133;"><b>家长信息</b></div>
+                  </el-row>
+                  <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
 
-                  <el-form-item label="父亲姓名" prop="addValue17" labelWidth="75px">
-                    <el-input v-model="addForm.addValue17" placeholder="" size="mini" style="width:135px"></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-                  <el-form-item label="联系电话" prop="addValue18" labelWidth="75px">
-                    <el-input v-model="addForm.addValue18" placeholder="" size="mini" style="width:135px"></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-                  <el-form-item label="工作单位" prop="addValue19" labelWidth="75px">
-                    <el-input v-model="addForm.addValue19" placeholder="" size="mini" style="width:135px"></el-input>
-                  </el-form-item>
-                </el-col>
+                    <el-form-item label="父亲姓名" prop="addValue17" labelWidth="75px">
+                      <el-input v-model="addForm.addValue17" placeholder="" size="mini" style="width:135px" clearable></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
+                    <el-form-item label="联系电话" prop="addValue18" labelWidth="75px">
+                      <el-input v-model="addForm.addValue18" placeholder="" size="mini" style="width:135px" clearable></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
+                    <el-form-item label="工作单位" prop="addValue19" labelWidth="75px">
+                      <el-input v-model="addForm.addValue19" placeholder="" size="mini" style="width:135px" clearable></el-input>
+                    </el-form-item>
+                  </el-col>
 
-              </el-row><!--父亲姓名联系电话-->
-              <el-row >
-                <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8" >
-                  <el-form-item label="母亲姓名" prop="addValue20" label-width="75px">
-                    <el-input v-model="addForm.addValue20" placeholder="" size="mini" style="width:135px"></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-                  <el-form-item label="联系电话" prop="addValue21" label-width="75px">
-                    <el-input v-model="addForm.addValue21" placeholder="" size="mini" style="width:135px"></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-                  <el-form-item label="工作单位" prop="addValue22" label-width="75px">
-                    <el-input v-model="addForm.addValue22" placeholder="" size="mini" style="width:135px"></el-input>
-                  </el-form-item>
-                </el-col>
+                </el-row><!--父亲姓名联系电话-->
+                <el-row >
+                  <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8" >
+                    <el-form-item label="母亲姓名" prop="addValue20" label-width="75px">
+                      <el-input v-model="addForm.addValue20" placeholder="" size="mini" style="width:135px" clearable></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
+                    <el-form-item label="联系电话" prop="addValue21" label-width="75px">
+                      <el-input v-model="addForm.addValue21" placeholder="" size="mini" style="width:135px" clearable></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
+                    <el-form-item label="工作单位" prop="addValue22" label-width="75px">
+                      <el-input v-model="addForm.addValue22" placeholder="" size="mini" style="width:135px" clearable></el-input>
+                    </el-form-item>
+                  </el-col>
 
-              </el-row><!--母亲姓名联系电话-->
-              <el-row >
-                <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
-                  <el-form-item label="备注" prop="addValue23">
-                    <el-input type="textarea" v-model="addForm.addValue23" placeholder="" size="mini"
-                              style="width:618px"></el-input>
-                  </el-form-item>
-                </el-col>
-              </el-row><!--备注-->
-            </el-col>
-            <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
-              <el-upload style="width: 100%;text-align: center"
-                :http-request='submitUpload'
-                class="avatar-uploader"
-                action="https://wx.jpbvip.com/dowinsysws/services/memberManagement/memberUploadPic"
-                :show-file-list="false"
-                :on-success="handleAvatarSuccess"
-                :before-upload="beforeupload">
-                <img v-if="imageUrl" :src="imageUrl" class="avatar"  >
-                <i v-else class="el-icon-plus avatar-uploader-icon">上传头像</i>
-              </el-upload>
-            </el-col><!--头像上传-->
-          </el-row>
-        </div><!--基础资料-->
+                </el-row><!--母亲姓名联系电话-->
+                <el-row >
+                  <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
+                    <el-form-item label="备注" prop="addValue23">
+                      <el-input type="textarea" v-model="addForm.addValue23" placeholder="" size="mini"
+                                style="width:618px"></el-input>
+                    </el-form-item>
+                  </el-col>
+                </el-row><!--备注-->
+              </el-col>
+              <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
+                <el-upload style="width: 100%;text-align: center"
+                           class="avatar-uploader"
+                           action="string"
+                           :data="imageUrl"
+                           :http-request='submitUpload'
+                           :show-file-list="false"
+                           :on-success="handleAvatarSuccess"
+                           :before-upload="beforeAvatarUpload"
+                           :on-change="changeFile"
+                >
+                  <img v-if="imageUrl" :src="imageUrl" class="avatar"  >
+                  <i v-else class="el-icon-plus avatar-uploader-icon">上传头像</i>
+                </el-upload>
+              </el-col><!--头像上传-->
+            </el-row>
+          </div><!--基础资料-->
         </fieldset>
         <fieldset style="border: 1px solid #c1c3c9;">
           <legend style="font-weight: 600">课程信息</legend>
-        <div >
+          <div >
 
-          <el-row>
-            <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-              <el-form-item label="课程名称　　" prop="addValue24" labelWidth="100px">
-                <el-select v-model="addForm.addValue24" placeholder="请选择" size="mini" style="width:150px">
-                  <el-option
-                    v-for="item in courseInfo"
-                    :key="item.jserial"
-                    :label="item.jname"
-                    :value="item.jserial">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-            </el-col><!--课程名称-->
-            <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-              <el-form-item label="有效期　　　" prop="addValue25" labelWidth="100px">
-                <el-input v-model="addForm.addValue25" placeholder="请填写" size="mini" style="width:150px">
-                </el-input>
-              </el-form-item>
-            </el-col><!--有效期-->
-            <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-              <el-form-item label="每周上课次数" prop="addValue26" labelWidth="100px">
-                <el-select v-model="addForm.addValue26" placeholder="请选择" size="mini" style="width:150px">
-                  <el-option
-                    v-for="item in courseInfo"
-                    :key="item.jclassesperweek"
-                    :label="item.jname"
-                    :value="item.jclassesperweek">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-            </el-col><!--每周上课次数-->
-          </el-row>
-          <el-row >
-            <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-              <el-form-item label="体验课次数　" prop="addValue27" labelWidth="100px">
-                <el-input v-model="addForm.addValue27" placeholder="请选择" size="mini" style="width:150px"></el-input>
-              </el-form-item>
-            </el-col><!--体验课次数-->
-            <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-              <el-form-item label="缴费日期　　" prop="addValue28" labelWidth="100px">
-                <el-date-picker
-                  value-format="yyyy-MM-dd"
-                  format="yyyy-MM-dd"
-                  v-model="addForm.addValue28"
-                  type="date"
-                  size="mini"
-                  placeholder="选择日期" style="width: 150px">
-                </el-date-picker>
-              </el-form-item>
-            </el-col><!--缴费日期-->
-            <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-              <el-form-item label="缴费金额　　" prop="addValue29" labelWidth="100px">
-                <el-input v-model="addForm.addValue29" placeholder="请选择" size="mini" style="width:150px"></el-input>
-              </el-form-item>
-            </el-col><!--缴费金额-->
-          </el-row>
-          <el-row style="margin-bottom: 10px">
-            <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-              <el-form-item label="课程开始时间" prop="addValue30" labelWidth="100px">
-                <el-date-picker
-                  value-format="yyyy-MM-dd"
-                  format="yyyy-MM-dd"
-                  v-model="addForm.addValue30"
-                  type="date"
-                  size="mini"
-                  placeholder="选择日期" style="width: 150px">
-                </el-date-picker>
-              </el-form-item>
-            </el-col><!--课程开始时间-->
-            <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-              <el-form-item label="课程结束时间" prop="addValue31" labelWidth="100px">
-                <el-date-picker
-                  value-format="yyyy-MM-dd"
-                  format="yyyy-MM-dd"
-                  v-model="addForm.addValue31"
-                  type="date"
-                  size="mini"
-                  placeholder="选择日期" style="width:150px">
-                </el-date-picker>
-              </el-form-item>
-            </el-col><!--课程结束时间-->
-            <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-              <el-form-item label="实缴金额　　" prop="addValue32" labelWidth="100px">
-                <el-input v-model="addForm.addValue32" placeholder="请选择" size="mini" style="width:150px">
-                </el-input>
-              </el-form-item>
-            </el-col><!--教练-->
-          </el-row>
-          <el-row>
-            <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6">
-              <el-form-item label="班级" prop="addValue33">
-                <el-select v-model="addForm.addValue33" placeholder="请选择" size="mini" style="width:120px">
-                  <el-option
-                    v-for="item in classes"
-                    :key="item.department_serial"
-                    :label="item.department_name"
-                    :value="item.department_serial">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-            </el-col><!--班级-->
-            <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6">
-              <el-form-item label="教练" prop="addValue34">
-                <el-select v-model="addForm.addValue34" placeholder="请选择" size="mini" style="width:120px">
-                  <el-option
-                    v-for="item in coachs"
-                    :key="item.employee_serial"
-                    :label="item.employee_name"
-                    :value="item.employee_serial">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-            </el-col><!--教练-->
-            <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6">
-              <el-form-item label="老师" prop="addValue35">
-                <el-select v-model="addForm.addValue35" clearable placeholder="请选择" size="mini" style="width:120px">
-                  <el-option
-                    v-for="item in teachers"
-                    :key="item.employee_serial"
-                    :label="item.employee_name"
-                    :value="item.employee_serial">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-            </el-col><!--老师-->
-            <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6">
-              <el-form-item label="开票人" prop="addValue36" labelWidth="60px">
-                <el-select v-model="addForm.addValue36" placeholder="请选择" size="mini" style="width:120px">
-                  <el-option
-                    v-for="item in drawer"
-                    :key="item.employee_serial"
-                    :label="item.employee_name"
-                    :value="item.employee_serial">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-            </el-col><!--开票人-->
-          </el-row>
-        </div><!--课程信息-->
+            <el-row>
+              <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
+                <el-form-item label="课程名称　　" prop="addValue24" labelWidth="100px">
+                  <el-select v-model="addForm.addValue24" placeholder="请选择" size="mini" style="width:150px" clearable @change="courseInfoChange">
+                    <el-option
+                      v-for="item in courseInfo"
+                      :key="item.jserial"
+                      :label="item.jname"
+                      :value="item.jserial">
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col><!--课程名称-->
+              <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
+                <el-form-item label="有效期　　　" prop="addValue25" labelWidth="100px">
+                  <el-input v-model="addForm.addValue25" placeholder="请选择" size="mini" style="width:150px" clearable @change="courseInfoChange">
+                    <el-option
+                      v-for="item in courseInfo"
+                      v-if="item.jserial===courseId"
+                      :key="item.jserial"
+                      :label="item.course_year"
+                      :value="item.jserial">
+                    </el-option>
+                  </el-input>
+                </el-form-item>
+              </el-col><!--有效期-->
+              <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
+                <el-form-item label="每周上课次数" prop="addValue26" labelWidth="100px">
+                  <el-select v-model="addForm.addValue26" clearable  placeholder="请选择" size="mini" style="width:150px">
+                    <el-option
+                      v-for="item in courseInfo"
+                      v-if="item.jserial===courseId"
+                      :key="item.jserial"
+                      :label="item.jclassesperweek"
+                      :value="item.jserial">
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col><!--每周上课次数-->
+            </el-row>
+            <el-row >
+              <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
+                <el-form-item label="课时数　" prop="addValue27" labelWidth="100px">
+                  <el-select v-model="addForm.addValue27" clearable  placeholder="请选择" size="mini" style="width:150px">
+                    <el-option
+                      v-for="item in courseInfo"
+                      v-if="item.jserial===courseId"
+                      :key="item.jserial"
+                      :label="item.jvalidPeriod"
+                      :value="item.jserial">
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col><!--体验课次数-->
+              <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
+                <el-form-item label="缴费日期　　" prop="addValue28" labelWidth="100px">
+                  <el-date-picker
+                    value-format="yyyy-MM-dd"
+                    format="yyyy-MM-dd"
+                    v-model="addForm.addValue28"
+                    type="date"
+                    size="mini"
+                    placeholder="选择日期" style="width: 150px">
+                  </el-date-picker>
+                </el-form-item>
+              </el-col><!--缴费日期-->
+              <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
+                <el-form-item label="应缴金额　　" prop="addValue29" labelWidth="100px">
+                  <el-select v-model="addForm.addValue29" clearable  placeholder="请选择" size="mini" style="width:150px">
+                    <el-option
+                      v-for="item in courseInfo"
+                      v-if="item.jserial===courseId"
+                      :key="item.jserial"
+                      :label="item.unitPrice"
+                      :value="item.jserial">
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col><!--缴费金额-->
+            </el-row>
+            <el-row style="margin-bottom: 10px">
+              <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
+                <el-form-item label="课程开始时间" prop="addValue30" labelWidth="100px">
+                  <el-date-picker
+                    value-format="yyyy-MM-dd"
+                    format="yyyy-MM-dd"
+                    v-model="addForm.addValue30"
+                    type="date"
+                    size="mini"
+                    placeholder="选择日期" style="width: 150px">
+                  </el-date-picker>
+                </el-form-item>
+              </el-col><!--课程开始时间-->
+              <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
+                <el-form-item label="课程结束时间" prop="addValue31" labelWidth="100px">
+                  <el-date-picker
+                    value-format="yyyy-MM-dd"
+                    format="yyyy-MM-dd"
+                    v-model="addForm.addValue31"
+                    type="date"
+                    size="mini"
+                    placeholder="选择日期" style="width:150px">
+                  </el-date-picker>
+                </el-form-item>
+              </el-col><!--课程结束时间-->
+              <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
+                <el-form-item label="实缴金额　　" prop="addValue32" labelWidth="100px">
+                  <el-input v-model="addForm.addValue32" clearable placeholder="请选择" size="mini" style="width:150px">
+                  </el-input>
+                </el-form-item>
+              </el-col><!--教练-->
+            </el-row>
+            <el-row>
+              <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6">
+                <el-form-item label="班级" prop="addValue33">
+                  <el-select v-model="addForm.addValue33" placeholder="请选择" size="mini" style="width:120px">
+                    <el-option
+                      v-for="item in classes"
+                      :key="item.department_serial"
+                      :label="item.department_name"
+                      :value="item.department_serial">
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col><!--班级-->
+              <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6">
+                <el-form-item label="教练" prop="addValue34">
+                  <el-select v-model="addForm.addValue34" placeholder="请选择" size="mini" style="width:120px">
+                    <el-option
+                      v-for="item in coachs"
+                      :key="item.employee_serial"
+                      :label="item.employee_name"
+                      :value="item.employee_serial">
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col><!--教练-->
+              <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6">
+                <el-form-item label="老师" prop="addValue35">
+                  <el-select v-model="addForm.addValue35" clearable placeholder="请选择" size="mini" style="width:120px">
+                    <el-option
+                      v-for="item in teachers"
+                      :key="item.employee_serial"
+                      :label="item.employee_name"
+                      :value="item.employee_serial">
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col><!--老师-->
+              <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6">
+                <el-form-item label="开票人" prop="addValue36" labelWidth="60px">
+                  <el-select v-model="addForm.addValue36" placeholder="请选择" size="mini" style="width:120px">
+                    <el-option
+                      v-for="item in drawer"
+                      :key="item.employee_serial"
+                      :label="item.employee_name"
+                      :value="item.employee_serial">
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col><!--开票人-->
+            </el-row>
+          </div><!--课程信息-->
         </fieldset>
         <el-row style="margin-top:5px;padding:0 5px">
           <el-col class="tanchu">
             <fieldset style="border: 1px solid #c1c3c9;font-weight: 600;">
               <legend>物品发放</legend>
-            <el-form-item label="" prop="name">
-              <el-checkbox-group v-model="checkList" @change="goodsCbChange">
-                <el-checkbox v-for="item in goodsCbList" :label="item.name" :key="item.count">{{item.name}}
-                </el-checkbox>
-              </el-checkbox-group>
-            </el-form-item>
+              <el-form-item label="" prop="name">
+                <el-checkbox-group v-model="checkList" @change="goodsCbChange">
+                  <el-checkbox v-for="item in goodsCbList" :label="item.name" :key="item.count">{{item.name}}
+                  </el-checkbox>
+                </el-checkbox-group>
+              </el-form-item>
             </fieldset>
           </el-col>
         </el-row><!--物品发放-->
@@ -515,14 +542,14 @@
             <el-col class="tanchu">
               <fieldset style="border: 1px solid #c1c3c9;">
                 <legend style="font-weight: 600">入会须知</legend>
-              <div style="padding: 0px;">
-                <p>
-                  1、会员或其监护人必须如实填写此表，若会员患有不宜练习跆拳道或不能参与剧烈活动等之疾病，不得报名。若患有其他疾病或有其他特殊情况须在填写此表时备注，以便适当调整训练强度。如有隐瞒病情及特殊情况之情形，发生的任何意外，一切法律后果均由会员和其监护人自行负责，与本馆无涉。</p>
-                <p>2、会员入会后，必须遵守本馆的规章制度、训练规定等，听从工作人员安排，反之造成的一切后果均由会员和其监护人负责，与本馆无涉。</p>
-                <p>3、 如因会员自身原因出现缺课、旷课，在有效期内无法完成全部课程的，课时不补，费用不退。如有特殊情况提前向本馆申请，经本馆同意后可在有效期内补课。</p>
-                <p>4、 会员卡一经办理概不退费，会员不得转让会员资格。</p>
-                <p>会员报名时，本馆已充分告知其会员和其监护人以上规定，会员和其监护人已知悉并同意遵守。</p>
-              </div>
+                <div style="padding: 0px;">
+                  <p>
+                    1、会员或其监护人必须如实填写此表，若会员患有不宜练习跆拳道或不能参与剧烈活动等之疾病，不得报名。若患有其他疾病或有其他特殊情况须在填写此表时备注，以便适当调整训练强度。如有隐瞒病情及特殊情况之情形，发生的任何意外，一切法律后果均由会员和其监护人自行负责，与本馆无涉。</p>
+                  <p>2、会员入会后，必须遵守本馆的规章制度、训练规定等，听从工作人员安排，反之造成的一切后果均由会员和其监护人负责，与本馆无涉。</p>
+                  <p>3、 如因会员自身原因出现缺课、旷课，在有效期内无法完成全部课程的，课时不补，费用不退。如有特殊情况提前向本馆申请，经本馆同意后可在有效期内补课。</p>
+                  <p>4、 会员卡一经办理概不退费，会员不得转让会员资格。</p>
+                  <p>会员报名时，本馆已充分告知其会员和其监护人以上规定，会员和其监护人已知悉并同意遵守。</p>
+                </div>
               </fieldset>
             </el-col>
           </el-row>
@@ -643,6 +670,7 @@
       :close-on-click-modal="false"
       :close-on-press-escape="false"
       :visible.sync="detailDialogVisible"
+      :open="openDialog"
       :close="closeDialog"
       width="900px" style="font-size:10px"
     >
@@ -798,12 +826,12 @@
               </el-col>
               <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
                 <el-upload style="width: 100%;text-align: center"
-                           :http-request='submitUpload'
-                           class="avatar-uploader"
                            action="https://wx.jpbvip.com/dowinsysws/services/memberManagement/memberUploadPic"
+                           class="avatar-uploader"
+                           :http-request='submitUpload'
+                           :data="{fileType:'multipart/form-data'}"
                            :show-file-list="false"
-                           :on-success="handleAvatarSuccess"
-                           :before-upload="beforeAvatarUpload">
+                >
                   <img v-if="imageUrl" :src="imageUrl" class="avatar"  >
                   <i v-else class="el-icon-plus avatar-uploader-icon">上传头像</i>
                 </el-upload>
@@ -1055,7 +1083,7 @@
         :page-size="pageSize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
-      style="text-align: right;margin-top: 20px">
+        style="text-align: right;margin-top: 20px">
       </el-pagination>
     </el-row>
     <!--表格内容结束-->
@@ -1076,9 +1104,7 @@
       return {
         detailDialogVisible:false,
         fileParam:'',
-        uploadHeader: {
-          'Content-Type': 'multipart/form-data'
-        },
+        // uplodHeader:{'Content-Type': 'multipart/form-data; boundary=fuckReaquestHeader'},
         //开票人
         drawer:[],
         genders: [
@@ -1187,6 +1213,7 @@
         levels: [],
         statuses: [],
         course: [],
+        courseId:'',
         courseInfo: [],
         ucs: '',
         uc: '',
@@ -1250,7 +1277,7 @@
         //新增提交验证规则
         rules: {
           addValue1: [
-            {required: true, message: '', trigger: 'change'},
+            {required: true, message: '请选择来源', trigger: 'change'},
           ],
           addValue2: [
             {required: true, message: '请选择卡型', trigger: 'change'}
@@ -1259,7 +1286,7 @@
             { required: true, message: '请选择道馆', trigger: 'change'}
           ],
           addValue4: [
-            { required: true, message: '', trigger: 'blur' },
+            { required: true, message: '请填写姓名', trigger: 'blur' },
           ],
           addValue5: [
             { required: true, message: '请选择病史', trigger: 'change'},
@@ -1382,18 +1409,44 @@
       }
     },
     computed: {
-        medicalHistory(){
+      medicalHistory(){
         return this.$store.state.medicalHistory
-      }
+      },
     },
     methods: {
-      beforeAvatarUpload(){
-
+      // beforeAvatarUpload(){
+      //
+      // },
+      changeFile(file, fileList) {
+        var This = this;
+        //this.imageUrl = URL.createObjectURL(file.raw);
+        var reader = new FileReader();
+        reader.readAsDataURL(file.raw);
+        reader.onload = function (e) {
+          this.result // 这个就是base64编码了
+          This.imageUrl = this.result;
+        }
       },
-      submitUpload: function(content) {//自定义的上传图片的方法
+      submitUpload(file) {
+        // var imageData={
+        //
+        //  image:this.data
+        // }
+        var imageParams={
+          methodUrl: 'memberManagement/memberUploadPic',
+          jsonParam: qs.stringify()
+        }
+        this.$axios.postRequest(imageParams).then(function (res) {
+          //成功之后处理逻辑
 
+        }, function (res) {
+          //失败之后处理逻辑
+          console.log("error:" + res)
+        })
       },
-
+      courseInfoChange() {
+        this.courseId =this.addForm.addValue24
+      },
       //排序
       //提交续费
       //打开详情
@@ -1461,8 +1514,10 @@
         }
       },
       closeDialog(){
-        this.dialogVisible = false
+        this.multipleSelection.length=0
+        alert(784512)
         this.$refs.addForm.resetFields();
+        alert(789555)
       },/*清空表单样式调用*/
       //导出
       exportCh(fileName, docType){
@@ -1581,57 +1636,11 @@
           .catch(_ => {
           });
       },
-
+      //下拉选多级联动
       //头像上传
       handleAvatarSuccess(res, file) {
         this.imageUrl = "https://wx.jpbvip.com/dowinsysws/swagger/upload/" + res.data.pic_url;
 
-      },
-      //上传前执行
-      beforeupload(file) {
-        console.log(file);
-        //创建临时的路径来展示图片
-        var windowURL = window.URL || window.webkitURL;
-
-        this.imageUrl=windowURL.createObjectURL(file);
-        //重新写一个表单上传的方法
-        this.fileParam = new FormData();
-        this.fileParam.append('file', file);
-        let config = {
-          'Content-Type': 'multipart/form-data'
-        }
-        var imageData={
-          image:this.fileParam,
-          config:config
-        }
-        var imageParams={
-          methodUrl: 'memberManagement/memberUploadPic',
-          jsonParam: qs.stringify(imageData)
-        }
-        this.$axios.postRequest(imageParams).then(function (res) {
-          //成功之后处理逻辑
-          that.members = res.data.list
-          that.total = res.data.totalcount
-
-        }, function (res) {
-          //失败之后处理逻辑
-          console.log("error:" + res)
-        })
-        // axios.post('https://wx.jpbvip.com/dowinsysws/services/memberManagement/memberUploadPic', this.fileParam, config)
-        //   .then(function(response) {
-        //     if (!response.data.success) {
-        //       console.log('9999999999999')
-        //     }else{
-        //       console.log('-------------------')
-        //       console.log( response.data)
-        //     }
-        //   })
-        //   .catch(function(error) {
-        //     console.log('++++++++++++++++++')
-        //     console.log(error);
-        //   })
-
-        // return false;
       },
       //查询
       find(column){
@@ -1692,7 +1701,7 @@
         var userData = qs.parse(sessionStorage.getItem("userData"));
         console.log(`每页 ${val} 条`);
         this.pageSize = val
-      this.find()
+        this.find()
       },
       handleCurrentChange(val) {
         var userData = qs.parse(sessionStorage.getItem("userData"));
@@ -1713,11 +1722,10 @@
       },
       // /显示弹窗type=1新增、=2修改，新增清空数据、修改查询数据。
       showDialog(type){
-            var that =this
-            if (type == 1) {
-              that.jdolx = 1
-              that.dialogVisible = true
-
+        var that =this
+        if (type == 1) {
+          that.jdolx = 1
+          that.dialogVisible = true
         } else {
           if (this.multipleSelection.length < 1) {
             this.$message({
@@ -1725,25 +1733,15 @@
               showClose: true,
               type: 'warning'
             });
-            //this.dialogVisible = false
-
           } else if (this.multipleSelection.length > 1) {
             this.$message({
               message: '只能选择一名学员',
               showClose: true,
               type: 'warning'
             });
-            //this.dialogVisible = false
           } else {
             this.jdolx = 2
             this.dialogVisible = true
-           /* this.multipleSelection.forEach(function (v) {
-              that.result.push(v.source_id, v.status_id, v.membertype_id, v.dep_parent_serial, v.student_no,
-                v.student_name, v.illness, v.height, v.jsex, v.student_card, v.birthday, v.student_level,
-                v.id_card, v.student_phone, v.student_school, v.student_id, v.weixin_id, v.student_address,
-                v.father_name, v.father_phone, v.father_comp, v.mother_name, v.mother_phone, v.mother_comp,
-                v.student_serial, v.jcontent, v.picUrl, v.fillPerson, v.itemUse, v.department_serial,);
-            });*/
             this.addForm.addValue1 = this.multipleSelection[0].source_id
             this.addForm.addValue2=this.multipleSelection[0].membertype_id
             this.addForm.addvalue3=this.multipleSelection[0].dep_parent_serial
@@ -1767,36 +1765,6 @@
             this.addForm.addvalue21=this.multipleSelection[0].mother_phone
             this.addForm.addvalue22=this.multipleSelection[0].mother_comp
             this.serial = this.multipleSelection[0].student_serial
-
-
-
-            console.log("----------------")
-            console.log(this.multipleSelection)
-            console.log(this.addForm.addValue1)
-           /* this.addForm.addValue2 = result[2]
-            this.addForm.addValue3 = result[3]
-            this.addForm.addValue4 = result[5]
-            this.addForm.addValue5 = result[6]
-            this.addForm.addValue6 = result[7]
-            this.addForm.addValue7 = result[8]
-            this.addForm.addValue8 = result[9]
-            this.addForm.addValue9 = result[10]
-            this.addForm.addValue10 = result[11]
-            this.addForm.addValue11 = result[12]
-            this.addForm.addValue12 = result[13]
-            this.addForm.addValue13 = result[14]
-            this.addForm.addValue14 = result[15]
-            this.addForm.addValue15 = result[16]
-            this.addForm.addValue16 = result[17]
-            this.addForm.addValue19 = result[18]
-            this.addForm.addValue20 = result[19]
-            this.addForm.addValue21 = result[20]
-            this.addForm.addValue22 = result[21]
-            this.addForm.addValue17 = result[22]
-            this.addForm.addValue18 = result[23]
-            this.serial = result[24]
-            this.addForm.addValue23 = result[25]
-            this.addForm.addValue33 = result[29]*/
           }
         }
       },
@@ -1817,23 +1785,6 @@
               this.addForm.addValue34,this.addForm.addValue35,this.addForm.addValue36,
               this.goodsCountParams)
             var userData = qs.parse(sessionStorage.getItem("userData"));
-            let config = {
-              'Content-Type': 'multipart/form-data'
-            }
-            axios.post('https://wx.jpbvip.com/dowinsysws/services/memberManagement/memberUploadPic', this.fileParam, config)
-              .then(function(response) {
-                if (!response.data.success) {
-                  var_this.$message({
-                    message: response.data.message,
-                    type: 'error'
-                  });
-                }else{
-                 console.log( response.data)
-                }
-              })
-              .catch(function(error) {
-                console.log(error);
-              })
             var updateMemberData = {
               jlx: 2,
               jdolx: that.jdolx,
@@ -1854,6 +1805,7 @@
             this.$axios.postRequest(updateMemberParams).then(function (res) {
               //成功之后处理逻辑
               that.find()
+              that.$refs.addForm.resetFields()
             }, function (res) {
               //失败之后处理逻辑
               console.log("error:" + res)
@@ -2167,28 +2119,6 @@
       }
       //加载会员信息
       this.find();
-//      var postData = {
-//        count: true,
-//        pageindex: 1,
-//        pagesize: 20,
-//
-//        regserial: userData.company_serial,
-//        permissions_id: userData.permissions_id
-//      }
-//      var params = {
-//        methodUrl: 'memberManagement/memberClickQuery',
-//        jsonParam: qs.stringify(postData)
-//      }
-//      this.$axios.postRequest(params).then(function (res) {
-//        //成功之后处理逻辑
-//        console.log()
-//        that.members = res.data.list
-//        that.total = res.data.totalcount
-//      }, function (res) {
-//        //失败之后处理逻辑
-//        console.log("error:" + res)
-//      })
-//
       //加载来源信息
       var companyData = {
         regserial: userData.company_serial,
@@ -2330,10 +2260,10 @@
 
       //加载课程信息
       var courseInfoData = {
-        regserial: userData.company_serial,
+        company_serial : userData.company_serial,
       }
       var courseInfoParams = {
-        methodUrl: 'courseManagement/setUpCourseInformation',
+        methodUrl: 'memberManagement/memberCourseInfo',
         jsonParam: qs.stringify(courseInfoData)
       }
       this.$axios.postRequest(courseInfoParams).then(function (res) {
