@@ -5,8 +5,6 @@
     <el-container>
       <el-aside width="155px">
         <el-menu
-
-
           :default-active="activeMenu"
           :default-openeds="openSubMenuList"
           @open="handleOpen"

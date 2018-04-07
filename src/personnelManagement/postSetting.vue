@@ -6,7 +6,7 @@
       <ul>
         <el-button size="mini" type="info" @click="dialogVisible = true">新增岗位</el-button>
         <el-button size="mini" type="info">修改</el-button>
-        <el-button size="mini" type="info">删除</el-button>
+        <el-button size="mini" type="info" @click="deleteMember">删除</el-button>
         <el-dialog
           title="新增"
           :close-on-click-modal="false"
@@ -117,6 +117,7 @@
       :data="postSetting"
       size="mini"
       border
+      @selection-change="handleSelectionChange"
       @row-click="openDetails"
       header-align="center"
       tooltip-effect="dark"
@@ -256,10 +257,9 @@
         classHour: '',//课时费
         competitionRewards: '',//比赛奖励
         nameID: [],
-
-
+        postSettingID:[],//岗位设置ID
         activeName2: 'first',
-        postSetting: [],//岗位设置表
+        postSetting:[],//岗位设置表
         positionInfoList: [],
         multipleTable: [],//
         multipleSelection: [],
@@ -334,38 +334,40 @@
         //失败之后处理逻辑
         console.log("error:" + res)
       })
-
+      
 //      //选择角色加载对应项目
       this.find();
+     
 //      //获取岗位设置表格信息
-//      var setupData = {
-//        count:true,
-//        pageindex:1,
-//        pagesize:20,
-//        regserial: userData.company_serial,
-//        permissions_id:userData.permissions_id,
-//      }
-//      var Setupparams = {
-//        methodUrl:'personnelManagement/getPostSet',
-//        jsonParam:qs.stringify(setupData)
-//      }
-//
-//      this.$axios.postRequest(Setupparams).then(function(res) {
-//        //成功之后处理逻辑
-//
-//        that.postSetting=res.data.list
-//        that.total=res.data.totalcount
-//      }, function(res) {
-//        //失败之后处理逻辑
-//        console.log("error:" + res)
-//      })
+     var setupData = {
+       count:true,
+       pageindex:1,
+       pagesize:20,
+       regserial: userData.company_serial,
+       permissions_id:userData.permissions_id,
+     }
+     var Setupparams = {
+       methodUrl:'personnelManagement/getPostSet',
+       jsonParam:qs.stringify(setupData)
+     }
+
+     this.$axios.postRequest(Setupparams).then(function(res) {
+       //成功之后处理逻辑
+
+       that.postSetting=res.data.list
+       that.total=res.data.totalcount
+     }, function(res) {
+       //失败之后处理逻辑
+       console.log("error:" + res)
+     })
 
     },
     methods: {
+      
       find(){
         var that = this;
         var userData = qs.parse(sessionStorage.getItem("userData"));
-        console.log('7894654113')
+     
         var setupData = {
           count: true,
           pageindex: 1,
@@ -387,8 +389,13 @@
           //失败之后处理逻辑
           console.log("error:" + res)
         })
-
       },
+
+    handleSelectionChange(val) {
+      this.multipleSelection = val;
+      console.log(val);
+    },
+ 
       focusExamItem(index){
         this.getExamItemIndex = index
       },
@@ -475,8 +482,7 @@
         var userData = qs.parse(sessionStorage.getItem("userData"));
         var that = this
         var postExamItemValues = that.project;
-        console.log('55555555555555555555')
-        console.log(that.project)
+      
         for (var i = 0; i < postExamItemValues.length; i++) {
 
           that.nameID.push(postExamItemValues[i].auditItem_id)
@@ -574,15 +580,8 @@
         var userData = qs.parse(sessionStorage.getItem("userData"));
 
         var updateMemberData = {
-          jlx: 1,
-          jdolx: 2,
-          jSerial: this.addValue18,
-          jname: this.addValue4,
-          picUrl: '',
-          regSerial: userData.company_serial,
-          jlog_ip: '',
-          jgly_Serial: userData.employee_serial,
-          jtext: result.join(',')
+          jlx: that.role.role_id,
+         
         }
 
         var updateMemberParams = {
@@ -603,27 +602,29 @@
       //删除
       deleteMember(){
         var that = this
+      
         if (this.multipleSelection.length > 0) {
+            
           var arrvalue = [];//用于存放取出的数组的值
           for (var i = 0; i < this.multipleSelection.length; i++) {
             arrvalue.push(this.multipleSelection[i].student_serial);//数组的索引是从0开始的
-            console.log(arrvalue)
+            
           }
           var userData = qs.parse(sessionStorage.getItem("userData"));
+       var postID=that.multipleSelection
+         for(var x=0; x<postID.length;x++){
+            
 
+          that.postSettingID.push(postID[x].id)
+         }
+        
+        
           var deleteData = {
-            jlx: 2,
-            jdolx: 3,
-            jSerial: 0,
-            name: '',
-            picUrl: '',
-            regserial: userData.company_serial,
-            jlog_ip: '',
-            jgly_Serial: userData.employee_serial,
-            jtext: arrvalue.join(',')
+            ids: that.postSettingID.join(','),
+           
           }
           var deleteParams = {
-            methodUrl: 'personnelManagement/updatePostSet',
+            methodUrl: 'personnelManagement/deletePostSet',
             jsonParam: qs.stringify(deleteData)
           }
           this.$axios.postRequest(deleteParams).then(function (res) {

@@ -74,6 +74,12 @@
   .el-input__inner{
     border: 1px solid #c1c3c9 !important;
   }
+  .el-form-item.is-success .el-input__inner{
+border-color: #67c23a !important;
+}
+.el-form-item.is-error .el-input__inner{
+border-color: #f56c6c !important;
+}
   .el-header{
     padding: 0 !important;
   }

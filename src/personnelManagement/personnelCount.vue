@@ -40,7 +40,7 @@
         </el-select>
       </ul>
       <ul>
-        <el-button size="mini" type="info" v-if="" @click="find">查询</el-button>
+        <el-button size="mini" type="info"  @click="find">查询</el-button>
         <el-button size="mini" type="info" @click="updateMember(2)">修改</el-button>
         <el-button size="mini" type="info" @click="deleteMember">删除 </el-button>
         <el-button size="mini" type="info">导入</el-button>
@@ -59,17 +59,17 @@
       :visible.sync="dialogVisible"
       width="800px" style="font-size: 10px"
     >
-      <el-form label-width="60px" ref="addForm" :show-message="false" :model="addForm" class="demo-ruleForm">
+      <el-form label-width="70px" ref="addForm" :show-message="false" :rules="rules"  :model="addForm" class="demo-ruleForm">
         <div class="basicData">
           <el-row>
             <el-col :xs="20" :sm="20" :md="20" :lg="20" :xl="20">
               <!--道馆岗位工号-->
               <el-row>
                 <el-col :xs="7" :sm="7" :md="7" :lg="7" :xl="7">
-                  <el-form-item label="道　　馆"  prop="name">
+                  <el-form-item label="入职部门"  prop="addValue1">
                     <el-select v-model="addForm.addValue1" placeholder="请选择" clearable size="mini" style="width: 105px">
                       <el-option
-                        v-for="item in roadMuseum"
+                        v-for="item in departmentMuseum"
                         :key="item.department_serial"
                         :label="item.department_name"
                         :value="item.department_serial">
@@ -78,7 +78,7 @@
                   </el-form-item>
                 </el-col>
                 <el-col :xs="7" :sm="7" :md="7" :lg="7" :xl="7">
-                  <el-form-item label="岗　　位" prop="name">
+                  <el-form-item label="岗　　位" prop="addValue2">
                     <el-select clearable v-model="addForm.addValue2" placeholder="请选择" size="mini" style="width: 105px">
                       <el-option
                         v-for="item in post"
@@ -90,7 +90,7 @@
                   </el-form-item>
                 </el-col>
                 <el-col :xs="7" :sm="7" :md="7" :lg="7" :xl="7">
-                  <el-form-item label="工　　号" prop="name">
+                  <el-form-item label="工　　号" prop="addValue3">
                     <el-input clearable v-model="addForm.addValue3" placeholder="" size="mini" style="width:105px"></el-input>
                   </el-form-item>
                 </el-col>
@@ -98,12 +98,12 @@
               <!--姓名性别-->
               <el-row style="margin-bottom: 10px">
                 <el-col :xs="7" :sm="7" :md="7" :lg="7" :xl="7">
-                  <el-form-item label="姓　　名"  prop="name">
+                  <el-form-item label="姓　　名"  prop="addValue4">
                     <el-input clearable v-model="addForm.addValue4" placeholder="" size="mini" style="width:105px"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :xs="7" :sm="7" :md="7" :lg="7" :xl="7">
-                  <el-form-item label="性　　别" prop="name">
+                  <el-form-item label="性　　别" prop="addValue5">
                     <el-select v-model="addForm.addValue5" clearable placeholder="请选择" size="mini" style="width:105px">
                       <el-option
                         v-for="item in medicalHistory"
@@ -118,9 +118,11 @@
               <!--出生日期身份证号-->
               <el-row style="margin-bottom: 10px">
                 <el-col :xs="7" :sm="7" :md="7" :lg="7" :xl="7">
-                  <el-form-item label="出生日期" prop="name">
+                  <el-form-item label="出生日期" prop="addValue6">
                     <el-date-picker clearable
                                     v-model="addForm.addValue6"
+                                     value-format="yyyy-MM-dd"
+                                        format="yyyy-MM-dd"
                                     type="date"
                                     size="mini"
                                     placeholder="选择日期" style="width: 105px">
@@ -129,7 +131,7 @@
                   </el-form-item>
                 </el-col>
                 <el-col :xs="7" :sm="7" :md="7" :lg="7" :xl="7">
-                  <el-form-item label="身份证号" prop="name">
+                  <el-form-item label="身份证号" prop="addValue7">
                     <el-input clearable v-model="addForm.addValue7" placeholder="" size="mini" style="width:105px"></el-input>
                   </el-form-item>
                 </el-col>
@@ -138,12 +140,12 @@
               <!--所学专业毕业院校-->
               <el-row style="margin-bottom: 10px">
                 <el-col :xs="14" :sm="14" :md="14" :lg="14" :xl="14">
-                  <el-form-item label="所学专业" prop="name">
+                  <el-form-item label="所学专业" prop="addValue8">
                     <el-input clearable v-model="addForm.addValue8" placeholder="" size="mini" style="width:288px"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :xs="10" :sm="10" :md="10" :lg="10" :xl="10">
-                  <el-form-item label="毕业院校" prop="name">
+                  <el-form-item label="毕业院校" prop="addValue9">
                     <el-input clearable v-model="addForm.addValue9" placeholder="" size="mini" style="width:185px"></el-input>
                   </el-form-item>
                 </el-col>
@@ -152,22 +154,24 @@
               <!--毕业时间学历学位-->
               <el-row>
                 <el-col :xs="7" :sm="7" :md="7" :lg="7" :xl="7">
-                  <el-form-item label="毕业时间" prop="name">
+                  <el-form-item label="毕业时间" prop="addValue10">
                     <el-date-picker clearable
                                     v-model="addForm.addValue10"
                                     type="date"
                                     size="mini"
+                                     value-format="yyyy-MM-dd"
+                                        format="yyyy-MM-dd"
                                     placeholder="选择日期" style="width: 105px">
                     </el-date-picker>
                   </el-form-item>
                 </el-col>
                 <el-col :xs="7" :sm="7" :md="7" :lg="7" :xl="7">
-                  <el-form-item label="学　　历" prop="name">
+                  <el-form-item label="学　　历" prop="addValue11">
                     <el-input clearable v-model="addForm.addValue11" placeholder="" size="mini" style="width:105px"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :xs="7" :sm="7" :md="7" :lg="7" :xl="7">
-                  <el-form-item label="学　　位" prop="name">
+                  <el-form-item label="学　　位" prop="addValue12">
                     <el-input clearable v-model="addForm.addValue12" placeholder="" size="mini" style="width:105px"></el-input>
                   </el-form-item>
                 </el-col>
@@ -175,12 +179,12 @@
               <!--户籍归属现居住地-->
               <el-row style="margin-bottom: 10px">
                 <el-col :xs="14" :sm="14" :md="14" :lg="14" :xl="14">
-                  <el-form-item label="户籍归属" prop="name">
+                  <el-form-item label="户籍归属" prop="addValue13">
                     <el-input clearable v-model="addForm.addValue13" placeholder="" size="mini" style="width:288px"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :xs="10" :sm="10" :md="10" :lg="10" :xl="10">
-                  <el-form-item label="现居住地" prop="name">
+                  <el-form-item label="现居住地" prop="addValue14">
                     <el-input clearable v-model="addForm.addValue14" placeholder="" size="mini" style="width:185px"></el-input>
                   </el-form-item>
                 </el-col>
@@ -190,27 +194,27 @@
               <el-row style="margin-bottom: 10px">
 
                 <el-col :xs="14" :sm="14" :md="14" :lg="14" :xl="14">
-                  <el-form-item label="联系电话" prop="name">
+                  <el-form-item label="联系电话" prop="addValue15">
                     <el-input clearable v-model="addForm.addValue15" placeholder="" size="mini" style="width:288px"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :xs="7" :sm="7" :md="7" :lg="7" :xl="7">
-                  <el-form-item label="联系人" prop="name">
-                    <el-input clearable clearable v-model="addForm.addValue16" placeholder="" size="mini"
+                  <el-form-item label="联系人" prop="addValue16">
+                    <el-input clearable  v-model="addForm.addValue16" placeholder="" size="mini"
                               style="width:105px"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :xs="3" :sm="3" :md="3" :lg="3" :xl="3">
-                  <el-form-item label="紧急联系电话" prop="name" label-width="90px">
-                    <el-input clearable v-model="addForm.addValue17" clearable placeholder="" size="mini"
-                              style="width:112px"></el-input>
+                  <el-form-item label="紧急联系电话" prop="addValue17" label-width="100px">
+                    <el-input clearable v-model="addForm.addValue17"  placeholder="" size="mini"
+                              style="width:102px"></el-input>
                   </el-form-item>
                 </el-col>
 
               </el-row>
 
             </el-col>
-            <!-- <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
+            <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
               <el-upload
                 class="avatar-uploader"
                 action="https://jsonplaceholder.typicode.com/posts/"
@@ -220,14 +224,14 @@
                 <img v-if="imageUrl" :src="imageUrl" class="avatar">
                 <i v-else class="el-icon-plus avatar-uploader-icon">上传头像</i>
               </el-upload>
-            </el-col>头像上传 -->
+            </el-col>
           </el-row>
         </div><!--基础资料-->
 
 
       </el-form>
       <div slot="footer" class="dialog-footer" style="text-align: center">
-        <el-button @click="dialogVisible = false" size="mini" class="dialogCancelButton">取 消</el-button>
+        <el-button @click="dialogVisible = false" size="mini" class="dialogCancelButton">取消</el-button>
         <el-button type="primary" @click="submitUpdate('addForm')" size="mini">确定</el-button>
 
       </div>
@@ -309,7 +313,7 @@
       <el-table-column
         align="center"
         prop="entryDate"
-
+        
         label="入职日期"
         width="100">
 
@@ -367,6 +371,7 @@ export default {
   data() {
     return {
       rooms: "",
+
       medicalHistory: [
         {
           label: "未知",
@@ -436,6 +441,7 @@ export default {
       checked: "",
       currentPage: 1,
       post: [],
+      departmentMuseum:[],//入职部门
       roadMuseum: [], //道馆
       multipleSelection: [], //修改用
       dialogVisibleTwo: false,
@@ -470,6 +476,61 @@ export default {
         addValue17: "", //紧急联系电话
         addValue18: "" //人员序号
       },
+         rules: {
+           addValue1: [
+            {required: true, message: '', trigger: 'change'},
+          ],
+          addValue2: [
+            {required: true, message: '', trigger: 'change'}
+          ],
+          addValue3: [
+            { required: true, message: '', trigger: 'blur'}
+          ],
+          addValue4: [
+            { required: true, message: '', trigger: 'blur' },
+          ],
+          addValue5: [
+            { required: true, message: '', trigger: 'change'},
+          ],
+          addValue6: [
+            {required: true, message: '', trigger: 'blur'}
+          ],
+          addValue7: [
+            {required: true, message: '', trigger: 'blur'}
+          ],
+          addValue8: [
+            { required: true, message: '', trigger: 'blur'},
+          ],
+          addValue9: [
+            {required: true, message: '', trigger: 'blur'}
+          ],
+          addValue10: [
+            { required: true, message: '', trigger: 'blur'}
+          ],
+          addValue11: [
+            { required: true, message: '', trigger: 'blur'}
+          ],
+          addValue12: [
+            { required: true, message: '', trigger: 'blur'}
+          ],
+          addValue13: [
+            {required: true, message: '', trigger: 'blur'}
+          ],
+          addValue14: [
+            {required: true, message: '', trigger: 'blur'}
+          ],
+          addValue15: [
+            {required: true, message: '', trigger: 'blur'},
+          ],
+          addValue16: [
+            {required: true, message: '', trigger: 'blur'}
+          ],
+          addValue17: [
+            { required: true, message: '', trigger: 'blur'}
+          ],
+        
+        
+        },
       jdolx: "", //新增修改方法中的状态 1新增2修改
       //        obj :{},
       //        obj1:{},
@@ -478,6 +539,15 @@ export default {
     };
   },
   methods: {
+    toggleSelection(rows) {
+        if (rows) {
+          rows.forEach(row => {
+            this.$refs.multipleTable.toggleRowSelection(row);
+          });
+        } else {
+          this.$refs.multipleTable.clearSelection();
+        }
+      },
     /*清空表单样式调用*/
     closeDialog() {
       this.$refs.addForm.resetFields();
@@ -761,6 +831,12 @@ export default {
       if (type == 1) {
         alert(111);
         that.jdolx = 1;
+        this.departmentMuseum.forEach(function(c) {
+          that.addForm.addValue18 = c.department_serial;
+        });
+        console.log('+++++++++++++')
+        console.log(that.addForm.addValue18)
+        
         that.dialogVisible = true;
       } else {
         if (this.multipleSelection.length < 1) {
@@ -793,13 +869,18 @@ export default {
             that.addForm.value18 = v.jstatus; //入职状态
             that.addForm.addValue18 = v.employee_serial;
           });
+    
           this.dialogVisible = true;
         }
+          console.log("++++++++++++");
+          console.log(that.addForm.addValue18);
       }
     },
     //提交修改
     submitUpdate(addForm) {
       var that = this;
+        that.$refs.addForm.validate((valid) => {
+          if (valid) {
       var result = [];
       result.push(
         this.addForm.addValue1,
@@ -818,7 +899,8 @@ export default {
         this.addForm.addValue14,
         this.addForm.addValue15,
         this.addForm.addValue16,
-        this.addForm.addValue17
+        this.addForm.addValue17,
+        this.addForm.addValue18
       );
       var userData = qs.parse(sessionStorage.getItem("userData"));
       let config = {
@@ -826,21 +908,24 @@ export default {
       };
       var updateMemberData = {
         jlx: 1,
+
+        jSerial:that.addForm.addValue18,
+
         jdolx: that.jdolx,
-        jSerial: this.addForm.addValue18,
-        jname: this.addForm.addValue4,
+
+        jname: that.addForm.addValue4,
         picUrl: "",
         regSerial: userData.company_serial,
         jlog_ip: "",
         jgly_Serial: userData.employee_serial,
         jtext: result.join(",")
       };
-
+      
       var updateMemberParams = {
         methodUrl: "memberManagement/memberOperation",
         jsonParam: qs.stringify(updateMemberData)
       };
-      alert();
+      alert(333);
       this.dialogVisible = false;
 
       this.$axios.postRequest(updateMemberParams).then(
@@ -851,6 +936,11 @@ export default {
         function(res) {
           //失败之后处理逻辑
           console.log("error:" + res);
+         })
+         }else {
+            console.log('error submit!!');
+            return false;
+        }
         }
       );
     },
@@ -861,14 +951,14 @@ export default {
         var arrvalue = []; //用于存放取出的数组的值
         for (var i = 0; i < this.multipleSelection.length; i++) {
           arrvalue.push(this.multipleSelection[i].employee_serial); //数组的索引是从0开始的
-          console.log("++++++++++++++");
-          console.log(arrvalue);
+          console.log(this.multipleSelection[i].employee_serial)
+          
         }
         var userData = qs.parse(sessionStorage.getItem("userData"));
         var deleteData = {
           jlx: 1,
           jdolx: 3,
-          jSerial: 0,
+          jSerial:0,
           jname: "",
           picUrl: "",
           regSerial: userData.company_serial,
@@ -891,7 +981,12 @@ export default {
           }
         );
       }
-    }
+    },
+    /*清空表单样式调用*/
+     closeDialog(){
+        this.dialogVisible = false
+        this.$refs.addForm.resetFields();
+      },
   },
   computed: {
     studentDepartment_serial() {
@@ -905,6 +1000,29 @@ export default {
   mounted() {
     var userData = qs.parse(sessionStorage.getItem("userData"));
     var that = this;
+     //获取入职部门
+    var departmentData = {
+      regserial: userData.company_serial,
+      permissions_id: userData.permissions_id,
+      dep_lx: ""
+    };
+    console.log('123456789')
+    console.log(departmentData)
+    
+    var departmentParams = {
+      methodUrl: "memberManagement/memberClass",
+      jsonParam: qs.stringify(departmentData)
+    };
+    this.$axios.postRequest(departmentParams).then(
+      function(res) {
+        //成功之后处理逻辑
+        that.departmentMuseum = res.data;
+      },
+      function(res) {
+        //失败之后处理逻辑
+        console.log("error:" + res);
+      }
+    );
     //获取道馆
     var roomData = {
       regserial: userData.company_serial,
@@ -984,26 +1102,26 @@ export default {
     //        console.log("error:" + res)
     //      })
     //加载班级信息
-    var classData = {
-      regserial: userData.company_serial,
-      permissions_id: userData.permissions_id,
-      dep_lx: "2",
-      department_serial: this.value3
-    };
-    var classParams = {
-      methodUrl: "memberManagement/memberClass",
-      jsonParam: qs.stringify(classData)
-    };
-    this.$axios.postRequest(classParams).then(
-      function(res) {
-        //成功之后处理逻辑
-        that.classes = res.data;
-      },
-      function(res) {
-        //失败之后处理逻辑
-        console.log("error:" + res);
-      }
-    );
+    // var classData = {
+    //   regserial: userData.company_serial,
+    //   permissions_id: userData.permissions_id,
+    //   dep_lx: "2",
+    //   department_serial: this.value3
+    // };
+    // var classParams = {
+    //   methodUrl: "memberManagement/memberClass",
+    //   jsonParam: qs.stringify(classData)
+    // };
+    // this.$axios.postRequest(classParams).then(
+    //   function(res) {
+    //     //成功之后处理逻辑
+    //     that.classes = res.data;
+    //   },
+    //   function(res) {
+    //     //失败之后处理逻辑
+    //     console.log("error:" + res);
+    //   }
+    // );
   }
 };
 </script>

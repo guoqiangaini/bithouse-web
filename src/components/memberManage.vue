@@ -1886,7 +1886,7 @@
             jtext: arrvalue.join(',')
           }
           var deleteParams = {
-            methodUrl: 'courseManagement/memberOperation',
+            methodUrl: 'memberManagement/memberOperation',
             jsonParam: qs.stringify(deleteData)
           }
           this.$axios.postRequest(deleteParams).then(function (res) {

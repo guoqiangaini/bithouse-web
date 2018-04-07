@@ -18,15 +18,18 @@ const store = new Vuex.Store({
     company_serial:'10001',
     studentDepartment_serial:'10008',
     //菜单
+    menu:[
 
+
+    ],
     medicalHistory:[
       {
         label:'有',
-        value:'选项1'        
+        value:'选项1'
       },
       {
         label:'无',
-        value:'选项2'        
+        value:'选项2'
       }
     ],
     //

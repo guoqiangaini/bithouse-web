@@ -164,7 +164,6 @@
       >
         <el-table
           header-row-style
-
           ref="multipleTables"
           :data="multipleSelection"
           border
