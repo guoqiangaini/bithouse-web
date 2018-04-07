@@ -1515,9 +1515,7 @@
       },
       closeDialog(){
         this.multipleSelection.length=0
-        alert(784512)
         this.$refs.addForm.resetFields();
-        alert(789555)
       },/*清空表单样式调用*/
       //导出
       exportCh(fileName, docType){
