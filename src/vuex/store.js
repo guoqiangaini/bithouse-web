@@ -25,11 +25,11 @@ const store = new Vuex.Store({
     medicalHistory:[
       {
         label:'有',
-        value:'选项1'
+        value:'1'
       },
       {
         label:'无',
-        value:'选项2'
+        value:'2'
       }
     ],
     //
