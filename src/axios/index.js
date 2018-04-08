@@ -5,8 +5,8 @@ import qs from 'qs'
 axios.defaults.timeout = 5000;
 axios.defaults.headers.post['Content-Type'] = 'application/json; charset=UTF-8';
 axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
-axios.defaults.baseURL = 'https://wx.jpbvip.com/dowinsysws/services/';
-// axios.defaults.baseURL = 'http://192.168.199.228:8080/dowinsysws/services/';
+// axios.defaults.baseURL = 'https://wx.jpbvip.com/dowinsysws/services/';
+axios.defaults.baseURL = 'http://192.168.199.228:8080/dowinsysws/services/';
 
 
 //返回状态判断

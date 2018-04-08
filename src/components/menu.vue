@@ -16,12 +16,12 @@
           :unique-opened="true"
           :router="true" style="text-align: center">
           <template v-for="(item,index) in menu">
-            <el-menu-item style="padding: 0;" :index="''+item.menu_id"  v-if="item.child_menus && item.child_menus.length===0">
+            <el-menu-item style="padding: 0;" :index="''+item.menu_url"  v-if="item.child_menus && item.child_menus.length===0">
               <span slot="title">{{item.menu_name}}</span>
             </el-menu-item>
-            <el-submenu  :index="''+item.menu_id"   v-else="item.child_menus && item.child_menus.length>0" >
+            <el-submenu  :index="''+item.menu_url"   v-else="item.child_menus && item.child_menus.length>0" >
               <span slot="title">{{item.menu_name}}</span>
-              <el-menu-item unique-opened :index="''+items.menu_id" v-for="(items,index) in item.child_menus" :key="items.menu_id" style="width:100px">{{items.menu_name}}</el-menu-item>
+              <el-menu-item unique-opened :index="''+items.menu_url" v-for="(items,index) in item.child_menus" :key="items.menu_id" style="width:100px">{{items.menu_name}}</el-menu-item>
             </el-submenu>
           </template>
         </el-menu>

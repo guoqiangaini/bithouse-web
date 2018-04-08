@@ -103,21 +103,16 @@
       </el-row>
     </div>
     <el-row>
-      <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12"
-              style="border-top:1px solid #c1c3c9;border-left:1px solid #c1c3c9">
+      <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12" style="border-top:1px solid #c1c3c9;border-left:1px solid #c1c3c9">
         <div id="option" style="margin:0px auto;width: 507px;height:400px"></div>
       </el-col>
-      <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12" style="border:1px solid #c1c3c9;border-bottom: 0">
-        <div id="table2"  style="margin:0px auto;width: 507px;height:400px"></div>
-      </el-col>
-    </el-row>
-    <el-row>
-      <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12" :span="12"
-              style="border-top:1px solid #c1c3c9;border-left:1px solid #c1c3c9">
-        <div id="table4" style="margin:0px auto;width: 507px;height:400px"></div>
-      </el-col>
-      <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12" :span="12" style="border:1px solid #c1c3c9;border-bottom: 0">
-        <div id="table3" style="margin:0px auto;width: 507px;height:400px"></div>
+       <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12" style="border:1px solid #c1c3c9;border-bottom: 0">
+        <div style="text-align:center">
+        <el-button @click="inComeMethod"  size="medium" class="tableButton">收入</el-button>
+        <el-button  size="medium" @click="expendMethod" class="tableButton">支出</el-button>
+       </div>
+        <div id="table2"  style="margin:0px auto;width: 507px;height:400px" v-show="income"></div>
+        <div id="table22"  style="margin:0px auto;width: 507px;height:400px" v-show="expenditure"></div>
       </el-col>
     </el-row>
     <el-row>
@@ -129,12 +124,23 @@
         <div  id="table8" style="margin:0px auto;width: 507px;height:400px"></div>
       </el-col>
     </el-row>
-    <el-row>
-      <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12" :span="12" style="border:1px solid #c1c3c9;border-right: 0">
-        <div id="table5" style="margin:0px auto;width: 507px;height:400px"></div>
+     <el-row>
+    
+      <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12" :span="12"    style="border:1px solid #c1c3c9;">
+        <div style="text-align:center">
+        <el-button @click="schoolMethod"  size="medium" class="tableButton">小区前10名</el-button>
+        <el-button  size="medium" @click="villageMethod" class="tableButton">学校前10名</el-button>
+        </div>
+        <div id="table5" v-show="school" style="margin:0px auto;width: 507px;height:400px"></div>
+         <div id="table6" v-show="village" style="margin:0px auto;width: 507px;height:400px"></div>
       </el-col>
-      <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12" :span="12" style="border:1px solid #c1c3c9">
-        <div id="table6" style="margin:0px auto;width: 507px;height:400px"></div>
+       <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12" :span="12" style="border:1px solid #c1c3c9;border-left:0;">
+       <div style="text-align:center">
+        <el-button @click="yearMethod"  size="medium" class="tableButton">年龄</el-button>
+        <el-button  size="medium" @click="genderMethod" class="tableButton">性别</el-button>
+       </div>
+        <div id="table3" style="margin:0px auto;width: 507px;height:400px" v-show="year" ></div>
+        <div id="table4" style="margin:0px auto;width: 507px;height:400px" v-show="gender"></div>
       </el-col>
     </el-row>
   </div>
@@ -153,6 +159,12 @@
     name: 'hello',
     data () {
       return {
+        income:true,//收入
+        expenditure:false,//支出
+        village:false,//小区
+        school:true,//学校
+        gender:true,//性别
+        year:false,//学校        
         corporateName: '',
         departmentList: [],
         fireClassRank: [],
@@ -187,6 +199,7 @@
     mounted(){
       var that = this
       this.drawLines();
+      this.drawLines2();
       this.drawLiness();
       this.drawLinessss();
       this.drawLinesssss();
@@ -222,6 +235,8 @@
         //失败之后处理逻辑
         console.log("error:" + res)
       })
+
+
       //请求道馆消课排名数据
       var fireClassData = {
         orderBy: '1',
@@ -411,6 +426,39 @@
     },
 
     methods: {
+       //显示收入
+      inComeMethod(){
+         
+        this.income=true;
+        this.expenditure=false
+      },
+      //显示支出
+      expendMethod(){
+        
+        this.income=false;
+        this.expenditure=true
+      
+      },
+      //显示学校
+      villageMethod(){
+          this.school=true;
+        this.village=false
+      },
+      //西安市小区
+      schoolMethod(){
+        this.school=false;
+        this.village=true
+      },
+      //显示年龄
+      yearMethod(){
+        this.gender=false;
+        this.year=true
+      },
+       //显示性别
+      genderMethod(){
+        this.gender=true;
+        this.year=false
+      },
       //消课图
       drawLine(){
         let that=this
@@ -476,12 +524,13 @@
           that.$router.push({name: '24', params: {roomId:roomId}})
         })
       },
-      //收支图
+      //收入图
       drawLines(){
+       
         let table2 = this.$echarts.init(document.getElementById('table2'))
         table2.setOption({
           title : {
-            text: '本月收支',
+            text: '本月收入',
             y:'3%',
             // subtext: '',
             x:'center'
@@ -494,7 +543,7 @@
             orient : 'vertical',
             x : 'left',
             y:'3%',
-            data:['新报','续费','工资支出','报销']//显示控制区
+            data:['新报','续费']//显示控制区
           },
           toolbox: {
             show : true,
@@ -528,13 +577,72 @@
 
                 {value:310, name:'新报'},
                 {value:234, name:'续费'},
+              ]//数据
+            }
+
+          ],
+          color:['#FACD32','#FFF001']
+        });
+      },
+        //支出图
+      drawLines2(){
+        
+        let table22 = this.$echarts.init(document.getElementById('table22'))
+        table22.setOption({
+          title : {
+            text: '本月支出',
+            y:'3%',
+            // subtext: '',
+            x:'center'
+          },
+          tooltip : {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+          },
+          legend: {
+            orient : 'vertical',
+            x : 'left',
+            y:'3%',
+            data:['工资支出','报销']//显示控制区
+          },
+          toolbox: {
+            show : true,
+            // feature : {
+            //   mark : {show: true},
+            //   dataView : {show: true, readOnly: false},
+            //   magicType : {
+            //     show: true,
+            //     type: ['pie', 'funnel'],
+            //     option: {
+            //       funnel: {
+            //         x: '50%',
+            //         width: '50%',
+            //         funnelAlign: 'left',
+            //         max: 1548
+            //       }
+            //     }
+            //   },
+            //   restore : {show: true},
+            //   saveAsImage : {show: true}
+            // }
+          },
+          calculable : true,
+          series : [
+            {
+              name:'',
+              type:'pie',
+              radius : '50%',//显示大小
+              center: ['50%', '60%'],//左右上下位置
+              data:[
+
+             
                 {value:135, name:'工资支出'},
                 {value:1548, name:'报销'}
               ]//数据
             }
 
           ],
-          color:['#FACD32','#FFF001','#2696A9','#90C131']
+          color:['#2696A9','#90C131']
         });
       },
       //年龄分布图
@@ -1033,4 +1141,26 @@
     font-size: 12px;
     color: black;
   }
+
+  /*tab按钮样式*/
+  .tableButton{
+    margin-top: 15px;
+    font-weight: 600;
+    width: 175px
+    
+  }
+  /*覆盖的样式*/
+  .el-button:active {
+    color: black !important;
+    border-color: #dcdfe6 !important;
+    outline: 0 !important;
+}
+.el-button:focus, .el-button:hover {
+    color: black !important;
+    border-color: #dcdfe6 !important;
+    background-color: #DEDEDE !important;
+}
+.el-button+.el-button {
+    margin:0 !important;
+}
 </style>
