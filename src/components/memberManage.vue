@@ -1414,32 +1414,22 @@
       beforeAvatarUpload(){
 
       },
-      changeFile(file, fileList) {
-        var This = this;
-        //this.imageUrl = URL.createObjectURL(file.raw);
-        var reader = new FileReader();
-        reader.readAsDataURL(file.raw);
-        reader.onload = function (e) {
-          this.result // 这个就是base64编码了
-          This.imageUrl = this.result;
-        }
-      },
       submitUpload(file) {
-        // var imageData={
-        //
-        //  image:this.data
-        // }
-        var imageParams={
-          methodUrl: 'memberManagement/memberUploadPic',
-          jsonParam: qs.stringify()
-        }
-        this.$axios.postRequest(imageParams).then(function (res) {
-          //成功之后处理逻辑
-
-        }, function (res) {
-          //失败之后处理逻辑
-          console.log("error:" + res)
-        })
+        let param = new FormData(); // 创建 form 对象
+        param.append("file", file.file, file.file.name); // 通过 append 向 form 对象添加数据
+        let config = {
+          headers: { "Content-Type": "multipart/form-data" }
+        }; // 添加请求头
+        this.$axios
+          .postImageRequest(
+            "memberManagement/memberUploadPic",
+            param,
+            config
+          )
+          .then(response => {
+            console.log("============222================");
+            console.log(response.data);
+          });
       },
       courseInfoChange() {
         this.courseId =this.addForm.addValue24
@@ -1734,7 +1724,7 @@
             this.dialogVisible = true
             this.addForm.addValue1 = this.multipleSelection[0].source_id
             this.addForm.addValue2=this.multipleSelection[0].membertype_id
-            this.addForm.addvalue3=this.multipleSelection[0].dep_parent_serial
+            this.addForm.addvalue3=this.multipleSelection[0].dep_parent_name
             this.addForm.addValue4 = this.multipleSelection[0].student_name
             this.addForm.addValue5=this.multipleSelection[0].illness
             this.addForm.addvalue6=this.multipleSelection[0].height
@@ -2219,7 +2209,6 @@
         //失败之后处理逻辑
         console.log("error:" + res)
       })
-
       //加载级别信息
       var levelData = {
         regserial: userData.company_serial,
