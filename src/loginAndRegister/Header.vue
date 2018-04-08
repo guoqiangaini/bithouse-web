@@ -38,7 +38,7 @@
           width="200"
           trigger="click">
           <el-col>
-            <el-button>退出</el-button>
+            <el-button  @click="outSystem">退出</el-button>
           </el-col>
         </el-popover>
         <img src="https://pro.modao.cc//uploads3/images/1783/17836137/raw_1521017812.png
@@ -67,13 +67,20 @@
         CorporateName: '',//公司名称
         todayTime: '',//获取时间
         dot:false,
-        information:[
-          {name:'中美贸易为何而战?'},
-          {name:'人民币中间价上调117个基点！'},
-          {name:'创业板持续大热'},
-          {name:'美国或于本周公布对华产品征税建议清单'}
+        information:[]
+      }
+    },
+    methods:{
+      dotState(){
+        this.dot=false;
+      },
+      dotCondition(){
 
-        ]
+        this.dot=true;
+      },
+      outSystem: function () {
+        sessionStorage.removeItem("userData");
+        this.$router.push('/')
       }
     },
     mounted(){
@@ -100,17 +107,26 @@
       //请求公司名称
       var userData = qs.parse(sessionStorage.getItem("userData"));
       that.CorporateName = userData.company_name;
-      console.log(userData.company_name)
-    },
-    methods:{
-      dotState(){
-        this.dot=false;
-      },
-      dotCondition(){
-
-        this.dot=true;
+      //请求消息
+      var infomationData={
+        regserial:userData.company_serial,
+        news_role:'103',
+        user_serial:userData.employee_serial
+      };
+      var infomationParams={
+        methodUrl:'adminMenu/getInformInfo',
+        jsonParam:qs.stringify(infomationData),
       }
-    }
+      this.$axios.postRequest(infomationParams).then(function(res) {
+        //成功之后处理逻辑
+        that.information = res.data
+
+      }, function(res) {
+        //失败之后处理逻辑
+        console.log("error:" + res)
+      })
+    },
+
 
 
   }
