@@ -104,7 +104,6 @@
         <span class="size">时间段</span>
         <el-date-picker
           v-model="timeScope"
-
           value-format="yyyy-MM-dd"
           format="yyyy-MM-dd"
           type="daterange"
@@ -131,7 +130,7 @@
     <!--条件结束-->
     <!--新增修改弹出框开始-->
     <el-dialog
-      title="信息填写"
+      :title="dialogTitle"
       :close-on-click-modal="false"
       :close-on-press-escape="false"
       :visible.sync="dialogVisible"
@@ -666,11 +665,10 @@
     <!--续费结束-->
     <!--详情弹框开始-->
     <el-dialog
-      title="信息填写"
+      title="学员详情"
       :close-on-click-modal="false"
       :close-on-press-escape="false"
       :visible.sync="detailDialogVisible"
-      :open="openDialog"
       :close="closeDialog"
       width="900px" style="font-size:10px"
     >
@@ -683,17 +681,17 @@
                 <el-row>
                   <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8" >
                     <el-form-item label="来　　源:" prop="addValue1" labelWidth="75px">
-                      {{addForm.addValue1}}
+                      <div class="memberDetail">{{addForm.addValue1}}</div>
                     </el-form-item>
                   </el-col>
                   <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8"  >
-                    <el-form-item label='卡　　型:' prop="addValue2" style="text-indent: 1px;" labelWidth="75px">
-                      {{addForm.addValue2}}
+                    <el-form-item label='卡　　型:' prop="addValue2" style="text-indent:1px;" labelWidth="75px">
+                      <div class="memberDetail">{{addForm.addValue2}}</div>
                     </el-form-item>
                   </el-col>
                   <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8" >
                     <el-form-item label="道　　馆:" prop="addValue3" labelWidth="75px">
-                      {{addForm.addValue3}}
+                      <div class="memberDetail">{{addForm.addValue3}}</div>
                     </el-form-item>
                   </el-col>
 
@@ -701,17 +699,17 @@
                 <el-row >
                   <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
                     <el-form-item label="姓　　名:" prop="addValue4" labelWidth="75px">
-                      {{addForm.addValue4}}
+                      <div class="memberDetail">{{addForm.addValue4}}</div>
                     </el-form-item>
                   </el-col>
                   <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
                     <el-form-item label="病　　史:" prop="addValue5" labelWidth="75px">
-                      {{addForm.addValue5}}
+                      <div class="memberDetail">{{addForm.addValue5}}</div>
                     </el-form-item>
                   </el-col>
                   <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
                     <el-form-item label="身　　高:" prop="addValue6" labelWidth="75px">
-                      {{addForm.addValue6}}
+                      <div class="memberDetail">{{addForm.addValue6}}</div>
                     </el-form-item>
                   </el-col>
 
@@ -719,46 +717,46 @@
                 <el-row >
                   <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
                     <el-form-item label="性　　别:" prop="addValue7" labelWidth="75px">
-                      {{addForm.addValue7}}
+                      <div class="memberDetail">{{addForm.addValue7}}</div>
                     </el-form-item>
                   </el-col>
                   <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
                     <el-form-item label="物理卡号:" prop="addValue8" label-width="75px">
-                      {{addForm.addValue8}}
+                      <div class="memberDetail">{{addForm.addValue8}}</div>
                     </el-form-item>
                   </el-col>
                   <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
                     <el-form-item label="出生日期:" prop="addValue9" label-width="75px">
-                      {{addForm.addValue9}}
+                      <div class="memberDetail">{{addForm.addValue9}}</div>
                     </el-form-item>
                   </el-col>
                 </el-row><!--性别物理卡号出生日期-->
                 <el-row >
                   <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
                     <el-form-item label="级　　别:" prop="addValue10" labelWidth="75px">
-                      {{addForm.addValue10}}
+                      <div class="memberDetail">{{addForm.addValue10}}</div>
                     </el-form-item>
                   </el-col>
                   <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
                     <el-form-item label="身份证号:" prop="addValue11" label-width="75px">
-                      {{addForm.addValue11}}
+                      <div class="memberDetail">{{addForm.addValue11}}</div>
                     </el-form-item>
                   </el-col>
                   <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
                     <el-form-item label="联系电话:" prop="addValue12" label-width="75px">
-                      {{addForm.addValue12}}
+                      <div class="memberDetail">{{addForm.addValue12}}</div>
                     </el-form-item>
                   </el-col>
                 </el-row><!--级别身份证号联系电话-->
                 <el-row >
                   <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
                     <el-form-item label="所在学校:" prop="addValue13" label-width="75px">
-                      {{addForm.addValue13}}
+                      <div class="memberDetail">{{addForm.addValue13}}</div>
                     </el-form-item>
                   </el-col>
                   <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
                     <el-form-item label="学员证号:" prop="addValue14" label-width="75px">
-                      {{addForm.addValue14}}
+                      <div class="memberDetail">{{addForm.addValue14}}</div>
                     </el-form-item>
                   </el-col>
 
@@ -766,12 +764,12 @@
                 <el-row>
                   <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
                     <el-form-item label="微　　信:" prop="addValue15" labelWidth="75px">
-                      {{addForm.addValue15}}
+                      <div class="memberDetail">{{addForm.addValue15}}</div>
                     </el-form-item>
                   </el-col>
                   <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
                     <el-form-item label="家庭住址:" prop="addValue16" label-width="75px">
-                      {{addForm.addValue16}}
+                      <div class="memberDetail">{{addForm.addValue16}}</div>
                     </el-form-item>
                   </el-col>
 
@@ -783,35 +781,34 @@
                   <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
 
                     <el-form-item label="父亲姓名:" prop="addValue17" labelWidth="75px">
-                      {{addForm.addValue17}}
+                      <div class="memberDetail">{{addForm.addValue17}}</div>
                     </el-form-item>
                   </el-col>
                   <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
                     <el-form-item label="联系电话:" prop="addValue18" labelWidth="75px">
-                      {{addForm.addValue18}}
+                      <div class="memberDetail">{{addForm.addValue18}}</div>
                     </el-form-item>
                   </el-col>
                   <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
                     <el-form-item label="工作单位:" prop="addValue19" labelWidth="75px">
-                      {{addForm.addValue19}}
+                      <div class="memberDetail">{{addForm.addValue19}}</div>
                     </el-form-item>
                   </el-col>
-
                 </el-row><!--父亲姓名联系电话-->
                 <el-row >
                   <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8" >
                     <el-form-item label="母亲姓名:" prop="addValue20" label-width="75px">
-                      {{addForm.addValue20}}
+                      <div class="memberDetail">{{addForm.addValue20}}</div>
                     </el-form-item>
                   </el-col>
                   <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
                     <el-form-item label="联系电话:" prop="addValue21" label-width="75px">
-                      {{addForm.addValue21}}
+                      <div class="memberDetail">{{addForm.addValue21}}</div>
                     </el-form-item>
                   </el-col>
                   <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
                     <el-form-item label="工作单位:" prop="addValue22" label-width="75px">
-                      {{addForm.addValue22}}
+                      <div class="memberDetail">{{addForm.addValue22}}</div>
                     </el-form-item>
                   </el-col>
 
@@ -819,7 +816,7 @@
                 <el-row >
                   <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
                     <el-form-item label="备注" prop="addValue23">
-                      {{addForm.addValue23}}
+                      <div class="memberDetail">{{addForm.addValue23}}</div>
                     </el-form-item>
                   </el-col>
                 </el-row><!--备注-->
@@ -829,7 +826,6 @@
                            action="https://wx.jpbvip.com/dowinsysws/services/memberManagement/memberUploadPic"
                            class="avatar-uploader"
                            :http-request='submitUpload'
-                           :data="{fileType:'multipart/form-data'}"
                            :show-file-list="false"
                 >
                   <img v-if="imageUrl" :src="imageUrl" class="avatar"  >
@@ -844,70 +840,74 @@
           <div >
             <el-row>
               <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-                <el-form-item label="课程名称　　" prop="addValue24" labelWidth="100px">
-                  {{addForm.addValue24}}
+                <el-form-item label="课程名称:　　" prop="addValue24" labelWidth="100px">
+                  <div class="memberDetail">{{addForm.addValue24}}</div>
                 </el-form-item>
               </el-col><!--课程名称-->
               <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-                <el-form-item label="有效期　　　" prop="addValue25" labelWidth="100px">
-                  {{addForm.addValue25}}
+                <el-form-item label="有效期:　　　" prop="addValue25" labelWidth="100px">
+                  <div class="memberDetail">{{addForm.addValue25}}</div>
                 </el-form-item>
               </el-col><!--有效期-->
               <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-                <el-form-item label="每周上课次数" prop="addValue26" labelWidth="100px">
-                  {{addForm.addValue26}}
+                <el-form-item label="每周上课次数:" prop="addValue26" labelWidth="100px">
+                  <div class="memberDetail">{{addForm.addValue26}}</div>
                 </el-form-item>
               </el-col><!--每周上课次数-->
             </el-row>
             <el-row >
               <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-                {{addForm.addValue27}}
-              </el-col><!--体验课次数-->
+                <el-form-item label="课时数:　" prop="addValue27" labelWidth="100px">
+                <div class="memberDetail">{{addForm.addValue27}}</div>
+                </el-form-item>
+              </el-col><!--课时数-->
               <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-                {{addForm.addValue28}}
+                <el-form-item label="缴费日期:　　" prop="addValue28" labelWidth="100px">
+                <div class="memberDetail">{{addForm.addValue28}}</div>
+                </el-form-item>
               </el-col><!--缴费日期-->
               <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-                <el-form-item label="缴费金额　　" prop="addValue29" labelWidth="100px">
-                  {{addForm.addValue29}}
+                <el-form-item label="应缴金额:　　" prop="addValue29" labelWidth="100px">
+                  <div class="memberDetail">{{addForm.addValue29}}</div>
                 </el-form-item>
               </el-col><!--缴费金额-->
             </el-row>
             <el-row style="margin-bottom: 10px">
               <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-                <el-form-item label="课程开始时间" prop="addValue30" labelWidth="100px">
-                  {{addForm.addValue30}}
+                <el-form-item label="课程开始时间:" prop="addValue30" labelWidth="100px">
+                  <div class="memberDetail">{{addForm.addValue30}}</div>
                 </el-form-item>
               </el-col><!--课程开始时间-->
               <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-                <el-form-item label="课程结束时间" prop="addValue31" labelWidth="100px">
-                  {{addForm.addValue31}}
+                <el-form-item label="课程结束时间:" prop="addValue31" labelWidth="100px">
+                  <div class="memberDetail">{{addForm.addValue31}}</div>
                 </el-form-item>
               </el-col><!--课程结束时间-->
               <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-                <el-form-item label="实缴金额　　" prop="addValue32" labelWidth="100px">
-                  {{addForm.addValue32}}
+                <el-form-item label="实缴金额:　　" prop="addValue32" labelWidth="100px">
+                  <div class="memberDetail">{{addForm.addValue32}}</div>
                 </el-form-item>
               </el-col><!--教练-->
             </el-row>
             <el-row>
               <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6">
-                <el-form-item label="班级" prop="addValue33">
-                  {{addForm.addValue33}}
+                <el-form-item label="班级:" prop="addValue33">
+                  <div class="memberDetail">{{addForm.addValue33}}</div>
                 </el-form-item>
               </el-col><!--班级-->
               <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6">
-                <el-form-item label="教练" prop="addValue34">
-                  {{addForm.addValue34}}
+                <el-form-item label="教练:" prop="addValue34">
+                  <div class="memberDetail">{{addForm.addValue34}}</div>
                 </el-form-item>
               </el-col><!--教练-->
               <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6">
-                <el-form-item label="老师" prop="addValue35">
-                  {{addForm.addValue35}}
+                <el-form-item label="老师:" prop="addValue35">
+                  <div class="memberDetail">{{addForm.addValue35}}</div>
                 </el-form-item>
               </el-col><!--老师-->
               <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6">
-                <el-form-item label="开票人" prop="addValue36" labelWidth="60px">
-                  {{addForm.addValue36}}
+                <el-form-item label="开票人:" prop="addValue36" labelWidth="60px">
+                  <div class="memberDetail">{{addForm.addValue36}}</div>
                 </el-form-item>
               </el-col><!--开票人-->
             </el-row>
@@ -927,11 +927,6 @@
           </el-col>
         </el-row><!--物品发放-->
       </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="detailDialogVisible = false" size="mini">取 消</el-button>
-       <el-button type="primary" @click="detailDialogVisible = false" size="mini">确定</el-button>
-
-  </span>
     </el-dialog>
     <!--详情弹框结束-->
     <!--表格内容-->
@@ -1102,6 +1097,7 @@
     },
     data() {
       return {
+        dialogTitle:'',
         detailDialogVisible:false,
         fileParam:'',
         // uplodHeader:{'Content-Type': 'multipart/form-data; boundary=fuckReaquestHeader'},
@@ -1127,6 +1123,7 @@
         mustMoney: '',
         sjMoney: '',
         adminName: '',
+        //导出表头字段
         tableObject: [
           {
             field: 'student_name',
@@ -1382,7 +1379,7 @@
             {required: true, message: '请选择老师', trigger: 'change'}
           ],
           addValue36:[
-            // {required: true, message: '请选择开票人', trigger: 'change'}
+            {required: true, message: '请选择开票人', trigger: 'change'}
           ],
         },
         serial: '',
@@ -1414,9 +1411,9 @@
       },
     },
     methods: {
-      // beforeAvatarUpload(){
-      //
-      // },
+      beforeAvatarUpload(){
+
+      },
       changeFile(file, fileList) {
         var This = this;
         //this.imageUrl = URL.createObjectURL(file.raw);
@@ -1451,6 +1448,7 @@
       //提交续费
       //打开详情
       openDetails(row, event, column){
+        this.serial = row.student_serial
         this.addForm.addValue1 = row.source_name
         this.addForm.addValue2 = row.membertype_name
         this.addForm.addValue3 = row.dep_parent_name
@@ -1467,34 +1465,26 @@
         this.addForm.addValue14 = row.student_id
         this.addForm.addValue15 = row.weixin_id
         this.addForm.addValue16 = row.student_address
-        this.addForm.addValue19 = row.father_name
-        this.addForm.addValue20 = row.father_phone
-        this.addForm.addValue21 = row.father_comp
-        this.addForm.addValue22 = row.mother_name
-        this.addForm.addValue17 = row.mother_phone
-        this.addForm.addValue18 = row.mother_comp
-        this.serial = row.student_serial
+        this.addForm.addValue17 = row.father_name
+        this.addForm.addValue18 = row.father_phone
+        this.addForm.addValue19 = row.father_comp
+        this.addForm.addValue20 = row.mother_name
+        this.addForm.addValue21 = row.mother_phone
+        this.addForm.addValue22 = row.mother_comp
         this.addForm.addValue23 = row.jcontent
-        this.addForm.addValue24 = row.course_id
+        this.addForm.addValue24 = row.course_name
+        this.addForm.addValue25=row.course_year
+        this.addForm.addValue26=row.jclassesperweek
+        this.addForm.addValue27=row.jvalidPeriod
+        this.addForm.addValue29=row.jprice
         this.addForm.addValue30=row.course_start
         this.addForm.addValue31=row.course_end
+        this.addForm.addValue32=row.pay_price
         this.addForm.addValue33 = row.department_name,
-          this.addForm.addValue34=row.employee_name
+        this.addForm.addValue34=row.employee_name
         this.addForm.addValue35=row.employee_name
         this.addForm.addValue36=row.fillPerson
         this.goodsCountParams=row.itemUse
-        // this.value31=row
-        // this.value32=row
-        // this.value33=row
-        // this.value34=row
-        // this.value35=row
-        // this.value36=row
-        // this.value37=row
-        // this.value38=row
-        // this.value41=row
-        // this.value40=row
-        // this.value15=row
-        // this.value42=row
         this.detailDialogVisible = true
       },
       //表头样式
@@ -1722,6 +1712,7 @@
       showDialog(type){
         var that =this
         if (type == 1) {
+          that.dialogTitle='新增学员'
           that.jdolx = 1
           that.dialogVisible = true
         } else {
@@ -1738,6 +1729,7 @@
               type: 'warning'
             });
           } else {
+            this.dialogTitle='修改学员信息'
             this.jdolx = 2
             this.dialogVisible = true
             this.addForm.addValue1 = this.multipleSelection[0].source_id
@@ -1817,11 +1809,16 @@
       //删除
       deleteMember(){
         var that = this
-        if (this.multipleSelection.length > 0) {
+
+        if (this.multipleSelection.length>0) {
+          that.$message({
+            message: '确定要删除吗？',
+            showClose:"true",
+            type: 'warning'
+          });
           var arrvalue = [];//用于存放取出的数组的值
           for (var i = 0; i < this.multipleSelection.length; i++) {
             arrvalue.push(this.multipleSelection[i].student_serial);//数组的索引是从0开始的
-            console.log(arrvalue)
           }
           var userData = qs.parse(sessionStorage.getItem("userData"));
           var deleteData = {
@@ -1846,8 +1843,6 @@
             //失败之后处理逻辑
             console.log("error:" + res)
           })
-
-
         }
       },
       //调动获取数据
@@ -2097,7 +2092,8 @@
         }
         this.$axios.postRequest(renewParams).then(function (res) {
           //成功之后处理逻辑
-          that.source = res.data
+          that.renewDialog=false
+          that.find()
 
 
         }, function (res) {
@@ -2291,14 +2287,9 @@
   }
 </script>
 <style scoped>
-
   .basicData {
-
     padding: 5px;
   }
-
-
-
   .avatar-uploader {
     border: 1px solid #c1c3c9;
     cursor: pointer;
@@ -2329,42 +2320,21 @@
   h6 {
     margin-left: 15px
   }
-
-  .menu {
-    width: 300px;
-    text-align: center;
-  }
-
-  .personal {
-    width: 15%;
-    background-color: red;
-  }
-
-
-
   .size {
     font-size: 12px;
     color: #101010;
     margin-right: 5px;
 
   }
-
-
   /*下拉选*/
   .pullDown ul {
     float: left;
     line-height: 20px;
     margin: 0 0 10px 0;
   }
-
   .pullDown>ul>div{
     margin-right: 5px;
   }
-
-  .btn {
-
-  }
-
   /*按钮*/
   .tanchu ul {
     float: left;
@@ -2380,6 +2350,14 @@
 
   .el-dialog__body {
     font-size: 1px;
+  }
+  .memberDetail{
+    width: 135px;
+    height:20px;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+    font-size: 12px;
   }
 
 </style>
