@@ -6,7 +6,7 @@
         <ul>
           <span class="size">年限</span>
           <el-date-picker
-            clearable
+            :editable="false"
             v-model="year"
             align="right"
             type="year"
@@ -56,19 +56,19 @@
             </el-form-item>
             <el-form-item label="报名时间" prop="startTime">
               <el-col :span="11">
-                <el-date-picker size="mini" type="date" placeholder="选择日期" v-model="form.startTime" style="width: 100%;margin-bottom: 10px"
+                <el-date-picker :editable="false" size="mini" type="date" placeholder="选择日期" v-model="form.startTime" style="width: 100%;margin-bottom: 10px"
                                 format="yyyy-MM-dd" value-format="yyyy-MM-dd" ></el-date-picker>
               </el-col>
             </el-form-item>
             <el-form-item label="截止时间" prop="expiryDate">
               <el-col :span="11">
-                <el-date-picker size="mini" type="date" placeholder="选择日期" v-model="form.expiryDate" style="width: 100%;margin-bottom: 10px"
+                <el-date-picker :editable="false" size="mini" type="date" placeholder="选择日期" v-model="form.expiryDate" style="width: 100%;margin-bottom: 10px"
                                 format="yyyy-MM-dd" value-format="yyyy-MM-dd"></el-date-picker>
               </el-col>
             </el-form-item>
             <el-form-item label="考试时间" prop="testDate">
               <el-col :span="11">
-                <el-date-picker size="mini" type="date" placeholder="选择日期" v-model="form.testDate" style="width: 100%;margin-bottom: 10px"
+                <el-date-picker :editable="false" size="mini" type="date" placeholder="选择日期" v-model="form.testDate" style="width: 100%;margin-bottom: 10px"
                                 format="yyyy-MM-dd" value-format="yyyy-MM-dd"></el-date-picker>
               </el-col>
             </el-form-item>

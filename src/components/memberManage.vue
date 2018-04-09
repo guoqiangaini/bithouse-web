@@ -680,7 +680,7 @@
               <el-col :xs="20" :sm="20" :md="20" :lg="20" :xl="20" >
                 <el-row>
                   <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8" >
-                    <el-form-item label="来　　源:" prop="addValue1" labelWidth="75px">
+                    <el-form-item label="来　　源:" prop="addValue1" labelWidth="75px" style="">
                       <div class="memberDetail">{{addForm.addValue1}}</div>
                     </el-form-item>
                   </el-col>
@@ -841,7 +841,7 @@
             <el-row>
               <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
                 <el-form-item label="课程名称:　　" prop="addValue24" labelWidth="100px">
-                  <div class="memberDetail">{{addForm.addValue24}}</div>
+                  <div class="memberDetail"><span>{{addForm.addValue24}}</span></div>
                 </el-form-item>
               </el-col><!--课程名称-->
               <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
@@ -906,8 +906,8 @@
                 </el-form-item>
               </el-col><!--老师-->
               <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6">
-                <el-form-item label="开票人:" prop="addValue36" labelWidth="60px">
-                  <div class="memberDetail">{{addForm.addValue36}}</div>
+                <el-form-item label="开票人:" prop="addValue36" labelWidth="60px" >
+                  <div class="memberDetail" >{{addForm.addValue36}}</div>
                 </el-form-item>
               </el-col><!--开票人-->
             </el-row>
@@ -2342,11 +2342,13 @@
   }
   .memberDetail{
     width: 135px;
-    height:20px;
-    margin: 0;
-    padding: 0;
     background-color: #f0f0f0;
+    height: 20px;
+    line-height: 20px;
     font-size: 12px;
+    margin-top: 10px;
+    text-align: center
   }
+  /*覆盖的样式*/
 
 </style>

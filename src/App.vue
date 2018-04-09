@@ -14,17 +14,17 @@
     components:{
       headly,
     },
-    mounted(){
-      var userData={
-        company_name:'多维跆拳道综合管理系统',
-        employee_serial:'20000001',
-        permissions_id:'1',
-        studentDepartment_serial:'10008',
-        company_serial:'10001'
-      }
-      sessionStorage.setItem('userData',qs.stringify(userData));
+   mounted(){
+     var userData={
+       company_name:'多维跆拳道综合管理系统',
+       employee_serial:'20000001',
+       permissions_id:'1',
+       studentDepartment_serial:'10008',
+       company_serial:'10001'
+     }
+     sessionStorage.setItem('userData',qs.stringify(userData));
 
-    }
+   }
   }
 </script>
 
@@ -104,4 +104,5 @@ border-color: #f56c6c !important;
   .el-dialog__body{
     padding: 0 20px 30px 20px !important;
   }
+  
 </style>

@@ -95,9 +95,11 @@
             </el-row>
             <el-row v-for="(positionInfo,index) in project">
               <el-col :span="4" style="margin: 5px 0 5px 0"><span>{{positionInfo.name}}</span></el-col>
-              <el-col :span="11" style="margin: 5px 0 5px 0">
-                <el-input @focus="focusExamItem(index)" @change="getExamItem" style="width:330px"
-                          size="mini" v-for="(item,index) in postSetData" v-model="item.jvalues"></el-input>
+              <el-col v-if="postSetData.length>0" :span="11" style="margin: 5px 0 5px 0">
+                <el-input @change="getExamItem" v-for="(item,index) in postSetData" v-model="item.jvalues" style="width:330px" size="mini" ></el-input>
+              </el-col>
+              <el-col v-else :span="11" style="margin: 5px 0 5px 0">
+                <el-input style="width:330px" size="mini" @change="getExamItem"></el-input>
               </el-col>
             </el-row>
           </div>
@@ -105,7 +107,7 @@
 
           <div slot="footer" class="dialog-footer" style="text-align: center">
             <el-button size="mini" @click="dialogVisible = false" class="dialogCancelButton">取 消</el-button>
-            <el-button size="mini" type="primary" @click="addMember">提交</el-button>
+            <el-button size="mini" type="primary" @click="submitPostSet()">提交</el-button>
           </div>
         </el-dialog>
 
@@ -117,7 +119,6 @@
       size="mini"
       border
       @selection-change="handleSelectionChange"
-      @row-click="openDetails"
       header-align="center"
       tooltip-effect="dark"
       :headerCellStyle="headerSetStyle"
@@ -263,7 +264,7 @@ export default {
       positionInfoList: [],
       multipleTable: [], //
       multipleSelection: [],
-      getExamItemIndex: [],
+      getExamItemIndexs: [],
       examItemValues: [],
       pickerOptions1: {
         disabledDate(time) {
@@ -287,8 +288,8 @@ export default {
       dialogVisible: false,
       dialogTitle: "", //弹窗标题
       isAdd: "", //1：新增0：修改
-      postSetId:"",//岗位id
-      postSetData:[],//岗位动态value
+      postSetId: "", //岗位id
+      postSetData: [] //岗位动态value
     };
   },
   computed: {
@@ -364,9 +365,9 @@ export default {
     );
   },
   methods: {
-    clearFormData(formName) {
-      this.$refs[formName].resetFields();
-    },
+    // clearFormData(formName) {
+    //   this.$refs[formName].resetFields();
+    // },
     addPostSet() {
       this.isAdd = "1";
       this.dialogTitle = "新增岗位";
@@ -393,6 +394,17 @@ export default {
             that.input1 = v.name;
             that.value1 = v.role_id; //角色(没有绑定的角色)
             that.postSetId = v.id;
+
+            that.basicSalary = v.basicSalary;
+            that.wageJobs = v.wageJobs;
+            that.fullCourtAward = v.fullCourtAward;
+            that.newReport = v.newReport;
+            that.turnToIntroduce = v.turnToIntroduce;
+            that.upgrade = v.upgrade;
+            that.fillCost = v.fillCost;
+            that.renewals = v.renewals;
+            that.classHour = v.classHour;
+            that.competitionRewards = v.competitionRewards;
           });
           that.changePost();
           that.getChangePostData();
@@ -435,37 +447,6 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val;
       console.log(val);
-    },
-
-    focusExamItem(index) {
-      this.getExamItemIndex = index;
-    },
-    getExamItem(value123) {
-      this.examItemValues[this.getExamItemIndex] = value123;
-    },
-    //打开详情
-    openDetails(row, event, column) {
-      var getExamItemValue = [];
-      for (var i = 0; i < getExamItemValue.length; i++) {
-        getExamItemValue[i] = this.assessment;
-      }
-      this.input1 = row.name;
-      this.value1 = row.role_id; //角色(没有绑定的角色)
-      //        this.value13 = row.status_id
-      this.basicSalary = row.basicSalary;
-      this.wageJobs = row.wageJobs;
-      //        this.value17 = row.student_no
-      this.fullCourtAward = row.fullCourtAward;
-      this.newReport = row.newReport;
-      this.turnToIntroduce = row.turnToIntroduce;
-      this.upgrade = row.upgrade;
-      this.fillCost = row.fillCost;
-      this.renewals = row.renewals;
-      this.classHour = row.classHour;
-      this.competitionRewards = row.competitionRewards;
-      this.getExamItemValue[i];
-
-      this.dialogVisible = true;
     },
 
     headerSetStyle() {
@@ -528,7 +509,7 @@ export default {
       this.$axios.postRequest(assessmentparams).then(
         function(res) {
           console.log("---------");
-          
+
           //成功之后处理逻辑
           that.postSetData = res.data;
           console.log(that.postSetData);
@@ -542,40 +523,47 @@ export default {
     //      handleClick(tab, event) {
     //        console.log(tab, event);
     //      },
-    //添加
-    addMember() {
+    getExamItem(value) {
+      this.examItemValues[this.getExamItemIndex] = value;
+    },
+    //新增、修改岗位
+    submitPostSet() {
       var userData = qs.parse(sessionStorage.getItem("userData"));
       var that = this;
       var postExamItemValues = that.project;
+      var postSetParams = "";
+      if (this.isAdd == 1) {
+        for (var i = 0; i < postExamItemValues.length; i++) {
+          that.nameID.push(postExamItemValues[i].auditItem_id);
+        }
+        var uploadValues = that.examItemValues;
 
-      for (var i = 0; i < postExamItemValues.length; i++) {
-        that.nameID.push(postExamItemValues[i].auditItem_id);
+        var postSetData = {
+          auditItem_ids: that.nameID.join(","),
+          jvalues: uploadValues.join(","),
+          operatorIP: "",
+          jopreatorSerial: userData.employee_no,
+          name: that.input1,
+          role_id: that.value1,
+          basicSalary: that.basicSalary,
+          wageJobs: that.wageJobs,
+          fullCourtAward: that.fullCourtAward,
+          newReport: that.newReport,
+          turnToIntroduce: that.turnToIntroduce,
+          upgrade: that.upgrade,
+          fillCost: that.fillCost,
+          renewals: that.renewals,
+          classHour: that.classHour,
+          competitionRewards: that.competitionRewards,
+          regserial: userData.company_serial
+        };
+        postSetParams = {
+          methodUrl: "personnelManagement/addPostSet",
+          jsonParam: qs.stringify(postSetData)
+        };
+      } else {
       }
-      var uploadValues = that.examItemValues;
 
-      var memberData = {
-        auditItem_ids: that.nameID.join(","),
-        jvalues: uploadValues.join(","),
-        operatorIP: "",
-        jopreatorSerial: userData.employee_no,
-        name: that.input1,
-        role_id: that.value1,
-        basicSalary: that.basicSalary,
-        wageJobs: that.wageJobs,
-        fullCourtAward: that.fullCourtAward,
-        newReport: that.newReport,
-        turnToIntroduce: that.turnToIntroduce,
-        upgrade: that.upgrade,
-        fillCost: that.fillCost,
-        renewals: that.renewals,
-        classHour: that.classHour,
-        competitionRewards: that.competitionRewards,
-        regserial: userData.company_serial
-      };
-      var coachParams = {
-        methodUrl: "personnelManagement/addPostSet",
-        jsonParam: qs.stringify(memberData)
-      };
       this.$axios.postRequest(coachParams).then(
         function(res) {
           //成功之后处理逻辑
@@ -619,17 +607,20 @@ export default {
         this.dialogVisibleTwo = false;
       } else {
         this.multipleSelection.forEach(function(v) {
-          that.basicSalary = v.basicSalary;
+          that.basicSalary = row.basicSalary;
           that.wageJobs = v.wageJobs;
+          //        this.value17 = row.student_no
           that.fullCourtAward = v.fullCourtAward;
-          that.newReport = v.newReport; //性別
-          that.turnToIntroduce = v.turnToIntroduce; //年齡
+          that.newReport = v.newReport;
+          that.turnToIntroduce = v.turnToIntroduce;
           that.upgrade = v.upgrade;
-          that.fillCost = v.fillCost; //入職日期
+          that.fillCost = v.fillCost;
           that.renewals = v.renewals;
-          that.classHour = v.classHour; //入职状态
+          that.classHour = v.classHour;
           that.competitionRewards = v.competitionRewards;
         });
+        console.log("789465132");
+        console.log(that.competitionRewards);
         this.dialogVisibleTwo = true;
       }
     },

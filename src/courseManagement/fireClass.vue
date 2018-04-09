@@ -32,7 +32,7 @@
         <span class="size">时间段</span>
         <el-date-picker
           v-model="timeScope"
-
+          :editable="false"
           value-format="yyyy-MM-dd"
           format="yyyy-MM-dd"
           type="daterange"
