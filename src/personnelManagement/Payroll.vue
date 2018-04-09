@@ -417,7 +417,7 @@
           exportTitle:fileName
         }
         var that = this
-        axios.s.baseURL= ''
+        
         //jindu
         axios.post("sys/export.do",Wagesparams
           ,{

@@ -142,11 +142,12 @@
     position: relative;
     top: 50%;
     transform: translateY(-50%);
+    height: 100%;
   }
 
   .user img {
     width: 64px;
-    height: 64px;
+   height: 100%;
 
   
     vertical-align: middle;
@@ -157,7 +158,7 @@
   .font {
     color: #fff;;
     font-size: 14px;
-    height: 64px;
+    height: 100%;
     line-height: 64px;
     position: relative;
     top: 50%;

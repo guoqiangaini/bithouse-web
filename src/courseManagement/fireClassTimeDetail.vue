@@ -168,7 +168,6 @@
           exportType: docType
         }
         var that = this
-        axios.defaults.baseURL = ''
         //jindu
         axios.post("sys/export.do", params
           , {

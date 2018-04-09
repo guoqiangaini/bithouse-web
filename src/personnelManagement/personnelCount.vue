@@ -948,6 +948,12 @@ export default {
     deleteMember() {
       var that = this;
       if (this.multipleSelection.length > 0) {
+        this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+          center: true
+        }).then(() => {
         var arrvalue = []; //用于存放取出的数组的值
         for (var i = 0; i < this.multipleSelection.length; i++) {
           arrvalue.push(this.multipleSelection[i].employee_serial); //数组的索引是从0开始的
@@ -972,14 +978,35 @@ export default {
         };
         this.$axios.postRequest(deleteParams).then(
           function(res) {
-            //成功之后处理逻辑
-            that.find();
-          },
-          function(res) {
-            //失败之后处理逻辑
-            console.log("error:" + res);
-          }
-        );
+                //成功之后处理逻辑
+                that.find();
+                that.$message({
+                  type: "success",
+                  message: "删除成功"
+                });
+              },
+              function(res) {
+                //失败之后处理逻辑
+                console.log("error:" + res);
+                that.$message({
+                  type: "error",
+                  message: "删除失败"
+                });
+              }
+            );
+          })
+          .catch(() => {
+            this.$message({
+              type: "info",
+              message: "已取消删除"
+            });
+          });
+      } else {
+        this.$message({
+          message: "请选择数据",
+          showClose: true,
+          type: "warning"
+        });
       }
     },
     /*清空表单样式调用*/

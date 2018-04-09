@@ -330,7 +330,7 @@
           exportTitle: fileName
         }
         var that = this
-        axios.defaults.baseURL = ''
+        
         //jindu
         axios.post("sys/export.do", params
           , {

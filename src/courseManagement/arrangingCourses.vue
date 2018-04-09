@@ -32,9 +32,9 @@
             </el-select>
           </ul>
           <!--查询按钮-->
-          <ul style="float: right;margin: 0 10px 10px 0;">
+          <!-- <ul style="float: right;margin: 0 10px 10px 0;">
             <el-button size="mini" type="info" @click="selectDetail()">查询</el-button>
-          </ul>
+          </ul> -->
           <table cellspacing="0" cellpadding="0" class="tb"
                  style="border-right:1px solid #c1c3c9;margin-bottom: 20px;width: 100%">
             <thead style="background-color:lightgray;font-size:12px">
@@ -172,7 +172,7 @@
               <el-row class="classTime">
                 <el-col :span="18" style="height: 32px;line-height: 32px">设置上课时间</el-col>
                 <el-col :span="6">
-                  <el-button @click="dialogVisible = true" size="small">编辑</el-button>
+                  <el-button @click="dialogVisible = true" size="small" style="float:right">编辑</el-button>
                 </el-col>
                 <el-dialog
                   title="编辑上课时间"
@@ -241,7 +241,7 @@
               <el-row class="classInfo">
                 <el-col :span="18" style="height: 32px;line-height: 32px">设置课程信息</el-col>
                 <el-col :span="6">
-                  <el-button @click="dialogVisible2 = true" size="small">编辑</el-button>
+                  <el-button @click="dialogVisible2 = true" size="small" style="float:right">编辑</el-button>
                 </el-col>
                 <el-dialog 
                   width="536px" 

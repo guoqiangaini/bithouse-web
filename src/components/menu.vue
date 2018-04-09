@@ -108,7 +108,7 @@
   }
   .user img {
     width: 61px;
-    height: 61px;
+   height: 100%;
     margin: 0;
     padding: 10px 0 10px 0;
     vertical-align: middle;

@@ -853,7 +853,6 @@
           exportTitle:fileName
         }
         var that = this
-        axios.defaults.baseURL = ''
         //jindu
         axios.post("sys/export.do", Dayparams
           , {
@@ -932,7 +931,7 @@
           exportTitle:fileName
         }
         var that = this
-        axios.s.baseURL = ''
+        
         //jindu
         axios.post("sys/export.do", Monthparams
           , {
