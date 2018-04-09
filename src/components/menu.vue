@@ -48,10 +48,12 @@
       headly
     },
     mounted() {
-
+      this.initMenu()
     },
     methods: {
-
+      initMenu(){
+        this.activeMenu = this.$route.path.replace("/", "");
+      }
     },
 
     computed: {
@@ -63,8 +65,12 @@
     created() {
       //初始化菜单
       this.$store.dispatch("sMenu");
-      this.activeMenu = this.$route.path.replace("/", "");
-    }
+
+    },
+    watch: {
+      // 如果路由有变化，会再次执行该方法
+      '$route': 'initMenu'
+    },
   };
 </script>
 <style scoped>
