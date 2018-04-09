@@ -264,7 +264,7 @@ export default {
       positionInfoList: [],
       multipleTable: [], //
       multipleSelection: [],
-      getExamItemIndexs: [],
+   
       examItemValues: [],
       pickerOptions1: {
         disabledDate(time) {
@@ -523,10 +523,13 @@ export default {
     //      handleClick(tab, event) {
     //        console.log(tab, event);
     //      },
+
     getExamItem(value) {
-      this.examItemValues[this.getExamItemIndex] = value;
+      this.examItemValues.push(value);
     },
-    //新增、修改岗位
+
+   
+     //提交新增、修改岗位
     submitPostSet() {
       var userData = qs.parse(sessionStorage.getItem("userData"));
       var that = this;
@@ -537,8 +540,11 @@ export default {
           that.nameID.push(postExamItemValues[i].auditItem_id);
         }
         var uploadValues = that.examItemValues;
+        console.log('uploadValues')
+        console.log(uploadValues)
 
         var postSetData = {
+          position_id:that.postSetId,
           auditItem_ids: that.nameID.join(","),
           jvalues: uploadValues.join(","),
           operatorIP: "",
@@ -562,9 +568,33 @@ export default {
           jsonParam: qs.stringify(postSetData)
         };
       } else {
+           var uploadValues = that.examItemValues;
+        var postSetData = {
+          position_id:that.postSetId,
+          name:that.input1,
+          jvalues: uploadValues.join(","),
+          operatorIP: "",
+          jopreatorSerial: userData.employee_no,
+          role_id: that.value1,
+          basicSalary: that.basicSalary,
+          wageJobs: that.wageJobs,
+          fullCourtAward: that.fullCourtAward,
+          newReport: that.newReport,
+          turnToIntroduce: that.turnToIntroduce,
+          upgrade: that.upgrade,
+          fillCost: that.fillCost,
+          renewals: that.renewals,
+          classHour: that.classHour,
+          competitionRewards: that.competitionRewards,
+         
+        };
+        postSetParams = {
+          methodUrl: "personnelManagement/updatePostSet",
+          jsonParam: qs.stringify(postSetData)
+        };
       }
 
-      this.$axios.postRequest(coachParams).then(
+      this.$axios.postRequest(postSetParams).then(
         function(res) {
           //成功之后处理逻辑
           that.find();
@@ -576,105 +606,63 @@ export default {
       );
       that.dialogVisible = false;
     },
-    // goodsCbChange(e){
-    //   var goodsSelectedList = e
-    //   var value = 0
-    //   for (var i = 0; i < goodsSelectedList.length; i++) {
-    //     for (var j = 0; j < this.goodsCbList.length; j++) {
-    //       if (goodsSelectedList[i] == this.goodsCbList[j].name) {
-    //         value = value + this.goodsCbList[j].count
-    //       }
+    // //提交修改
+    // submitUpdate() {
+    //   var that = this;
+    //   var result = [];
+    //   result.push(
+    //     this.basicSalary,
+    //     this.wageJobs,
+    //     this.fullCourtAward,
+    //     this.newReport,
+    //     this.turnToIntroduce,
+    //     this.upgrade,
+    //     this.fillCost,
+    //     this.renewals,
+    //     this.classHour,
+    //     this.competitionRewards,
+    //     this.addValue11,
+    //     this.addValue12,
+    //     this.addValue13,
+    //     this.addValue14,
+    //     this.addValue15,
+    //     this.addValue16,
+    //     this.addValue17
+    //   );
+    //   var userData = qs.parse(sessionStorage.getItem("userData"));
+
+    //   var updateMemberData = {
+    //     position_id
+    //   };
+
+    //   var updateMemberParams = {
+    //     methodUrl: "memberManagement/memberOperation",
+    //     jsonParam: qs.stringify(updateMemberData)
+    //   };
+    //   this.dialogVisibleTwo = false;
+
+    //   this.$axios.postRequest(updateMemberParams).then(
+    //     function(res) {
+    //       //成功之后处理逻辑
+    //       that.find();
+    //     },
+    //     function(res) {
+    //       //失败之后处理逻辑
+    //       console.log("error:" + res);
     //     }
-    //   }
-    //   this.goodsCountParams = value
+    //   );
     // },
-    //修改
-    updateMember() {
-      var that = this;
-      if (this.multipleSelection.length < 1) {
-        this.$message({
-          message: "请选择学员",
-          showClose: true,
-          type: "warning"
-        });
-        this.dialogVisibleTwo = false;
-      } else if (this.multipleSelection.length > 1) {
-        this.$message({
-          message: "只能选择一名学员",
-          showClose: true,
-          type: "warning"
-        });
-        this.dialogVisibleTwo = false;
-      } else {
-        this.multipleSelection.forEach(function(v) {
-          that.basicSalary = row.basicSalary;
-          that.wageJobs = v.wageJobs;
-          //        this.value17 = row.student_no
-          that.fullCourtAward = v.fullCourtAward;
-          that.newReport = v.newReport;
-          that.turnToIntroduce = v.turnToIntroduce;
-          that.upgrade = v.upgrade;
-          that.fillCost = v.fillCost;
-          that.renewals = v.renewals;
-          that.classHour = v.classHour;
-          that.competitionRewards = v.competitionRewards;
-        });
-        console.log("789465132");
-        console.log(that.competitionRewards);
-        this.dialogVisibleTwo = true;
-      }
-    },
-    //提交修改
-    submitUpdate() {
-      var that = this;
-      var result = [];
-      result.push(
-        this.basicSalary,
-        this.wageJobs,
-        this.fullCourtAward,
-        this.newReport,
-        this.turnToIntroduce,
-        this.upgrade,
-        this.fillCost,
-        this.renewals,
-        this.classHour,
-        this.competitionRewards,
-        this.addValue11,
-        this.addValue12,
-        this.addValue13,
-        this.addValue14,
-        this.addValue15,
-        this.addValue16,
-        this.addValue17
-      );
-      var userData = qs.parse(sessionStorage.getItem("userData"));
-
-      var updateMemberData = {
-        position_id
-      };
-
-      var updateMemberParams = {
-        methodUrl: "memberManagement/memberOperation",
-        jsonParam: qs.stringify(updateMemberData)
-      };
-      this.dialogVisibleTwo = false;
-
-      this.$axios.postRequest(updateMemberParams).then(
-        function(res) {
-          //成功之后处理逻辑
-          that.find();
-        },
-        function(res) {
-          //失败之后处理逻辑
-          console.log("error:" + res);
-        }
-      );
-    },
     //删除
     deleteMember() {
       var that = this;
-
+    
       if (this.multipleSelection.length > 0) {
+          this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+          center: true
+        }).then(() => {
         var arrvalue = []; //用于存放取出的数组的值
         for (var i = 0; i < this.multipleSelection.length; i++) {
           arrvalue.push(this.multipleSelection[i].student_serial); //数组的索引是从0开始的
@@ -693,15 +681,36 @@ export default {
           jsonParam: qs.stringify(deleteData)
         };
         this.$axios.postRequest(deleteParams).then(
-          function(res) {
-            //成功之后处理逻辑
-            that.find();
-          },
-          function(res) {
-            //失败之后处理逻辑
-            console.log("error:" + res);
-          }
-        );
+         function(res) {
+                //成功之后处理逻辑
+                that.find();
+                that.$message({
+                  type: "success",
+                  message: "删除成功"
+                });
+              },
+              function(res) {
+                //失败之后处理逻辑
+                console.log("error:" + res);
+                that.$message({
+                  type: "error",
+                  message: "删除失败"
+                });
+              }
+            );
+          })
+          .catch(() => {
+            this.$message({
+              type: "info",
+              message: "已取消删除"
+            });
+          });
+      } else {
+        this.$message({
+          message: "请选择数据",
+          showClose: true,
+          type: "warning"
+        });
       }
     },
     transfers() {

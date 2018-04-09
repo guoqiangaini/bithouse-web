@@ -656,13 +656,13 @@ export default {
       } else if (this.value4 !== "") {
         department = this.value4;
       }
-      if (column && column.order) {
-        var index = column.order.indexOf("ending");
-        this.orderByName = column.prop + " " + column.order.substring(0, index);
-        console.log(this.orderByName);
-      }
+      // if (column && column.order) {
+      //   var index = column.order.indexOf("ending");
+      //   this.orderByName = column.prop + " " + column.order.substring(0, index);
+      //   console.log(this.orderByName);
+      // }
       var personnelData = {
-        orderby: this.orderByName,
+        // orderby: this.orderByName,
         count: true,
 
         pageindex: this.currentPage,

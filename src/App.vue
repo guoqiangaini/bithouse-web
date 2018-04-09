@@ -52,9 +52,8 @@
     height: 100%;
   }
   .elTableBorder{
-    border-top: 1px solid #c1c3c9 !important;
-    border-left: 1px solid #c1c3c9 !important;
-    border-bottom: 1px solid #c1c3c9 !important;
+    border: 1px solid #c1c3c9 !important;
+
   }
   /*#app>div>div:nth-child(2){*/
    /*height:100%;*/

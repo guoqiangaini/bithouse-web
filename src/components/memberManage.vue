@@ -1470,7 +1470,7 @@
         this.addForm.addValue33 = row.department_name,
         this.addForm.addValue34=row.employee_name
         this.addForm.addValue35=row.employee_name
-        this.addForm.addValue36=row.fillPerson
+        this.addForm.addValue36=row.fillPerson_name
         this.goodsCountParams=row.itemUse
         this.detailDialogVisible = true
         this.imageUrl=row.picUrl
@@ -2054,7 +2054,7 @@
           this.xfcard = this.multipleSelection[0].membertype_id
           this.xfcourse = this.multipleSelection[0].course_id
           this.mustMoney =this.multipleSelection[0].course_price
-          this.adminName=this.multipleSelection[0].fillPerson
+          this.adminName=this.multipleSelection[0].fillPerson_name
           this.renewDialog = true
 
 

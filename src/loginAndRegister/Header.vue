@@ -1,15 +1,15 @@
 <template>
-  <el-row>
-    <el-header class="wai" style="height:90px">
-      <el-col :span="4" class="user" style="padding-left: 13px;"><img src="https://pro.modao.cc/uploads3/images/1751/17519267/raw_1520225943.png">
+  <el-row style="height:10%">
+    <el-header class="wai" style="height:100%">
+      <el-col :span="3" class="user" ><img src="https://pro.modao.cc/uploads3/images/1751/17519267/raw_1520225943.png">
       </el-col>
-      <el-col :span="15" class="title">{{CorporateName}}</el-col>
+      <el-col :span="13" class="font" style="font-size: 28px;font-weight: 600;">{{CorporateName}}</el-col>
       <!--<el-col :span="7" style="width: 390px">-->
       <!---->
       <!--<el-button size="mini" v-show="false"><span style="color:#1b96a9;font-weight: 600; " >切换</span></el-button>-->
       <!--</el-col>-->
-      <el-col :span="4" class="font" style="padding-left: 30px;margin-top: 35px">今天是：{{todayTime}}</el-col>
-      <el-col :span="1" style="text-align:center;">
+      <el-col :span="4" class="font">今天是：{{todayTime}}</el-col>
+      <el-col :span="2" class="right_icon">
 
         <el-popover @hide="dotCondition"
           ref="popover3"
@@ -28,10 +28,10 @@
         <!--width: 32px;height: 32px;padding-top: 29px" v-popover:popover3></el-badge>-->
         <img
         src="https://pro.modao.cc//uploads3/images/1783/17836132/raw_1521017810.png"
-        style="width: 32px;height: 32px;padding-top: 29px"  v-popover:popover3 @click="dotState" >
+        style="width: 32px;height: 32px;"  v-popover:popover3 @click="dotState" >
         <div class="tip" v-show="dot" ></div>
       </el-col>
-      <el-col :span="1" style="padding-left: 20px">
+      <el-col :span="2" class="right_icon">
         <el-popover
           ref="popover4"
           placement="bottom"
@@ -42,7 +42,7 @@
           </el-col>
         </el-popover>
         <img src="https://pro.modao.cc//uploads3/images/1783/17836137/raw_1521017812.png
-" style="width: 32px;height: 32px;padding-top: 29px;cursor: pointer" v-popover:popover4>
+" style="width: 32px;height: 32px;cursor: pointer" v-popover:popover4>
 
 
       </el-col>
@@ -138,31 +138,35 @@
   }
 
   .user {
-    width: 150px;
     background-color: #1b96a9;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
   }
 
   .user img {
     width: 64px;
     height: 64px;
 
-    padding: 10px 0 10px 0;
+  
     vertical-align: middle;
-    margin-left: 20%;
+    margin-left: 45px;
 
-  }
-
-  .title {
-    color: white;
-    font-size: 28px;
-    font-weight: 600;
-    margin-top: 20px
   }
 
   .font {
-    color: white;
+    color: #fff;;
     font-size: 14px;
-
+    height: 64px;
+    line-height: 64px;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .right_icon {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
   }
   .tip {
     min-width: 14px;

@@ -2,8 +2,8 @@
 
   <el-row>
     <headly></headly>
-    <el-container>
-      <el-aside width="155px">
+    <el-container style="height:90%">
+      <el-aside width="155px" style="background-color:rgb(242, 242, 242)">
         <el-menu
           :default-active="activeMenu"
           :default-openeds="openSubMenuList"
@@ -101,19 +101,17 @@
     padding: 0;
   }
   .menu{
-    width: 150px;
+    width: 154px;
     text-align: left;
     font-size: 40px;
     font-weight: 600;
-    height:1812px;
+    /* height: 100%; */
   }
   .personal{
     width: 15%;
     background-color: red;
   }
-  .list{
-
-  }
+  
   .group>ul>li{
     min-width: 150px;
   }

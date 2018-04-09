@@ -52,8 +52,8 @@ export default {
     // b['permissions_id'] = '1';
     axios({
       method: 'post',
-    //  baseURL: 'https://wx.jpbvip.com/dowinsysws/services/',
-      baseURL: 'http://192.168.199.228:8080/dowinsysws/services/',
+     baseURL: 'https://wx.jpbvip.com/dowinsysws/services/',
+      // baseURL: 'http://192.168.199.228:8080/dowinsysws/services/',
       url:data.methodUrl,
       data: b,
       timeout: 10000,
