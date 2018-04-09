@@ -214,17 +214,17 @@
               </el-row>
 
             </el-col>
-            <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
-              <el-upload
-                class="avatar-uploader"
-                action="https://jsonplaceholder.typicode.com/posts/"
-                :show-file-list="false"
-                :on-success="handleAvatarSuccess"
-                :before-upload="beforeAvatarUpload">
-                <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                <i v-else class="el-icon-plus avatar-uploader-icon">上传头像</i>
-              </el-upload>
-            </el-col>
+             <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
+                <el-upload style="width: 100%;text-align: center"
+                           action="https://wx.jpbvip.com/dowinsysws/services/memberManagement/memberUploadPic"
+                           class="avatar-uploader"
+                           :http-request='submitUpload'
+                           :show-file-list="false"
+                >
+                  <img v-if="imageUrl" :src="imageUrl" class="avatar"  >
+                  <i v-else class="el-icon-plus avatar-uploader-icon">上传头像</i>
+                </el-upload>
+              </el-col><!--头像上传-->
           </el-row>
         </div><!--基础资料-->
 
@@ -539,6 +539,23 @@ export default {
     };
   },
   methods: {
+    //提交图片
+    submitUpload(file) {
+        let param = new FormData(); // 创建 form 对象
+        param.append("file", file.file, file.file.name); // 通过 append 向 form 对象添加数据
+        let config = {
+          headers: { "Content-Type": "multipart/form-data" }
+        }; // 添加请求头
+        this.$axios
+          .postImageRequest(
+            "memberManagement/memberUploadPic",
+            param,
+            config
+          )
+          .then(response => {
+            this.imageUrl=response.data.pic_url
+          });
+      },
     toggleSelection(rows) {
         if (rows) {
           rows.forEach(row => {
