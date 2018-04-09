@@ -1497,14 +1497,14 @@
       },/*清空表单样式调用*/
       //导出
       exportCh(fileName, docType){
-
+        var userData = qs.parse(sessionStorage.getItem("userData"));
         var department = "";
         if (this.value3 !== '' && this.value4 === '') {
           department = this.value3
         } else if (this.value4 !== '') {
           department = this.value4
         }
-        var userData = qs.parse(sessionStorage.getItem("userData"));
+        
         var postData = {
           count: true,
           pageindex: 1,
@@ -1541,7 +1541,7 @@
               'Content-Type': 'application/json;charset=utf-8'
             }
           }
-        ).then((response) => {
+        ).then(response => {
 //guanbi
 
           var fileParam = {
@@ -1558,29 +1558,36 @@
         })
       },
       //浏览器兼容
-      Browser(){
-        var browser = {
-          msie: false, msie7: false, msie8: false, msie9: false,
-          msie10: false, msie11: false, chrome: false, firefox: false
-        }
-        var ver = null, u = window.navigator.userAgent.toLocaleLowerCase();
-        if (/(msie) ([\d.]+)/.test(u)) {
-          ver = parseInt(/(msie) ([\d.]+)/.exec(u)[2]);
-          browser.msie = true;
-          if (ver < 8) browser.msie7 = true;
-          else if (ver == 8) browser.msie8 = true;
-          else if (ver == 9) browser.msie9 = true;
-          else if (ver == 10) browser.msie10 = true;
-        } else if (/(chrome)\/([\d.]+)/.test(u)) browser.chrome = true;
-        else if (/(trident)\/([\d.]+)/.test(u)) {
-          browser.msie11 = true;
-          browser.msie = true;
-        } else if (/(firefox)\/([\d.]+)/) browser.firefox = true;
-        else if (/(safari)\/([\d.]+)/.test(u)) browser.safari = true;
-        else if (/(opera)\/([\d.]+)/) browser.opera = true;
+      Browser() {
+      var browser = {
+        msie: false,
+        msie7: false,
+        msie8: false,
+        msie9: false,
+        msie10: false,
+        msie11: false,
+        chrome: false,
+        firefox: false
+      };
+      var ver = null,
+        u = window.navigator.userAgent.toLocaleLowerCase();
+      if (/(msie) ([\d.]+)/.test(u)) {
+        ver = parseInt(/(msie) ([\d.]+)/.exec(u)[2]);
+        browser.msie = true;
+        if (ver < 8) browser.msie7 = true;
+        else if (ver == 8) browser.msie8 = true;
+        else if (ver == 9) browser.msie9 = true;
+        else if (ver == 10) browser.msie10 = true;
+      } else if (/(chrome)\/([\d.]+)/.test(u)) browser.chrome = true;
+      else if (/(trident)\/([\d.]+)/.test(u)) {
+        browser.msie11 = true;
+        browser.msie = true;
+      } else if (/(firefox)\/([\d.]+)/) browser.firefox = true;
+      else if (/(safari)\/([\d.]+)/.test(u)) browser.safari = true;
+      else if (/(opera)\/([\d.]+)/) browser.opera = true;
 
-        return browser
-      },
+      return browser;
+    },
       //报名时间下拉选
       getSTime(val) {
         this.date = val;//这个sTime是在data中声明的，也就是v-model绑定的值

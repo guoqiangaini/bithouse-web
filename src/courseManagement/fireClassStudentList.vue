@@ -202,6 +202,7 @@
           console.log(err)
         })
       },
+ 
       //加载表格
       selectTestDetail() {
         var that = this

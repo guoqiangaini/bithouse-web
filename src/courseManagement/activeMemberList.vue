@@ -212,6 +212,36 @@
           console.log(err)
         })
       },
+       Browser() {
+      var browser = {
+        msie: false,
+        msie7: false,
+        msie8: false,
+        msie9: false,
+        msie10: false,
+        msie11: false,
+        chrome: false,
+        firefox: false
+      };
+      var ver = null,
+        u = window.navigator.userAgent.toLocaleLowerCase();
+      if (/(msie) ([\d.]+)/.test(u)) {
+        ver = parseInt(/(msie) ([\d.]+)/.exec(u)[2]);
+        browser.msie = true;
+        if (ver < 8) browser.msie7 = true;
+        else if (ver == 8) browser.msie8 = true;
+        else if (ver == 9) browser.msie9 = true;
+        else if (ver == 10) browser.msie10 = true;
+      } else if (/(chrome)\/([\d.]+)/.test(u)) browser.chrome = true;
+      else if (/(trident)\/([\d.]+)/.test(u)) {
+        browser.msie11 = true;
+        browser.msie = true;
+      } else if (/(firefox)\/([\d.]+)/) browser.firefox = true;
+      else if (/(safari)\/([\d.]+)/.test(u)) browser.safari = true;
+      else if (/(opera)\/([\d.]+)/) browser.opera = true;
+
+      return browser;
+    },
       //加载表格信息
       selectTestDetail() {
         var that = this
