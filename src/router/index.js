@@ -21,13 +21,12 @@ import postSetting from '../personnelManagement/postSetting.vue'
 import fireClassTimeDetail from '../courseManagement/fireClassTimeDetail'
 import fireClassStudentList from '../courseManagement/fireClassStudentList'
 import activeMemberList from '../courseManagement/activeMemberList'
+import dailySalesStatistics  from '../salesManagement/dailySalesStatistics'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
-
-
     {
       path: '/menu',
       component: menu,
@@ -44,6 +43,14 @@ export default new Router({
           // meta: { requiresAuth: true }
 
         },
+        //销售管理
+        {
+          path: '/19',
+          component: dailySalesStatistics,
+          alise: '/dailySalesStatistics',
+          // meta: { requiresAuth: true }
+        },
+
         //课程管理
         {
           path: '/23',
@@ -97,7 +104,6 @@ export default new Router({
 
       ]
     },//首页
-
     {
       path: '/',
       component: login

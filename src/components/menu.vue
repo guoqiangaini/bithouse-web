@@ -6,22 +6,19 @@
       <el-aside width="155px" style="background-color:rgb(242, 242, 242)">
         <el-menu
           :default-active="activeMenu"
-          :default-openeds="openSubMenuList"
-          @open="handleOpen"
-          @close="handleClose"
           background-color="#f2f2f2"
           text-color="black"
           active-text-color="#1b96a9"
           class="menu"
-          :unique-opened="true"
+          :unique-opened="false"
           :router="true" style="text-align: center">
           <template v-for="(item,index) in menu">
             <el-menu-item style="padding: 0;" :index="''+item.menu_url"  v-if="item.child_menus && item.child_menus.length===0">
               <span slot="title">{{item.menu_name}}</span>
             </el-menu-item>
-            <el-submenu  :index="''+item.menu_url"   v-else="item.child_menus && item.child_menus.length>0" >
+            <el-submenu :index="''+item.menu_url" v-else="item.child_menus && item.child_menus.length>0" >
               <span slot="title">{{item.menu_name}}</span>
-              <el-menu-item unique-opened :index="''+items.menu_url" v-for="(items,index) in item.child_menus" :key="items.menu_id" style="width:100px">{{items.menu_name}}</el-menu-item>
+              <el-menu-item unique-opened :index="''+items.menu_url" v-for="(items,index) in item.child_menus" :key="items.menu_url" style="width:100px">{{items.menu_name}}</el-menu-item>
             </el-submenu>
           </template>
         </el-menu>
@@ -33,70 +30,60 @@
   </el-row>
 </template>
 <script>
-  import headly from '../loginAndRegister/Header.vue'
+  import headly from "../loginAndRegister/Header.vue";
   import ElRow from "element-ui/packages/row/src/row";
   import ElCol from "element-ui/packages/col/src/col";
-  import {mapState} from 'vuex'
+  import { mapState } from "vuex";
   import ElAside from "element-ui/packages/aside/src/main";
   export default {
-    data(){
-      return{
-
-        activeMenu:'',
-        openSubMenuList:[]
-
-      }
+    data() {
+      return {
+        activeMenu: ""
+      };
     },
     components: {
       ElAside,
       ElCol,
       ElRow,
-      headly},
-    mounted(){
-      // this.handleOpen(0,0)
-      //进入界面时，重新计算菜单展开的子选项，如果子菜单展开时，重新设置菜单展开，防止子菜单关闭
-      var subMenuIndex = localStorage.getItem('subMenuIndex')
-      if(subMenuIndex!=null&&subMenuIndex.length>0){
-        this.openSubMenuList.push(0,subMenuIndex+'')
-      }
-      this.$store.dispatch("sMenu")
-      this.doSomeThing()
+      headly
     },
-    watch: {
-      // 如果路由有变化，会再次执行该方法
-      '$route': 'doSomeThing'
+    mounted() {
+      this.initMenu()
     },
-    methods:{
-      doSomeThing() {
-        this.activeMenu = this.$route.path.replace("/", "")
-      },
-      handleOpen(index,path){
-        this.openSubMenuList.push(0,index+'')
-        localStorage.setItem('subMenuIndex',index)
-      },
-      handleClose(index,path){
-        this.openSubMenuList=[]
-        localStorage.setItem('subMenuIndex','')
+    methods: {
+      initMenu(){
+        this.activeMenu = this.$route.path.replace("/", "");
       }
     },
 
     computed: {
-      //获取请求的会员信息展示在页面
+      //获取菜单
       menu() {
         return this.$store.state.menu;
       }
     },
-    created(){
-      this.$store.dispatch("sMenu")
-      this.activeMenu=this.$route.path.replace("/","")
+    created() {
+      //初始化菜单
+      this.$store.dispatch("sMenu");
 
-    }
-  }
+    },
+    watch: {
+      // 如果路由有变化，会再次执行该方法
+      '$route': 'initMenu'
+    },
+  };
 </script>
 <style scoped>
-
-
-  div,p,ul,li,o,tbody,tfoot,thead,fieldset,legend{
+  div,
+  p,
+  ul,
+  li,
+  o,
+  tbody,
+  tfoot,
+  thead,
+  fieldset,
+  legend {
     margin: 0;
     padding: 0;
   }
@@ -107,7 +94,7 @@
     font-weight: 600;
     /* height: 100%; */
   }
-  .personal{
+  .personal {
     width: 15%;
     background-color: red;
   }
@@ -116,7 +103,7 @@
     min-width: 150px;
   }
 
-  .user{
+  .user {
     background-color: #1b96a9;
   }
   .user img {
@@ -127,7 +114,7 @@
     vertical-align: middle;
     text-align: center;
   }
-  .sizer{
+  .sizer {
     color: #101010;
   }
   /*.el-menu-item{*/
@@ -136,5 +123,4 @@
   /*.el-submenu{*/
   /*font-size:18px;*/
   /*}*/
-
 </style>
