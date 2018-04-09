@@ -341,12 +341,10 @@
                 <el-upload style="width: 100%;text-align: center"
                            class="avatar-uploader"
                            action="string"
-                           :data="imageUrl"
                            :http-request='submitUpload'
                            :show-file-list="false"
                            :on-success="handleAvatarSuccess"
                            :before-upload="beforeAvatarUpload"
-                           :on-change="changeFile"
                 >
                   <img v-if="imageUrl" :src="imageUrl" class="avatar"  >
                   <i v-else class="el-icon-plus avatar-uploader-icon">上传头像</i>
@@ -1427,8 +1425,7 @@
             config
           )
           .then(response => {
-            console.log("============222================");
-            console.log(response.data);
+            this.imageUrl=response.data.pic_url
           });
       },
       courseInfoChange() {
@@ -1476,6 +1473,7 @@
         this.addForm.addValue36=row.fillPerson
         this.goodsCountParams=row.itemUse
         this.detailDialogVisible = true
+        this.imageUrl=row.picUrl
       },
       //表头样式
       headerSetStyle(){
@@ -1745,6 +1743,7 @@
             this.addForm.addvalue21=this.multipleSelection[0].mother_phone
             this.addForm.addvalue22=this.multipleSelection[0].mother_comp
             this.serial = this.multipleSelection[0].student_serial
+            this.imageUrl=this.multipleSelection[0].picUrl
           }
         }
       },
