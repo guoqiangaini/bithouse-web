@@ -808,7 +808,7 @@ export default {
           }
         );
     },
-     Browser() {
+    Browser() {
       var browser = {
         msie: false,
         msie7: false,
@@ -942,32 +942,89 @@ export default {
     //删除题库
     deleteTestBank() {
       var that = this;
+      var userData = qs.parse(sessionStorage.getItem("userData"));
       if (this.multipleSelection.length > 0) {
-        var arrvalue = []; //用于存放取出的数组的值
-        for (var i = 0; i < this.multipleSelection.length; i++) {
-          //数组的索引是从0开始的
-          arrvalue.push(this.multipleSelection[i].id);
-        }
-        var userData = qs.parse(sessionStorage.getItem("userData"));
-        var deleteData = {
-          regserial: userData.company_serial,
-          ids: arrvalue.join(",")
-        };
-        var deleteParams = {
-          methodUrl: "courseManagement/deleteQuestions",
-          jsonParam: qs.stringify(deleteData)
-        };
-        this.$axios.postRequest(deleteParams).then(
-          function(res) {
-            //成功之后处理逻辑
-            that.selectTestBank();
-          },
-          function(res) {
-            //失败之后处理逻辑
-            console.log("error:" + res);
-          }
-        );
+        this.$confirm("此操作将永久删除该题目, 是否继续？", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        })
+          .then(() => {
+            var arrvalue = []; //用于存放取出的数组的值
+            for (var i = 0; i < this.multipleSelection.length; i++) {
+              arrvalue.push(this.multipleSelection[i].id); //数组的索引是从0开始的
+            }
+            
+            var deleteData = {
+              regserial: userData.company_serial,
+              ids: arrvalue.join(",")
+            };
+
+            var deleteParams = {
+              methodUrl: "courseManagement/deleteQuestions",
+              jsonParam: qs.stringify(deleteData)
+            };
+
+            this.$axios.postRequest(deleteParams).then(
+              function(res) {
+                //成功之后处理逻辑
+                that.selectTestBank();
+                that.$message({
+                  type: "success",
+                  message: "删除成功"
+                });
+              },
+              function(res) {
+                //失败之后处理逻辑
+                console.log("error:" + res);
+                that.$message({
+                  type: "error",
+                  message: "删除失败"
+                });
+              }
+            );
+          })
+          .catch(() => {
+            this.$message({
+              type: "info",
+              message: "已取消删除"
+            });
+          });
+      } else {
+        this.$message({
+          message: "请选择数据",
+          showClose: true,
+          type: "warning"
+        });
       }
+
+      // var that = this;
+      // if (this.multipleSelection.length > 0) {
+      //   var arrvalue = []; //用于存放取出的数组的值
+      //   for (var i = 0; i < this.multipleSelection.length; i++) {
+      //     //数组的索引是从0开始的
+      //     arrvalue.push(this.multipleSelection[i].id);
+      //   }
+      //   var userData = qs.parse(sessionStorage.getItem("userData"));
+      //   var deleteData = {
+      //     regserial: userData.company_serial,
+      //     ids: arrvalue.join(",")
+      //   };
+      //   var deleteParams = {
+      //     methodUrl: "courseManagement/deleteQuestions",
+      //     jsonParam: qs.stringify(deleteData)
+      //   };
+      //   this.$axios.postRequest(deleteParams).then(
+      //     function(res) {
+      //       //成功之后处理逻辑
+      //       that.selectTestBank();
+      //     },
+      //     function(res) {
+      //       //失败之后处理逻辑
+      //       console.log("error:" + res);
+      //     }
+      //   );
+      // }
     },
     //添加、修改题库
     submitTestBank(form) {
@@ -977,7 +1034,7 @@ export default {
       this.$refs.form.validate(valid => {
         if (valid) {
           console.log(this.isAdd);
-          console.log(this.isAdd==1);
+          console.log(this.isAdd == 1);
           if (this.isAdd == 1) {
             var questionData = {
               regserial: userData.company_serial,
