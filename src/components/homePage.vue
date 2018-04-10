@@ -108,7 +108,7 @@
     <!-- 业绩收支开始 -->
     <el-row>
       <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12" style="border-top:1px solid #c1c3c9;border-left:1px solid #c1c3c9">
-      
+        <div  id="table13" style="margin:40px 0 0 0 ;width: 507px;height:400px;text-align:center"></div>
       </el-col>
        <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12" style="border:1px solid #c1c3c9;border-bottom: 0">
         <div style="text-align:center">
@@ -219,7 +219,9 @@
     },
     mounted(){
       var that = this
+      this.qwert();
       this.drawLines();
+      
       this.drawLines2();
       this.drawLiness();
       this.drawLinessss();
@@ -492,15 +494,108 @@
         this.gender=true;
         this.year=false
       },
+      //业绩图
+      qwert(){
+      let that=this
+        let table13 = this.$echarts.init(document.getElementById('table13'))
+        table13.setOption({
+          title: {
+            x: 'left',
+            y:'3%',
+            text: '业绩排名',
+            textStyle:{fontSize:'16',margin:10}
+          },
+          tooltip: {
+            trigger: 'item',
+            formatter: '{b}:\n{c}'
+          },
+          toolbox: {
+            show: true,
+            // feature: {
+            //   dataView: {show: true, readOnly: false},
+            //   restore: {show: true},
+            //   saveAsImage: {show: true}
+            // }
+          },
+          calculable: true,
+          grid: {
+            borderWidth: 0,
+            x2:0,
+            y: 80,
+            y2: 80
+          },
+          xAxis: [
+            {
+              axisTick:{
+                show:false
+              },
+              type: 'category',
+              data:['初家','幸福','西南河','新桥','马山寨','绿色家园','世贸'],
+              axisLabel:{
+                show: true,
+                rotate:45,
+              }
+            }
+          ],
+          yAxis: [
+            {
+              type: 'value',
+              axisLabel: {
+                show: true,
+                interval: 'auto',
+                formatter: '{value}'
+              },
+              show: true
+            }
+          ],
+          series: [
+            {
+              splitNumber:6,
+              barWidth:30,
+              name: '卡型',
+              type: 'bar',
+              itemStyle: {
+                normal: {
+                  color: function(params) {
+                    var colorList = [
+                    
+                      '#f1a346'
+                    ];
+                    return colorList[params.dataIndex]
+                  }
+                }
+              },
+             data:[67, 89, 52, 69, 96, 34, 135, 16, 32, 20, 64, 33], 
+              // markPoint: {
+              //   tooltip: {
+              //     trigger: 'item',
+              //     backgroundColor: 'rgba(0,0,0,0)',
+              //     formatter: function(params){
+              //       return '<img src="'
+              //         + params.data.symbol.replace('image://', '')
+              //         + '"/>';
+              //     }
+              //   },
+              //   data: [
+              //     {xAxis:0, y: 350, name:'4-14', symbolSize:20, symbol: 'image://../asset/ico/折线图.png'},
+              //     {xAxis:1, y: 350, name:'15-24', symbolSize:20, symbol: 'image://../asset/ico/柱状图.png'},
+              //     {xAxis:2, y: 350, name:'25-34', symbolSize:20, symbol: 'image://../asset/ico/散点图.png'},
+              //     {xAxis:3, y: 350, name:'35-44', symbolSize:20, symbol: 'image://../asset/ico/K线图.png'},
+              //   ]
+              // }
+            }
+          ]
+        });},
       //消课图
       drawLine(){
         let that=this
         let option = this.$echarts.init(document.getElementById('option'))
         option.setOption({
           title:{
-            text:'消课量排名-前3名',
-            y:'3%',
-            x:'left'
+            text:'　消课排名',
+            y:'4%',
+            x:'left',
+           textStyle:{fontSize:'16'},
           },
           tooltip : {
             trigger: 'axis',
@@ -524,6 +619,7 @@
           calculable : true,
           xAxis : [
             {
+
               type : 'value',
             }
           ],
@@ -535,13 +631,14 @@
           ],
           series : [
             {
-              barWidth:30,
+              barWidth:80,
               name:'消课量',
               type:'bar',
               stack: '总量',
-              itemStyle : { normal: {label : {show: true, position: 'insideRight',color:'red',},color:'orange',}},//样式
+              textStyle: {fontSize:'12px'},
+              itemStyle: { normal: {label : {show: true, position: 'insideRight',color:'red',},color:'orange',}},//样式
               data:that.fireClassRank,//数据
-              // radius : '20%',//显示大小
+              // radius : '40%',//显示大小
             },
           ]
         });
@@ -717,9 +814,11 @@
           calculable : true,
           xAxis : [
             {
+              show : true,
               type : 'category',
               data : ['5岁以下','6`9岁','10`13岁','14`17岁','18岁以上','其他']
             }
+            
           ],
           yAxis : [
             {

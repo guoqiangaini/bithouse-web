@@ -12,17 +12,17 @@
           :close-on-click-modal="false"
           :close-on-press-escape="false"
           :visible.sync="dialogVisible"
-          width="35%"
+          width="572px"
           @close="clearFormData('form')"
         >
           <div>
             <el-row>
               <el-col :span="4">岗位名称</el-col>
-              <el-col :span="11">
+              <el-col :span="9">
                 <el-input v-model="input1" style="width:200px" size="mini"></el-input>
               </el-col>
-              <el-col :span="7">
-                <el-select v-model="value1" placeholder="请选择" size="mini" class="select" @change="changePost">
+              <el-col :span="7" >
+                <el-select v-model="value1" placeholder="请选择" size="mini" class="select"  @change="changePost">
                   <el-option
                     v-for="item in role"
                     :key="item.role_id"
@@ -748,7 +748,7 @@ export default {
 }
 
 .select {
-  width: 127px;
+  width: 130px;
 }
 
 .wai ul {

@@ -667,7 +667,7 @@
       :close-on-click-modal="false"
       :close-on-press-escape="false"
       :visible.sync="detailDialogVisible"
-      :close="closeDialog"
+      @close="closeDialog(addForm)"
       width="900px" style="font-size:10px"
     >
       <el-form label-width="50px" :show-message="false"  class="demo-ruleForm" :model="addForm"  ref="addForm">
@@ -1103,16 +1103,16 @@
         drawer:[],
         genders: [
           {
-            value: '0',
-            label: '未知'
+            value: '未知',
+            label: '0'
           },
           {
-            value: '1',
-            label: '男'
+            value: '男',
+            label: '1'
           },
           {
-            value: '2',
-            label: '女'
+            value: '女',
+            label: '2'
           },
         ],//性别
         timeScope:'',//报名时间
@@ -1492,8 +1492,9 @@
         }
       },
       closeDialog(addForm){
-        this.multipleSelection.length=0
+        
         this.$refs[addForm].resetFields();
+        this.multipleSelection.length=0
       },/*清空表单样式调用*/
       //导出
       exportCh(fileName, docType){
@@ -1727,8 +1728,8 @@
             setTimeout(function() {
             this.dialogTitle='修改学员信息'
             this.jdolx = 2
-            alert('11111111')
-            that.dialogVisible = true
+            
+          
             that.addForm.addValue1 = that.multipleSelection[0].source_id
             that.addForm.addValue2=that.multipleSelection[0].membertype_id
             that.addForm.addvalue3=that.multipleSelection[0].dep_parent_name
@@ -1754,9 +1755,9 @@
             that.serial = that.multipleSelection[0].student_serial
             that.imageUrl=that.multipleSelection[0].picUrl
             
-             } )
+             },0 )
     
-          
+           this.dialogVisible = true;
           }}
       },
       //提交修改

@@ -36,7 +36,7 @@
           :close-on-click-modal="false"
           :close-on-press-escape="false"
           :visible.sync="dialogFormVisible"
-          @close="closeDialog()"
+          @close="closeDialog('form')"
           >
           <el-form :model="form" :show-message="false"  :rules="rules" ref="form" label-width="80px">
             <el-form-item label="活动名称" prop="name">
@@ -287,9 +287,9 @@
       };
     },
     methods: {
-      closeDialog(){
+      closeDialog(form){
         //this.dialogVisible = false
-        this.$refs.addForm.resetFields();
+        this.$refs.form.resetFields();
       }, /*清空表单样式调用*/
       //表头样式
       headerSetStyle(){
