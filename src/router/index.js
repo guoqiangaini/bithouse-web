@@ -46,8 +46,8 @@ export default new Router({
         //销售管理
         {
           path: '/19',
-          component: dailySalesStatistics,
-          alise: '/dailySalesStatistics',
+          component: dailySalesStatistics,//会员管理
+          alise: '/MemberManage',
           // meta: { requiresAuth: true }
         },
 
