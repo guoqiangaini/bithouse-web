@@ -584,15 +584,14 @@
         </ul>
         <ul>
           <el-button size="mini"  type="info" @click="">查询</el-button>
-          <el-button size="mini"  type="info" @click="">备注</el-button>
-          <el-button size="mini" type="info" @click="">导出</el-button>
+          <el-button size="mini" type="info" @click="exportCh('销售单','xlsx')">导出</el-button>
         </ul>
       </el-row>
       <!--条件查询结束-->
       <!--表格内容加载-->
       <el-table
         ref="multipleTable"
-        :data="questionBank"
+        :data="salesTicket"
         border
         size="mini"
         header-align="center"
@@ -754,6 +753,7 @@
             title: "业绩归属人"
           }
         ],
+        tableObject:[],
         tableData3: [{
           introduce: '新报-1年年卡1',
           number: '1',
@@ -770,6 +770,7 @@
           zip: 0
         }
         ],
+        salesTicket:[],//销售单请求数据
         //弹出框标题
         dialogTitle:'',
         //数据条数
