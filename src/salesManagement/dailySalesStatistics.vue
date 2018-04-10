@@ -73,7 +73,7 @@
           <el-button size="mini"  type="info" @click="collectionDialog=true">收款</el-button>
           <el-button size="mini"  type="info" @click="expenseDialogVisible=true">其它费用</el-button>
           <el-button size="mini"  type="info" @click="deleteSalesInfo">删除</el-button>
-          <el-button size="mini" type="info" @click="">导出</el-button>
+          <el-button size="mini" type="info" @click="exportCh('销售统计','xlsx')">导出</el-button>
         </ul>
       </el-row>
       <!--新增销售课程弹框开始-->
@@ -81,8 +81,10 @@
         :title="dialogTitle"
         :close-on-click-modal="false"
         :close-on-press-escape="false"
+        @selection-change="handleSelectionChange"
         :visible.sync="addSalesCourseDialog"
         width="900px"
+        @close="clearFormData('salesForm')"
         center>
         <el-form :model="salesForm" rules="rules" ref="salesForm">
           <fieldset style="border: 1px solid #c1c3c9;">
@@ -204,26 +206,26 @@
         width="30%"
         :before-close="handleClose"
         center>
-         <el-form :model="expenseRruleForm" :rules="rules" ref="expenseRruleForm" style="margin-top:15px">
-           <el-form-item label="收　　支:" prop="style" labelWidth="75px">
-             <el-select v-model="expenseRruleForm.style" placeholder="请选择收支"  size="mini" style="width:450px">
-               <el-option label="收入" value="1"></el-option>
-               <el-option label="支出" value="2"></el-option>
-             </el-select>
-            </el-form-item>
-           <el-form-item label="费用名称:" prop="costName" labelWidth="75px">
-             <el-select v-model="expenseRruleForm.costName" placeholder="请选择收支"  size="mini" style="width:450px">
-               <el-option label="房租" value="1"></el-option>
-               <el-option label="水费" value="2"></el-option>
-             </el-select>
-           </el-form-item>
-           <el-form-item label="费用数量:" prop="count" labelWidth="75px">
-             <el-input v-model="expenseRruleForm.count"  size="mini" placeholder="单行输入" style="width:450px"></el-input>
-           </el-form-item>
-           <el-form-item label="费用金额:" prop="amount" labelWidth="75px">
-             <el-input v-model="expenseRruleForm.amount"  size="mini"placeholder="单行输入" style="width:450px"></el-input>
-           </el-form-item>
-         </el-form>
+        <el-form :model="expenseRruleForm" :rules="rules" ref="expenseRruleForm" style="margin-top:15px">
+          <el-form-item label="收　　支:" prop="style" labelWidth="75px">
+            <el-select v-model="expenseRruleForm.style" placeholder="请选择收支"  size="mini" style="width:450px">
+              <el-option label="收入" value="1"></el-option>
+              <el-option label="支出" value="2"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="费用名称:" prop="costName" labelWidth="75px">
+            <el-select v-model="expenseRruleForm.costName" placeholder="请选择收支"  size="mini" style="width:450px">
+              <el-option label="房租" value="1"></el-option>
+              <el-option label="水费" value="2"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="费用数量:" prop="count" labelWidth="75px">
+            <el-input v-model="expenseRruleForm.count"  size="mini" placeholder="单行输入" style="width:450px"></el-input>
+          </el-form-item>
+          <el-form-item label="费用金额:" prop="amount" labelWidth="75px">
+            <el-input v-model="expenseRruleForm.amount"  size="mini"placeholder="单行输入" style="width:450px"></el-input>
+          </el-form-item>
+        </el-form>
         <span slot="footer" class="dialog-footer">
         <el-button type="info" size="mini"   @click="expenseDialogVisible = false">取 消</el-button>
         <el-button type="info" size="mini"   @click="expenseDialogVisible = false">提交</el-button>
@@ -235,8 +237,8 @@
         :close-on-click-modal="false"
         :close-on-press-escape="false"
         :visible.sync="collectionDialog"
-         width="900"
-        >
+        width="900"
+      >
         <div slot="title">
           <el-row>
             <div style="float: right">
@@ -289,107 +291,107 @@
         </el-row>
         <el-row>
           <el-table
-          :data="tableData3"
-          style="width: 100%"
-          size="mini"
-          border
-          :headerCellStyle="headerSetStyle"
-          :cellStyle="cellSetStyle"
-        >
-          <el-table-column
-            prop="introduce"
-            label="摘要"
-            align="center"
-            width="265"
+            :data="tableData3"
+            style="width: 100%"
+            size="mini"
+            border
+            :headerCellStyle="headerSetStyle"
+            :cellStyle="cellSetStyle"
+          >
+            <el-table-column
+              prop="introduce"
+              label="摘要"
+              align="center"
+              width="265"
             >
-          </el-table-column>
-          <el-table-column
-            prop="number"
-            label="数量"
-            align="center"
-            width="100"
+            </el-table-column>
+            <el-table-column
+              prop="number"
+              label="数量"
+              align="center"
+              width="100"
             >
-          </el-table-column>
-          <el-table-column label="金额" align="center">
+            </el-table-column>
+            <el-table-column label="金额" align="center">
               <el-table-column
                 prop="province"
                 label="亿"
                 align="center"
                 width="50"
-                >
+              >
               </el-table-column>
               <el-table-column
                 prop="city"
                 label="千"
                 align="center"
                 width="50"
-                >
+              >
               </el-table-column>
               <el-table-column
                 prop="address"
                 label="百"
                 align="center"
                 width="50"
-                >
+              >
               </el-table-column>
               <el-table-column
                 prop="zip"
                 label="十"
                 align="center"
                 width="50"
-                >
+              >
               </el-table-column>
               <el-table-column
                 prop="zip"
                 label="万"
                 align="center"
                 width="50"
-               >
+              >
               </el-table-column>
               <el-table-column
                 prop="zip"
                 label="千"
                 align="center"
                 width="50"
-                >
+              >
               </el-table-column>
               <el-table-column
                 prop="zip"
                 align="center"
                 label="百"
                 width="50"
-                >
+              >
               </el-table-column>
               <el-table-column
                 prop="zip"
                 label="十"
                 align="center"
                 width="50"
-                >
+              >
               </el-table-column>
               <el-table-column
                 prop="zip"
                 label="元"
                 align="center"
                 width="50"
-                >
+              >
               </el-table-column>
               <el-table-column
                 prop="zip"
                 label="角"
                 align="center"
                 width="50"
-                >
+              >
               </el-table-column>
               <el-table-column
                 prop="zip"
                 label="分"
                 align="center"
                 width="50"
-                >
+              >
               </el-table-column>
             </el-table-column>
-        </el-table>
+          </el-table>
         </el-row>
         <el-row style="margin-top: 15px">
           <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6">
@@ -404,12 +406,12 @@
           <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6">
             <div>收款方式：
               <el-select v-model="paymentId" placeholder="请选择" size="mini" style="width: 120px" clearable>
-                  <el-option
-                    v-for="item in paymentMethod"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                  </el-option>
+                <el-option
+                  v-for="item in paymentMethod"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
               </el-select>
             </div>
           </el-col>
@@ -458,14 +460,14 @@
           align="center"
           label="来源"
           width="120"
-          >
+        >
         </el-table-column>
-          <el-table-column
-            prop="student_name"
-            align="center"
-            label="姓名"
-            width="80">
-          </el-table-column>
+        <el-table-column
+          prop="student_name"
+          align="center"
+          label="姓名"
+          width="80">
+        </el-table-column>
         <el-table-column
           prop="sex"
           align="center"
@@ -543,7 +545,7 @@
         <!--卡型-->
         <ul>
           <span class="size">卡型</span>
-          <el-select v-model="secondCardTypeName" clearable placeholder="全部" size="mini" style="width: 90px">
+          <el-select v-model="secondCardTypeName" clearable placeholder="全部" size="mini" style="width:140px">
             <el-option
               v-for="item in cardType"
               :key="item.id"
@@ -573,10 +575,10 @@
           <span class="size">业绩归属人</span>
           <el-select v-model="secondBelonger" clearable placeholder="全部" size="mini" style="width: 90px">
             <el-option
-              v-for="item in levels"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id" >
+              v-for="item in belongers"
+              :key="item.employee_serial"
+              :label="item.employee_name"
+              :value="item.employee_serial" >
             </el-option>
           </el-select>
         </ul>
@@ -651,12 +653,6 @@
         <el-table-column
           prop="jdate"
           align="center"
-          label="收据"
-          show-overflow-tooltip>
-        </el-table-column>
-        <el-table-column
-          prop="jdate"
-          align="center"
           label="支付方式"
           show-overflow-tooltip>
         </el-table-column>
@@ -701,6 +697,63 @@
     },
     data() {
       return {
+        //导出表头字段
+        tableObject: [
+          {
+            field: "jdate",
+            width: "140",
+            title: "日期"
+          },
+          {
+            field: "dep_parent_name",
+            width: "80",
+            title: "道馆"
+          },
+          {
+            field: "name",
+            width: "120",
+            title: "来源"
+          },
+          {
+            field: "student_name",
+            width: "80",
+            title: "姓名"
+          },
+          {
+            field: "sex",
+            width: "60",
+            title: "性别"
+          },
+          {
+            field: "jquestionName",
+            width: "60",
+            title: "年龄"
+          },
+          {
+            field: "student_phone",
+            width: "160",
+            title: "联系方式"
+          },
+          {
+            field: "membertype_name",
+            width: "180",
+            title: "卡型"
+          },
+          {
+            field: "department_name",
+            width: "120",
+            title: "班级"
+          },
+          {
+            field: "coachName",
+            width: "120",
+            title: "教练"
+          },
+          {
+            field: "salesManagerName",
+            title: "业绩归属人"
+          }
+        ],
         tableData3: [{
           introduce: '新报-1年年卡1',
           number: '1',
@@ -710,13 +763,13 @@
           zip: 0
         },{
           date: '新报-1年年卡1',
-        name: '1',
-        province: '',
-        city: '',
-        address: '',
-        zip: 0
-    }
-          ],
+          name: '1',
+          province: '',
+          city: '',
+          address: '',
+          zip: 0
+        }
+        ],
         //弹出框标题
         dialogTitle:'',
         //数据条数
@@ -822,21 +875,113 @@
       };
     },
     methods: {
+      //关闭清空数据
+      clearFormData(salesForm) {
+        this.$refs[salesForm].resetFields();
+      },
+      //导出
+      exportCh(fileName, docType) {
+        var userData = qs.parse(sessionStorage.getItem("userData"));
+        var that = this
+        var salesInfoData = {
+          company_serial: userData.company_serial,
+          student_name: this.name,
+          membertype_id: this.cardTypeName,
+          start_date: this.timeScope[0],
+          end_date: this.timeScope[1],
+          count: true,
+          orderby:'',
+          pageindex: 1,
+          pagesize: 10000,
+        }
+
+        docType = docType || "pdf"; //默认导出pdf
+        var gridCols = this.tableObject;
+
+        var params = {
+          methodUrl: "salesManagement/getSalesStatisticsInfo",
+          jsonParam: JSON.stringify(salesInfoData),
+          exportStr: JSON.stringify(gridCols),
+          exportType: docType,
+          exportTitle: fileName
+        };
+        var that = this;
+        //jindu
+        axios
+          .post("sys/export.do", params, {
+            headers: {
+              "Content-Type": "application/json;charset=utf-8"
+            }
+          })
+          .then(
+            response => {
+              //guanbi
+
+              var fileParam = {
+                fileKey: encodeURI(response.data.info),
+                fileName: encodeURI(fileName),
+                browseType: this.Browser.firefox ? "firefox" : "",
+                docType: docType
+              };
+              //另存为文档
+              window.open("exportFile.do?" + qs.stringify(fileParam));
+            },
+            err => {
+              console.log(err);
+            }
+          );
+      },
+      //导出浏览器兼容
+      Browser() {
+        var browser = {
+          msie: false,
+          msie7: false,
+          msie8: false,
+          msie9: false,
+          msie10: false,
+          msie11: false,
+          chrome: false,
+          firefox: false
+        };
+        var ver = null,
+          u = window.navigator.userAgent.toLocaleLowerCase();
+        if (/(msie) ([\d.]+)/.test(u)) {
+          ver = parseInt(/(msie) ([\d.]+)/.exec(u)[2]);
+          browser.msie = true;
+          if (ver < 8) browser.msie7 = true;
+          else if (ver == 8) browser.msie8 = true;
+          else if (ver == 9) browser.msie9 = true;
+          else if (ver == 10) browser.msie10 = true;
+        } else if (/(chrome)\/([\d.]+)/.test(u)) browser.chrome = true;
+        else if (/(trident)\/([\d.]+)/.test(u)) {
+          browser.msie11 = true;
+          browser.msie = true;
+        } else if (/(firefox)\/([\d.]+)/) browser.firefox = true;
+        else if (/(safari)\/([\d.]+)/.test(u)) browser.safari = true;
+        else if (/(opera)\/([\d.]+)/) browser.opera = true;
+
+        return browser;
+      },
+      //获取选中的行数
+      handleSelectionChange(val) {
+        this.multipleSelection = val;
+        console.log(val)
+      },
       //获取销售统计信息
       querySalesInfo() {
         var userData = qs.parse(sessionStorage.getItem("userData"));
         var that = this
         var salesInfoData = {
-            company_serial: userData.company_serial,
-            student_name: this.name,
-            membertype_id: this.cardTypeName,
-            start_date: this.timeScope[0],
-            end_date: this.timeScope[1],
-            count: true,
-            orderby:'',
-            pageindex: 1,
-            pagesize: 20,
-          }
+          company_serial: userData.company_serial,
+          student_name: this.name,
+          membertype_id: this.cardTypeName,
+          start_date: this.timeScope[0],
+          end_date: this.timeScope[1],
+          count: true,
+          orderby:'',
+          pageindex: 1,
+          pagesize: 20,
+        }
         var salesInfoParams={
           methodUrl: 'salesManagement/getSalesStatisticsInfo',
           jsonParam: qs.stringify(salesInfoData)
@@ -854,7 +999,69 @@
       },
       //删除销售统计信息
       deleteSalesInfo(){
+        var that = this;
+        var userData = qs.parse(sessionStorage.getItem("userData"));
+        if (this.multipleSelection.length > 0) {
+          this.$confirm("此操作将永久删除该会员, 是否继续？", "提示", {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "warning"
+          }).then(() => {
 
+            var arrvalue = []; //用于存放取出的数组的值
+            for (var i = 0; i < this.multipleSelection.length; i++) {
+              arrvalue.push(this.multipleSelection[i].student_serial); //数组的索引是从0开始的
+            }
+            console.log(arrvalue)
+            var deleteData = {
+              jlx: 3,
+              jdolx: 3,
+              jSerial: 0,
+              jname: "",
+              picUrl: "",
+              regSerial: userData.company_serial,
+              jlog_ip: "",
+              jgly_Serial: userData.employee_serial,
+              jtext: arrvalue.join(",")
+            };
+
+            var deleteParams = {
+              methodUrl: "memberManagement/memberOperation",
+              jsonParam: qs.stringify(deleteData)
+            };
+
+            this.$axios.postRequest(deleteParams).then(
+              function(res) {
+                //成功之后处理逻辑
+                that.querySalesInfo();
+                that.$message({
+                  type: "success",
+                  message: "删除成功"
+                });
+              },
+              function(res) {
+                //失败之后处理逻辑
+                console.log("error:" + res);
+                that.$message({
+                  type: "error",
+                  message: "删除失败"
+                });
+              }
+            );
+          })
+            .catch(() => {
+              this.$message({
+                type: "info",
+                message: "已取消删除"
+              });
+            });
+        } else {
+          this.$message({
+            message: "请选择数据",
+            showClose: true,
+            type: "warning"
+          });
+        }
       },
       //添加非会员信息
       addNonmember(){
@@ -864,21 +1071,24 @@
       submitNonmembet(type){
         var that=this
         that. salesInfo=[]
-        that.salesInfo.push(
-          this.salesForm.studentSource,
-          this.salesForm.cardModel,
-          this.salesForm.studentName,
-          this.salesForm.sex,
-          this.salesForm.contact,
-          this.salesForm.clazz,
-          this.salesForm.coach,
-          this.salesForm.belonger
-        )
+        setTimeout(function () {
+          that.salesInfo.push(
+            this.salesForm.studentSource,
+            this.salesForm.cardModel,
+            this.salesForm.studentName,
+            this.salesForm.sex,
+            this.salesForm.contact,
+            this.salesForm.clazz,
+            this.salesForm.coach,
+            this.salesForm.belonger
+          )
+        },0)
+
         var userData = qs.parse(sessionStorage.getItem("userData"));
         var updateMemberData = {
           jlx:3,
           jdolx: 1,
-          jSerial:userData.studentDepartment_serial,
+          jSerial:this.salesForm.clazz,
           jname: this.salesForm.studentName,
           picUrl: '',
           regSerial: userData.company_serial,
