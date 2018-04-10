@@ -53,7 +53,7 @@
     <el-dialog
 
       title="信息填写"
-      :close="closeDialog"
+      @close="closeDialog('addForm')"
       :close-on-click-modal="false"
       :close-on-press-escape="false"
       :visible.sync="dialogVisible"
@@ -315,33 +315,25 @@
         prop="entryDate"
         
         label="入职日期"
-        width="100">
+        width="120">
 
       </el-table-column>
       <el-table-column
         align="center"
-
+        width="120"
         prop="employee_phone"
         label="联系方式"
       >
 
       </el-table-column>
-      <!--<el-table-column label="入职登记表" width="100" align="center">-->
-      <!--<template slot-scope="scope">-->
+     
+      <el-table-column
 
-      <!--<el-button-->
-      <!--size="mini"-->
-      <!--type="text"-->
-      <!--@click="openDetails">详情</el-button>-->
-      <!--</template>-->
-      <!--</el-table-column>-->
-      <!--<el-table-column-->
-
-      <!--align="center"-->
-      <!--prop="jstatus"-->
-      <!--label=" 入职状态"-->
-      <!--&gt;-->
-      <!--</el-table-column>-->
+      align="center"
+      prop="jstatus"
+      label=" 入职状态"
+      >
+      </el-table-column>
     </el-table>
     <el-pagination
       @size-change="handleSizeChange"
@@ -566,8 +558,8 @@ export default {
         }
       },
     /*清空表单样式调用*/
-    closeDialog() {
-      this.$refs.addForm.resetFields();
+    closeDialog(addForm) {
+      this.$refs[addForm].resetFields();
     },
     handleOpen(key, keyPath) {
       console.log(key, keyPath);
@@ -846,7 +838,7 @@ export default {
     updateMember(type) {
       var that = this;
       if (type == 1) {
-        alert(111);
+        
         that.jdolx = 1;
         this.departmentMuseum.forEach(function(c) {
           that.addForm.addValue18 = c.department_serial;
@@ -871,10 +863,11 @@ export default {
           });
           //this.dialogVisible = false
         } else {
-          alert(222);
+            
+          setTimeout(function() {
+        
           this.jdolx = 2;
-          this.dialogVisible = true;
-          this.multipleSelection.forEach(function(v) {
+          that.multipleSelection.forEach(function(v) {
             that.addForm.addValue1 = v.department_name;
             that.addForm.addValue2 = v.name;
             that.addForm.addValue4 = v.employee_name;
@@ -885,12 +878,13 @@ export default {
             that.addForm.addValue15 = v.employee_phone;
             that.addForm.value18 = v.jstatus; //入职状态
             that.addForm.addValue18 = v.employee_serial;
+           
           });
-    
+           
+      }, 0);
           this.dialogVisible = true;
         }
-          console.log("++++++++++++");
-          console.log(that.addForm.addValue18);
+         
       }
     },
     //提交修改
@@ -942,7 +936,7 @@ export default {
         methodUrl: "memberManagement/memberOperation",
         jsonParam: qs.stringify(updateMemberData)
       };
-      alert(333);
+   
       this.dialogVisible = false;
 
       this.$axios.postRequest(updateMemberParams).then(
@@ -1026,11 +1020,7 @@ export default {
         });
       }
     },
-    /*清空表单样式调用*/
-     closeDialog(){
-        this.dialogVisible = false
-        this.$refs.addForm.resetFields();
-      },
+    
   },
   computed: {
     studentDepartment_serial() {
@@ -1175,12 +1165,6 @@ export default {
   margin: 0;
 }
 
-.avatar-uploader {
-  border: 1px solid #c1c3c9;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
 
 .basicData {
   border: 1px solid #d8d8d8;
@@ -1203,6 +1187,25 @@ export default {
 .el-table .table-head-th {
   background-color: red;
   font-size: large;
+}
+
+
+.avatar {
+  width: 89px;
+  /*height: 160px;*/
+  display: block;
+}
+
+.avatar-uploader {
+  border: 1px solid #c1c3c9;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
 }
 
 .avatar-uploader-icon {

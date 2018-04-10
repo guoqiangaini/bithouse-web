@@ -134,7 +134,7 @@
       :close-on-click-modal="false"
       :close-on-press-escape="false"
       :visible.sync="dialogVisible"
-      @close="closeDialog"
+      @close="closeDialog('addForm')"
       width="900px" style="font-size:10px"
     >
       <el-form label-width="50px" :show-message="false"  class="demo-ruleForm" :model="addForm" :rules="rules" ref="addForm">
@@ -667,7 +667,7 @@
       :close-on-click-modal="false"
       :close-on-press-escape="false"
       :visible.sync="detailDialogVisible"
-      :close="closeDialog"
+      @close="closeDialog(addForm)"
       width="900px" style="font-size:10px"
     >
       <el-form label-width="50px" :show-message="false"  class="demo-ruleForm" :model="addForm"  ref="addForm">
@@ -1083,471 +1083,483 @@
   </el-row>
 </template>
 <script>
-import axios from "axios";
-import qs from "qs";
-import ElRow from "element-ui/packages/row/src/row";
-import ElCol from "element-ui/packages/col/src/col";
-import { mapState } from "vuex";
-export default {
-  components: {
-    ElCol,
-    ElRow
-  },
-  data() {
-    return {
-      dialogTitle: "",
-      detailDialogVisible: false,
-      fileParam: "",
-      // uplodHeader:{'Content-Type': 'multipart/form-data; boundary=fuckReaquestHeader'},
-      //开票人
-      drawer: [],
-      genders: [
-        {
-          value: "0",
-          label: "未知"
-        },
-        {
-          value: "1",
-          label: "男"
-        },
-        {
-          value: "2",
-          label: "女"
-        }
-      ], //性别
-      timeScope: "", //报名时间
-      xfcard: "",
-      xfcourse: "",
-      mustMoney: "",
-      sjMoney: "",
-      adminName: "",
-      //导出表头字段
-      tableObject: [
-        {
-          field: "student_name",
-          width: "60",
-          title: "姓名"
-        },
-        {
-          field: "jsex",
-          width: "45",
-          title: "性别"
-        },
-        {
-          field: "employee_name",
-          width: "90",
-          title: "教练分配"
-        },
-        {
-          field: "teacher_name",
-          width: "60",
-          title: "老师"
-        },
-        {
-          field: "jName",
-          width: "80",
-          title: "级别"
-        },
-        {
-          field: "course_start",
-          width: "100",
-          title: "报名日期"
-        },
-        {
-          field: "course_end",
-          width: "100",
-          title: "缴费日期"
-        },
-        {
-          field: "payMethod",
-          width: "80",
-          title: "付费方式"
-        },
-        {
-          field: "renewTime",
-          width: "100",
-          title: "续费日期"
-        },
-        {
-          field: "dep_parent_name",
-          width: "80",
-          title: "道馆"
-        },
-        {
-          field: "department_name",
-          width: "120",
-          title: "班级"
-        },
-        {
-          field: "switches",
-          width: "80",
-          title: "调转情况"
-        },
-        {
-          field: "fireClass",
-          width: "90",
-          title: "消课记录"
-        },
-        {
-          field: "membertype_name",
-          width: "120",
-          title: "卡型"
-        },
-        {
-          field: "sName",
-          width: "60",
-          title: "状态"
-        }
-      ],
-      total: 0,
-      cardType: [],
-      rooms: [],
-      classes: [],
-      coachs: [],
-      teachers: [],
-      levels: [],
-      statuses: [],
-      course: [],
-      courseId: "",
-      courseInfo: [],
-      ucs: "",
-      uc: "",
-      uss: "",
-      us: "",
-      pageSize: 20,
-      currentPage: 1,
-      imageUrl: "",
-      dialogVisible4: false,
-      renewDialog: false,
-      input: "",
-      source: [],
-      value1: "",
-      value2: "",
-      value3: "",
-      value4: "",
-      value5: "",
-      value6: "",
-      value7: "",
-      value8: "",
-      value9: "",
-      value10: "",
-      addForm: {
-        addValue1: "", //来源
-        addValue2: "", //卡型
-        addValue3: "", //道馆
-        addValue4: "", //姓名
-        addValue5: "", //病史
-        addValue6: "", //身高
-        addValue7: "", //性别
-        addValue8: "", //物理卡号
-        addValue9: "", //出生日期
-        addValue10: "", //级别
-        addValue11: "", //身份证号
-        addValue12: "", //联系电话
-        addValue13: "", //所在学校
-        addValue14: "", //学员证号
-        addValue15: "", //微信
-        addValue16: "", //家庭住址
-        addValue17: "", //父亲姓名
-        addValue18: "", //联系电话
-        addValue19: "", //工作单位
-        addValue20: "", //母亲姓名
-        addValue21: "", //联系电话
-        addValue22: "", //工作单位
-        addValue23: "", //备注
-        addValue24: "", //课程名称
-        addValue25: "", //有效期
-        addValue26: "", //每周上课次数
-        addValue27: "", //体验课次数
-        addValue28: "", //缴费日期
-        addValue29: "", //缴费金额
-        addValue30: "", //课程开始时间
-        addValue31: "", //课程结束时间
-        addValue32: "", //实缴金额
-        addValue33: "", //班级
-        addValue34: "", //教练
-        addValue35: "", //老师
-        addValue36: "" //开票人
-      },
-      //新增提交验证规则
-      rules: {
-        addValue1: [
-          { required: true, message: "请选择来源", trigger: "change" }
-        ],
-        addValue2: [
-          { required: true, message: "请选择卡型", trigger: "change" }
-        ],
-        addValue3: [
-          { required: true, message: "请选择道馆", trigger: "change" }
-        ],
-        addValue4: [{ required: true, message: "请填写姓名", trigger: "blur" }],
-        addValue5: [
-          { required: true, message: "请选择病史", trigger: "change" }
-        ],
-        addValue6: [{ required: true, message: "请填写身高", trigger: "blur" }],
-        addValue7: [
-          { required: true, message: "请选择性别", trigger: "change" }
-        ],
-        addValue8: [
-          { required: true, message: "填请写物理卡号", trigger: "blur" }
-        ],
-        addValue9: [
-          { required: true, message: "请选择出生日期", trigger: "change" }
-        ],
-        addValue10: [
-          { required: true, message: "请选择级别", trigger: "change" }
-        ],
-        addValue11: [
-          { required: true, message: "请填写身份证号", trigger: "blur" }
-        ],
-        addValue12: [
-          { required: true, message: "请填写联系电话", trigger: "blur" }
-        ],
-        addValue13: [
-          { required: true, message: "请填写所在学校", trigger: "blur" }
-        ],
-        addValue14: [
-          { required: true, message: "请填写学员证号", trigger: "blur" }
-        ],
-        addValue15: [
-          { required: true, message: "请填写微信号", trigger: "blur" }
-        ],
-        addValue16: [
-          { required: true, message: "请填写家庭住址", trigger: "blur" }
-        ],
-        addValue17: [
-          { required: true, message: "请填写父亲姓名", trigger: "blur" }
-        ],
-        addValue18: [
-          { required: true, message: "填写联系电话", trigger: "blur" }
-        ],
-        addValue19: [
-          { required: true, message: "请填写工作单位", trigger: "blur" }
-        ],
-        addValue20: [
-          { required: true, message: "请填写母亲姓名", trigger: "blur" }
-        ],
-        addValue21: [
-          { required: true, message: "请填写母亲电话", trigger: "blur" }
-        ],
-        addValue22: [
-          { required: true, message: "请填写工作单位", trigger: "blur" }
-        ],
-        addValue23: [],
-        addValue24: [
-          { required: true, message: "请选择课程", trigger: "change" }
-        ],
-        addValue25: [
-          { required: true, message: "请填写有效期", trigger: "blur" }
-        ],
-        addValue26: [
-          { required: true, message: "请选择上课次数", trigger: "change" }
-        ],
-        addValue27: [
-          { required: true, message: "请填写体验课次数", trigger: "blur" }
-        ],
-        addValue28: [
-          { required: true, message: "请选择缴费日期", trigger: "change" }
-        ],
-        addValue29: [
-          { required: true, message: "请填写缴费金额", trigger: "blur" }
-        ],
-        addValue30: [
-          { required: true, message: "请选择开始时间", trigger: "change" }
-        ],
-        addValue31: [
-          { required: true, message: "请选择结束时间", trigger: "change" }
-        ],
-        addValue32: [
-          { required: true, message: "请填写实缴金额", trigger: "blur" }
-        ],
-        addValue33: [
-          { required: true, message: "请选择班级", trigger: "change" }
-        ],
-        addValue34: [
-          { required: true, message: "请选择教练", trigger: "change" }
-        ],
-        addValue35: [
-          { required: true, message: "请选择老师", trigger: "change" }
-        ],
-        addValue36: [
-          { required: true, message: "请选择开票人", trigger: "change" }
-        ]
-      },
-      serial: "",
-      checkList: [],
-      goodsCbList: [
-        { name: "道包", count: 1 },
-        { name: "道服", count: 2 },
-        { name: "道鞋", count: 4 },
-        { name: "优惠券", count: 8 },
-        { name: "玩具", count: 16 },
-        { name: "促销礼包", count: 32 }
-      ],
-      goodsCountParams: 0,
-      dialogVisible: false,
-      multipleSelection: [],
-      obj: {},
-      obj1: {},
-      date: "",
-      members: [],
-      name: "",
-      jdolx: "", //新增修改方法中的状态 1新增2修改,
-      result: [],
-      orderByName: ""
-    };
-  },
-  computed: {
-    medicalHistory() {
-      return this.$store.state.medicalHistory;
-    }
-  },
-  methods: {
-    beforeAvatarUpload() {},
-    submitUpload(file) {
-      let param = new FormData(); // 创建 form 对象
-      param.append("file", file.file, file.file.name); // 通过 append 向 form 对象添加数据
-      let config = {
-        headers: { "Content-Type": "multipart/form-data" }
-      }; // 添加请求头
-      this.$axios
-        .postImageRequest("memberManagement/memberUploadPic", param, config)
-        .then(response => {
-          this.imageUrl = response.data.pic_url;
-        });
+  import axios from 'axios'
+  import qs from 'qs'
+  import ElRow from "element-ui/packages/row/src/row";
+  import ElCol from "element-ui/packages/col/src/col";
+  import {mapState} from 'vuex'
+  export default {
+    components: {
+      ElCol,
+      ElRow
     },
-    courseInfoChange() {
-      this.courseId = this.addForm.addValue24;
-    },
-    //排序
-    //提交续费
-    //打开详情
-    openDetails(row, event, column) {
-      this.serial = row.student_serial;
-      this.addForm.addValue1 = row.source_name;
-      this.addForm.addValue2 = row.membertype_name;
-      this.addForm.addValue3 = row.dep_parent_name;
-      this.addForm.addValue4 = row.student_name;
-      this.addForm.addValue5 = row.illness;
-      this.addForm.addValue6 = row.height;
-      this.addForm.addValue7 = row.jsex;
-      this.addForm.addValue8 = row.student_card;
-      this.addForm.addValue9 = row.birthday;
-      this.addForm.addValue10 = row.student_level;
-      this.addForm.addValue11 = row.id_card;
-      this.addForm.addValue12 = row.student_phone;
-      this.addForm.addValue13 = row.student_school;
-      this.addForm.addValue14 = row.student_id;
-      this.addForm.addValue15 = row.weixin_id;
-      this.addForm.addValue16 = row.student_address;
-      this.addForm.addValue17 = row.father_name;
-      this.addForm.addValue18 = row.father_phone;
-      this.addForm.addValue19 = row.father_comp;
-      this.addForm.addValue20 = row.mother_name;
-      this.addForm.addValue21 = row.mother_phone;
-      this.addForm.addValue22 = row.mother_comp;
-      this.addForm.addValue23 = row.jcontent;
-      this.addForm.addValue24 = row.course_name;
-      this.addForm.addValue25 = row.course_year;
-      this.addForm.addValue26 = row.jclassesperweek;
-      this.addForm.addValue27 = row.jvalidPeriod;
-      this.addForm.addValue29 = row.jprice;
-      this.addForm.addValue30 = row.course_start;
-      this.addForm.addValue31 = row.course_end;
-      this.addForm.addValue32 = row.pay_price;
-      (this.addForm.addValue33 = row.department_name),
-        (this.addForm.addValue34 = row.employee_name);
-      this.addForm.addValue35 = row.employee_name;
-      this.addForm.addValue36 = row.fillPerson_name;
-      this.goodsCountParams = row.itemUse;
-      this.detailDialogVisible = true;
-      this.imageUrl = row.picUrl;
-    },
-    //表头样式
-    headerSetStyle() {
+    data() {
       return {
-        "background-color": "#e5e5e5",
-        color: "#303133",
-        "border-color": "#c1c3c9"
-      };
-    },
-    //表格样式
-    cellSetStyle() {
-      return {
-        color: "#303133",
-        "border-color": "#c1c3c9"
-      };
-    },
-    closeDialog() {
-      this.multipleSelection.length = 0;
-      this.$refs.addForm.resetFields();
-    } /*清空表单样式调用*/,
-    //导出
-    exportCh(fileName, docType) {
-      var userData = qs.parse(sessionStorage.getItem("userData"));
-      var department = "";
-      if (this.value3 !== "" && this.value4 === "") {
-        department = this.value3;
-      } else if (this.value4 !== "") {
-        department = this.value4;
-      }
-
-      var postData = {
-        count: true,
-        pageindex: 1,
-        pagesize: 100000,
-        regserial: userData.company_serial,
-        permissions_id: userData.permissions_id,
-        department_serial: department,
-        source_id: this.value1,
-        membertype_id: this.value2,
-        employee_serial: this.value5,
-        jteacher_serial: this.value6,
-        student_level: this.value7,
-        status_id: this.value8,
-        student_name: this.value9,
-        student_no: this.value10,
-        create_date: this.date
-      };
-      docType = docType || "pdf"; //默认导出pdf
-      var gridCols = this.tableObject;
-
-      var params = {
-        methodUrl: "memberManagement/memberClickQuery",
-        jsonParam: JSON.stringify(postData),
-        exportStr: JSON.stringify(gridCols),
-        exportType: docType,
-        exportTitle: fileName
-      };
-      var that = this;
-
-      //jindu
-      axios
-        .post("sys/export.do", params, {
-          headers: {
-            "Content-Type": "application/json;charset=utf-8"
-          }
-        })
-        .then(
-          response => {
-            //guanbi
-
-            var fileParam = {
-              fileKey: encodeURI(response.data.info),
-              fileName: encodeURI(fileName),
-              browseType: this.Browser.firefox ? "firefox" : "",
-              docType: docType
-            };
-            //另存为文档
-            window.open("exportFile.do?" + qs.stringify(fileParam));
+        dialogTitle:'',
+        detailDialogVisible:false,
+        fileParam:'',
+        // uplodHeader:{'Content-Type': 'multipart/form-data; boundary=fuckReaquestHeader'},
+        //开票人
+        drawer:[],
+        genders: [
+          {
+            value: '未知',
+            label: '0'
           },
-          err => {
-            console.log(err);
+          {
+            value: '男',
+            label: '1'
+          },
+          {
+            value: '女',
+            label: '2'
+          },
+        ],//性别
+        timeScope:'',//报名时间
+        xfcard: '',
+        xfcourse: '',
+        mustMoney: '',
+        sjMoney: '',
+        adminName: '',
+        //导出表头字段
+        tableObject: [
+          {
+            field: 'student_name',
+            width: '60',
+            title: "姓名",
+          },
+          {
+            field: 'jsex',
+            width: '45',
+            title: "性别",
+          },
+          {
+            field: 'employee_name',
+            width: '90',
+            title: "教练分配",
+          },
+          {
+            field: 'teacher_name',
+            width: '60',
+            title: "老师",
+          },
+          {
+            field: 'jName',
+            width: '80',
+            title: "级别",
+          },
+          {
+            field: 'course_start',
+            width: '100',
+            title: "报名日期",
+          },
+          {
+            field: 'course_end',
+            width: '100',
+            title: "缴费日期",
+          },
+          {
+            field: 'payMethod',
+            width: '80',
+            title: "付费方式",
+          },
+          {
+            field: 'renewTime',
+            width: '100',
+            title: "续费日期",
+          },
+          {
+            field: 'dep_parent_name',
+            width: '80',
+            title: "道馆",
+          },
+          {
+            field: 'department_name',
+            width: '120',
+            title: "班级",
+          },
+          {
+            field: 'switches',
+            width: '80',
+            title: "调转情况",
+          },
+          {
+            field: 'fireClass',
+            width: '90',
+            title: "消课记录",
+          },
+          {
+            field: 'membertype_name',
+            width: '120',
+            title: "卡型"
+          },
+          {
+            field: 'sName',
+            width: '60',
+            title: "状态"
           }
-        );
+        ],
+        total: 0,
+        cardType: [],
+        rooms: [],
+        classes: [],
+        coachs: [],
+        teachers: [],
+        levels: [],
+        statuses: [],
+        course: [],
+        courseId:'',
+        courseInfo: [],
+        ucs: '',
+        uc: '',
+        uss: '',
+        us: '',
+        pageSize: 20,
+        currentPage: 1,
+        imageUrl: '',
+        dialogVisible4: false,
+        renewDialog: false,
+        input: '',
+        source: [],
+        value1: '',
+        value2: '',
+        value3: '',
+        value4: '',
+        value5: '',
+        value6: '',
+        value7: '',
+        value8: '',
+        value9: '',
+        value10: '',
+        addForm:{
+          addValue1: '',//来源
+          addValue2: '',//卡型
+          addValue3: '',//道馆
+          addValue4: '',//姓名
+          addValue5: '',//病史
+          addValue6: '',//身高
+          addValue7: '',//性别
+          addValue8: '',//物理卡号
+          addValue9: '',//出生日期
+          addValue10: '',//级别
+          addValue11: '',//身份证号
+          addValue12: '',//联系电话
+          addValue13: '',//所在学校
+          addValue14: '',//学员证号
+          addValue15: '',//微信
+          addValue16: '',//家庭住址
+          addValue17: '',//父亲姓名
+          addValue18: '',//联系电话
+          addValue19: '',//工作单位
+          addValue20: '',//母亲姓名
+          addValue21: '',//联系电话
+          addValue22: '',//工作单位
+          addValue23: '',//备注
+          addValue24: '',//课程名称
+          addValue25: '',//有效期
+          addValue26: '',//每周上课次数
+          addValue27: '',//体验课次数
+          addValue28: '',//缴费日期
+          addValue29: '',//缴费金额
+          addValue30: '',//课程开始时间
+          addValue31: '',//课程结束时间
+          addValue32: '',//实缴金额
+          addValue33: '',//班级
+          addValue34: '',//教练
+          addValue35: '',//老师
+          addValue36: '',//开票人
+        },
+        //新增提交验证规则
+        rules: {
+          addValue1: [
+            {required: true, message: '请选择来源', trigger: 'change'},
+          ],
+          addValue2: [
+            {required: true, message: '请选择卡型', trigger: 'change'}
+          ],
+          addValue3: [
+            { required: true, message: '请选择道馆', trigger: 'change'}
+          ],
+          addValue4: [
+            { required: true, message: '请填写姓名', trigger: 'blur' },
+          ],
+          addValue5: [
+            { required: true, message: '请选择病史', trigger: 'change'},
+          ],
+          addValue6: [
+            {required: true, message: '请填写身高', trigger: 'blur'}
+          ],
+          addValue7: [
+            {required: true, message: '请选择性别', trigger: 'change'}
+          ],
+          addValue8: [
+            { required: true, message: '填请写物理卡号', trigger: 'blur'},
+          ],
+          addValue9: [
+            {required: true, message: '请选择出生日期', trigger: 'change'}
+          ],
+          addValue10: [
+            { required: true, message: '请选择级别', trigger: 'change'}
+          ],
+          addValue11: [
+            { required: true, message: '请填写身份证号', trigger: 'blur'}
+          ],
+          addValue12: [
+            { required: true, message: '请填写联系电话', trigger: 'blur'}
+          ],
+          addValue13: [
+            {required: true, message: '请填写所在学校', trigger: 'blur'}
+          ],
+          addValue14: [
+            {required: true, message: '请填写学员证号', trigger: 'blur'}
+          ],
+          addValue15: [
+            {required: true, message: '请填写微信号', trigger: 'blur'},
+          ],
+          addValue16: [
+            {required: true, message: '请填写家庭住址', trigger: 'blur'}
+          ],
+          addValue17: [
+            { required: true, message: '请填写父亲姓名', trigger: 'blur'}
+          ],
+          addValue18: [
+            { required: true, message: '填写联系电话', trigger: 'blur'}
+          ],
+          addValue19: [
+            { required: true, message: '请填写工作单位', trigger: 'blur'}
+          ],
+          addValue20: [
+            {required: true, message: '请填写母亲姓名', trigger: 'blur'}
+          ],
+          addValue21: [
+            {required: true, message: '请填写母亲电话', trigger: 'blur'}
+          ],
+          addValue22: [
+            {required: true, message: '请填写工作单位', trigger: 'blur'},
+          ],
+          addValue23: [
+
+          ],
+          addValue24: [
+            { required: true, message: '请选择课程', trigger: 'change'}
+          ],
+          addValue25: [
+            {required: true, message: '请填写有效期', trigger: 'blur'}
+          ],
+          addValue26: [
+            { required: true, message: '请选择上课次数', trigger: 'change'}
+          ],
+          addValue27: [
+            {required: true, message: '请填写体验课次数', trigger: 'blur'}
+          ],
+          addValue28: [
+            { required: true, message: '请选择缴费日期', trigger: 'change'}
+          ],
+          addValue29: [
+            {required: true, message: '请填写缴费金额', trigger: 'blur'},
+          ],
+          addValue30: [
+            {required: true, message: '请选择开始时间', trigger: 'change'}
+          ],
+          addValue31: [
+            { required: true, message: '请选择结束时间', trigger: 'change'}
+          ],
+          addValue32: [
+            { required: true, message: '请填写实缴金额', trigger: 'blur'}
+          ],
+          addValue33: [
+            { required: true, message: '请选择班级', trigger: 'change'}
+          ],
+          addValue34: [
+            {required: true, message: '请选择教练', trigger: 'change'}
+          ],
+          addValue35: [
+            {required: true, message: '请选择老师', trigger: 'change'}
+          ],
+          addValue36:[
+            {required: true, message: '请选择开票人', trigger: 'change'}
+          ],
+        },
+        serial: '',
+        checkList: [],
+        goodsCbList: [
+          {name: '道包', count: 1},
+          {name: '道服', count: 2},
+          {name: '道鞋', count: 4},
+          {name: '优惠券', count: 8},
+          {name: '玩具', count: 16},
+          {name: '促销礼包', count: 32},
+        ],
+        goodsCountParams: 0,
+        dialogVisible: false,
+        multipleSelection: [],
+        obj: {},
+        obj1: {},
+        date: '',
+        members: [],
+        name: '',
+        jdolx: '',//新增修改方法中的状态 1新增2修改,
+        result:[],
+        orderByName:''
+      }
     },
-    //浏览器兼容
-    Browser() {
+    computed: {
+      medicalHistory(){
+        return this.$store.state.medicalHistory
+      },
+    },
+    methods: {
+      beforeAvatarUpload(){
+
+      },
+      submitUpload(file) {
+        let param = new FormData(); // 创建 form 对象
+        param.append("file", file.file, file.file.name); // 通过 append 向 form 对象添加数据
+        let config = {
+          headers: { "Content-Type": "multipart/form-data" }
+        }; // 添加请求头
+        this.$axios
+          .postImageRequest(
+            "memberManagement/memberUploadPic",
+            param,
+            config
+          )
+          .then(response => {
+            this.imageUrl=response.data.pic_url
+          });
+      },
+      courseInfoChange() {
+        this.courseId =this.addForm.addValue24
+      },
+      //排序
+      //提交续费
+      //打开详情
+      openDetails(row, event, column){
+        this.serial = row.student_serial
+        this.addForm.addValue1 = row.source_name
+        this.addForm.addValue2 = row.membertype_name
+        this.addForm.addValue3 = row.dep_parent_name
+        this.addForm.addValue4 = row.student_name
+        this.addForm.addValue5 = row.illness
+        this.addForm.addValue6 = row.height
+        this.addForm.addValue7 = row.jsex
+        this.addForm.addValue8 = row.student_card
+        this.addForm.addValue9 = row.birthday
+        this.addForm.addValue10 = row.student_level
+        this.addForm.addValue11 = row.id_card
+        this.addForm.addValue12 = row.student_phone
+        this.addForm.addValue13 = row.student_school
+        this.addForm.addValue14 = row.student_id
+        this.addForm.addValue15 = row.weixin_id
+        this.addForm.addValue16 = row.student_address
+        this.addForm.addValue17 = row.father_name
+        this.addForm.addValue18 = row.father_phone
+        this.addForm.addValue19 = row.father_comp
+        this.addForm.addValue20 = row.mother_name
+        this.addForm.addValue21 = row.mother_phone
+        this.addForm.addValue22 = row.mother_comp
+        this.addForm.addValue23 = row.jcontent
+        this.addForm.addValue24 = row.course_name
+        this.addForm.addValue25=row.course_year
+        this.addForm.addValue26=row.jclassesperweek
+        this.addForm.addValue27=row.jvalidPeriod
+        this.addForm.addValue29=row.jprice
+        this.addForm.addValue30=row.course_start
+        this.addForm.addValue31=row.course_end
+        this.addForm.addValue32=row.pay_price
+        this.addForm.addValue33 = row.department_name,
+        this.addForm.addValue34=row.employee_name
+        this.addForm.addValue35=row.employee_name
+        this.addForm.addValue36=row.fillPerson_name
+        this.goodsCountParams=row.itemUse
+        this.detailDialogVisible = true
+        this.imageUrl=row.picUrl
+      },
+      //表头样式
+      headerSetStyle(){
+        return {
+          "background-color": "#e5e5e5",
+          "color": "#303133",
+          "border-color": "#c1c3c9"
+        }
+      },
+      //表格样式
+      cellSetStyle(){
+        return {
+          "color": "#303133",
+          "border-color": "#c1c3c9"
+
+        }
+      },
+      closeDialog(addForm){
+        
+        this.$refs[addForm].resetFields();
+        this.multipleSelection.length=0
+      },/*清空表单样式调用*/
+      //导出
+      exportCh(fileName, docType){
+        var userData = qs.parse(sessionStorage.getItem("userData"));
+        var department = "";
+        if (this.value3 !== '' && this.value4 === '') {
+          department = this.value3
+        } else if (this.value4 !== '') {
+          department = this.value4
+        }
+        
+        var postData = {
+          count: true,
+          pageindex: 1,
+          pagesize: 100000,
+          regserial: userData.company_serial,
+          permissions_id: userData.permissions_id,
+          department_serial: department,
+          source_id: this.value1,
+          membertype_id: this.value2,
+          employee_serial: this.value5,
+          jteacher_serial: this.value6,
+          student_level: this.value7,
+          status_id: this.value8,
+          student_name: this.value9,
+          student_no: this.value10,
+          create_date: this.date,
+        }
+        docType = docType || "pdf";//默认导出pdf
+        var gridCols = this.tableObject
+
+        var params = {
+          methodUrl: 'memberManagement/memberClickQuery',
+          jsonParam: JSON.stringify(postData),
+          exportStr: JSON.stringify(gridCols),
+          exportType: docType,
+          exportTitle:fileName
+        }
+        var that = this
+        
+        //jindu
+        axios.post("sys/export.do", params
+          , {
+            'headers': {
+              'Content-Type': 'application/json;charset=utf-8'
+            }
+          }
+        ).then(response => {
+//guanbi
+
+          var fileParam = {
+            'fileKey': encodeURI(response.data.info),
+            'fileName': encodeURI(fileName),
+            'browseType': this.Browser.firefox ? "firefox" : '',
+            'docType': docType
+          };
+          //另存为文档
+          window.open("exportFile.do?" + qs.stringify(fileParam));
+
+        }, (err) => {
+          console.log(err)
+        })
+      },
+      //浏览器兼容
+      Browser() {
       var browser = {
         msie: false,
         msie7: false,
@@ -1577,873 +1589,778 @@ export default {
 
       return browser;
     },
-    //报名时间下拉选
-    getSTime(val) {
-      this.date = val; //这个sTime是在data中声明的，也就是v-model绑定的值
-    },
-    handleOpen(key, keyPath) {
-      console.log(key, keyPath);
-    },
-    toggleSelection(rows) {
-      if (rows) {
-        rows.forEach(row => {
-          this.$refs.multipleTable.toggleRowSelection(row);
-        });
-      } else {
-        this.$refs.multipleTable.clearSelection();
-      }
-    },
-    handleSelectionChange(val) {
-      this.multipleSelection = val;
-      console.log(val);
-    },
-    formatter(row, column) {
-      return row.address;
-    },
-    handleClose(done) {
-      this.$confirm("确认关闭？")
-        .then(_ => {
-          done();
-        })
-        .catch(_ => {});
-    },
-    //下拉选多级联动
-    //头像上传
-    handleAvatarSuccess(res, file) {
-      this.imageUrl =
-        "https://wx.jpbvip.com/dowinsysws/swagger/upload/" + res.data.pic_url;
-    },
-    //查询
-    find(column) {
-      var department = "";
-      if (this.value3 !== "" && this.value4 === "") {
-        department = this.value3;
-      } else if (this.value4 !== "") {
-        department = this.value4;
-      }
-      var userData = qs.parse(sessionStorage.getItem("userData"));
-      if (column && column.order) {
-        var index = column.order.indexOf("ending"); //获取end e的下标
-        if (column.prop == "teacher_name") {
-          this.orderByName =
-            "r.employee_name " + column.order.substring(0, index); //截取下标0到下标e之间的字符串
-        } else if (column.prop == "employee_name") {
-          this.orderByName =
-            "w.employee_name " + column.order.substring(0, index);
+      //报名时间下拉选
+      getSTime(val) {
+        this.date = val;//这个sTime是在data中声明的，也就是v-model绑定的值
+      },
+      handleOpen(key, keyPath) {
+        console.log(key, keyPath);
+      },
+      toggleSelection(rows) {
+        if (rows) {
+          rows.forEach(row => {
+            this.$refs.multipleTable.toggleRowSelection(row);
+          });
         } else {
-          this.orderByName =
-            column.prop + " " + column.order.substring(0, index);
+          this.$refs.multipleTable.clearSelection();
         }
-      }
-      var postData = {
-        count: true,
-        pageindex: this.currentPage,
-        pagesize: this.pageSize,
-        regserial: userData.company_serial,
-        permissions_id: userData.permissions_id,
-        department_serial: department,
-        source_id: this.value1,
-        membertype_id: this.value2,
-        employee_serial: this.value5,
-        jteacher_serial: this.value6,
-        student_level: this.value7,
-        status_id: this.value8,
-        student_name: this.value9,
-        student_no: this.value10,
-        start_date: this.timeScope[0],
-        end_date: this.timeScope[1],
-        orderby: this.orderByName
-      };
-      var params = {
-        methodUrl: "memberManagement/memberClickQuery",
-        jsonParam: qs.stringify(postData)
-      };
-      var that = this;
-      this.$axios.postRequest(params).then(
-        function(res) {
-          //成功之后处理逻辑
-          that.members = res.data.list;
-          that.total = res.data.totalcount;
-        },
-        function(res) {
-          //失败之后处理逻辑
-          console.log("error:" + res);
+      },
+      handleSelectionChange(val) {
+        this.multipleSelection = val;
+        console.log(val)
+      },
+      formatter(row, column) {
+        return row.address;
+      },
+      handleClose(done) {
+        this.$confirm('确认关闭？')
+          .then(_ => {
+            done();
+          })
+          .catch(_ => {
+          });
+      },
+      //下拉选多级联动
+      //头像上传
+      handleAvatarSuccess(res, file) {
+        this.imageUrl = "https://wx.jpbvip.com/dowinsysws/swagger/upload/" + res.data.pic_url;
+
+      },
+      //查询
+      find(column){
+        var department = "";
+        if (this.value3 !== '' && this.value4 === '') {
+          department = this.value3
+        } else if (this.value4 !== '') {
+          department = this.value4
         }
-      );
-    },
-    //分页
-    handleSizeChange(val) {
-      var userData = qs.parse(sessionStorage.getItem("userData"));
-      console.log(`每页 ${val} 条`);
-      this.pageSize = val;
-      this.find();
-    },
-    handleCurrentChange(val) {
-      var userData = qs.parse(sessionStorage.getItem("userData"));
-      this.currentPage = val;
-      this.find();
-    },
-    goodsCbChange(e) {
-      var goodsSelectedList = e;
-      var value = 0;
-      for (var i = 0; i < goodsSelectedList.length; i++) {
-        for (var j = 0; j < this.goodsCbList.length; j++) {
-          if (goodsSelectedList[i] == this.goodsCbList[j].name) {
-            value = value + this.goodsCbList[j].count;
+        var userData = qs.parse(sessionStorage.getItem("userData"));
+        if(column && column.order){
+          var index = (column.order).indexOf("ending") //获取end e的下标
+          if(column.prop=='teacher_name'){
+            this.orderByName="r.employee_name "+(column.order).substring(0,index) //截取下标0到下标e之间的字符串
+          }else if(column.prop=='employee_name'){
+            this.orderByName="w.employee_name "+(column.order).substring(0,index)
+          }else{
+            this.orderByName=column.prop+ " "+(column.order).substring(0,index)
           }
         }
-      }
-      this.goodsCountParams = value;
-    },
-    // /显示弹窗type=1新增、=2修改，新增清空数据、修改查询数据。
-    showDialog(type) {
-      var that = this;
-      if (type == 1) {
-        that.dialogTitle = "新增学员";
-        that.jdolx = 1;
-        that.dialogVisible = true;
-      } else {
+        var postData = {
+          count: true,
+          pageindex:this.currentPage,
+          pagesize: this.pageSize,
+          regserial: userData.company_serial,
+          permissions_id: userData.permissions_id,
+          department_serial: department,
+          source_id: this.value1,
+          membertype_id: this.value2,
+          employee_serial: this.value5,
+          jteacher_serial: this.value6,
+          student_level: this.value7,
+          status_id: this.value8,
+          student_name: this.value9,
+          student_no: this.value10,
+          start_date:this.timeScope[0],
+          end_date:this.timeScope[1],
+          orderby:this.orderByName
+        }
+        var params = {
+          methodUrl: 'memberManagement/memberClickQuery',
+          jsonParam: qs.stringify(postData)
+        }
+        var that = this
+        this.$axios.postRequest(params).then(function (res) {
+          //成功之后处理逻辑
+          that.members = res.data.list
+          that.total = res.data.totalcount
+
+        }, function (res) {
+          //失败之后处理逻辑
+          console.log("error:" + res)
+        })
+
+      },
+      //分页
+      handleSizeChange(val) {
+        var userData = qs.parse(sessionStorage.getItem("userData"));
+        console.log(`每页 ${val} 条`);
+        this.pageSize = val
+        this.find()
+      },
+      handleCurrentChange(val) {
+        var userData = qs.parse(sessionStorage.getItem("userData"));
+        this.currentPage = val
+        this.find()
+      },
+      goodsCbChange(e){
+        var goodsSelectedList = e
+        var value = 0
+        for (var i = 0; i < goodsSelectedList.length; i++) {
+          for (var j = 0; j < this.goodsCbList.length; j++) {
+            if (goodsSelectedList[i] == this.goodsCbList[j].name) {
+              value = value + this.goodsCbList[j].count
+            }
+          }
+        }
+        this.goodsCountParams = value
+      },
+      // /显示弹窗type=1新增、=2修改，新增清空数据、修改查询数据。
+      showDialog(type){
+        var that =this
+        if (type == 1) {
+          that.dialogTitle='新增学员'
+          that.jdolx = 1
+          that.dialogVisible = true
+        } else {
+          if (this.multipleSelection.length < 1) {
+            this.$message({
+              message: '请选择学员',
+              showClose: true,
+              type: 'warning'
+            });
+          } else if (this.multipleSelection.length > 1) {
+            this.$message({
+              message: '只能选择一名学员',
+              showClose: true,
+              type: 'warning'
+            });
+          } else {
+            setTimeout(function() {
+            this.dialogTitle='修改学员信息'
+            this.jdolx = 2
+            
+          
+            that.addForm.addValue1 = that.multipleSelection[0].source_id
+            that.addForm.addValue2=that.multipleSelection[0].membertype_id
+            that.addForm.addvalue3=that.multipleSelection[0].dep_parent_name
+            that.addForm.addValue4 = that.multipleSelection[0].student_name
+            that.addForm.addValue5=that.multipleSelection[0].illness
+            that.addForm.addvalue6=that.multipleSelection[0].height
+            that.addForm.addValue7 = that.multipleSelection[0].jsex
+            that.addForm.addValue8=that.multipleSelection[0].student_card
+            that.addForm.addvalue9=that.multipleSelection[0].birthday
+            that.addForm.addValue10 = that.multipleSelection[0].student_level
+            that.addForm.addValue11=that.multipleSelection[0].id_card
+            that.addForm.addvalue12=that.multipleSelection[0].student_phone
+            that.addForm.addValue13 = that.multipleSelection[0].student_school
+            that.addForm.addValue14=that.multipleSelection[0].student_id
+            that.addForm.addvalue15=that.multipleSelection[0].weixin_id
+            that.addForm.addvalue16=that.multipleSelection[0].student_address
+            that.addForm.addValue17=that.multipleSelection[0].father_name
+            that.addForm.addvalue18=that.multipleSelection[0].father_phone
+            that.addForm.addValue19 = that.multipleSelection[0].father_comp
+            that.addForm.addValue20=that.multipleSelection[0].mother_name
+            that.addForm.addvalue21=that.multipleSelection[0].mother_phone
+            that.addForm.addvalue22=that.multipleSelection[0].mother_comp
+            that.serial = that.multipleSelection[0].student_serial
+            that.imageUrl=that.multipleSelection[0].picUrl
+            
+             },0 )
+    
+           this.dialogVisible = true;
+          }}
+      },
+      //提交修改
+      submitUpdate(addForm){
+        var that = this
+        that.$refs.addForm.validate((valid) => {
+          if (valid) {
+            that.result = [];
+            that.result.push(this.addForm.addValue1,this.addForm.addValue2,this.addForm.addValue3,this.addForm.addValue4,this.addForm.addValue5,
+              this.addForm.addValue6,this.addForm.addValue7,this.addForm.addValue8,this.addForm.addValue9,
+              this.addForm.addValue10,this.addForm.addValue11,this.addForm.addValue12,this.addForm.addValue13,
+              this.addForm.addValue14,this.addForm.addValue15,this.addForm.addValue16,this.addForm.addValue17,
+              this.addForm.addValue18,this.addForm.addValue19,this.addForm.addValue20,this.addForm.addValue21,
+              this.addForm.addValue22,this.addForm.addValue23,this.addForm.addValue24,this.addForm.addValue25,
+              this.addForm.addValue26,this.addForm.addValue27,this.addForm.addValue28,this.addForm.addValue29,
+              this.addForm.addValue30,this.addForm.addValue31,this.addForm.addValue32,this.addForm.addValue33,
+              this.addForm.addValue34,this.addForm.addValue35,this.addForm.addValue36,
+              this.goodsCountParams)
+            var userData = qs.parse(sessionStorage.getItem("userData"));
+            var updateMemberData = {
+              jlx: 2,
+              jdolx: that.jdolx,
+              jSerial: this.addForm.addValue33,
+              jname: this.addForm.addValue4,
+              picUrl:this.imageUrl,
+              regSerial: userData.company_serial,
+              jlog_ip: '',
+              jgly_Serial: userData.employee_serial,
+              jtext: that.result.join(',')
+            }
+            this.dialogVisible = false
+
+            var updateMemberParams = {
+              methodUrl: 'memberManagement/memberOperation',
+              jsonParam: qs.stringify(updateMemberData)
+            }
+            this.$axios.postRequest(updateMemberParams).then(function (res) {
+              //成功之后处理逻辑
+              that.find()
+              that.$refs.addForm.resetFields()
+            }, function (res) {
+              //失败之后处理逻辑
+              console.log("error:" + res)
+            })
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        })
+      },
+      //删除
+      deleteMember(){
+        var that = this
+
+        if (this.multipleSelection.length>0) {
+          that.$message({
+            message: '确定要删除吗？',
+            showClose:"true",
+            type: 'warning'
+          });
+          var arrvalue = [];//用于存放取出的数组的值
+          for (var i = 0; i < this.multipleSelection.length; i++) {
+            arrvalue.push(this.multipleSelection[i].student_serial);//数组的索引是从0开始的
+          }
+          var userData = qs.parse(sessionStorage.getItem("userData"));
+          var deleteData = {
+            jlx: 2,
+            jdolx: 3,
+            jSerial: 0,
+            jname: '',
+            picUrl: '',
+            regSerial: userData.company_serial,
+            jlog_ip: '',
+            jgly_Serial: userData.employee_serial,
+            jtext: arrvalue.join(',')
+          }
+          var deleteParams = {
+            methodUrl: 'memberManagement/memberOperation',
+            jsonParam: qs.stringify(deleteData)
+          }
+          this.$axios.postRequest(deleteParams).then(function (res) {
+            //成功之后处理逻辑
+            that.find()
+          }, function (res) {
+            //失败之后处理逻辑
+            console.log("error:" + res)
+          })
+        }
+      },
+      //调动获取数据
+      transfers(){
         if (this.multipleSelection.length < 1) {
           this.$message({
-            message: "请选择学员",
+            message: '请选择数据',
             showClose: true,
-            type: "warning"
+            type: 'warning'
           });
+          this.dialogVisible4 = false
         } else if (this.multipleSelection.length > 1) {
           this.$message({
-            message: "只能选择一名学员",
+            message: '只能选择一条数据',
             showClose: true,
-            type: "warning"
+            type: 'warning'
           });
+          this.dialogVisible4 = false
         } else {
-          this.dialogTitle = "修改学员信息";
-          this.jdolx = 2;
-          this.dialogVisible = true;
-          this.addForm.addValue1 = this.multipleSelection[0].source_id;
-          this.addForm.addValue2 = this.multipleSelection[0].membertype_id;
-          this.addForm.addvalue3 = this.multipleSelection[0].dep_parent_name;
-          this.addForm.addValue4 = this.multipleSelection[0].student_name;
-          this.addForm.addValue5 = this.multipleSelection[0].illness;
-          this.addForm.addvalue6 = this.multipleSelection[0].height;
-          this.addForm.addValue7 = this.multipleSelection[0].jsex;
-          this.addForm.addValue8 = this.multipleSelection[0].student_card;
-          this.addForm.addvalue9 = this.multipleSelection[0].birthday;
-          this.addForm.addValue10 = this.multipleSelection[0].student_level;
-          this.addForm.addValue11 = this.multipleSelection[0].id_card;
-          this.addForm.addvalue12 = this.multipleSelection[0].student_phone;
-          this.addForm.addValue13 = this.multipleSelection[0].student_school;
-          this.addForm.addValue14 = this.multipleSelection[0].student_id;
-          this.addForm.addvalue15 = this.multipleSelection[0].weixin_id;
-          this.addForm.addvalue16 = this.multipleSelection[0].student_address;
-          this.addForm.addValue17 = this.multipleSelection[0].father_name;
-          this.addForm.addvalue18 = this.multipleSelection[0].father_phone;
-          this.addForm.addValue19 = this.multipleSelection[0].father_comp;
-          this.addForm.addValue20 = this.multipleSelection[0].mother_name;
-          this.addForm.addvalue21 = this.multipleSelection[0].mother_phone;
-          this.addForm.addvalue22 = this.multipleSelection[0].mother_comp;
-          this.serial = this.multipleSelection[0].student_serial;
-          this.imageUrl = this.multipleSelection[0].picUrl;
-        }
-      }
-    },
-    //提交修改
-    submitUpdate(addForm) {
-      var that = this;
-      that.$refs.addForm.validate(valid => {
-        if (valid) {
-          that.result = [];
-          that.result.push(
-            this.addForm.addValue1,
-            this.addForm.addValue2,
-            this.addForm.addValue3,
-            this.addForm.addValue4,
-            this.addForm.addValue5,
-            this.addForm.addValue6,
-            this.addForm.addValue7,
-            this.addForm.addValue8,
-            this.addForm.addValue9,
-            this.addForm.addValue10,
-            this.addForm.addValue11,
-            this.addForm.addValue12,
-            this.addForm.addValue13,
-            this.addForm.addValue14,
-            this.addForm.addValue15,
-            this.addForm.addValue16,
-            this.addForm.addValue17,
-            this.addForm.addValue18,
-            this.addForm.addValue19,
-            this.addForm.addValue20,
-            this.addForm.addValue21,
-            this.addForm.addValue22,
-            this.addForm.addValue23,
-            this.addForm.addValue24,
-            this.addForm.addValue25,
-            this.addForm.addValue26,
-            this.addForm.addValue27,
-            this.addForm.addValue28,
-            this.addForm.addValue29,
-            this.addForm.addValue30,
-            this.addForm.addValue31,
-            this.addForm.addValue32,
-            this.addForm.addValue33,
-            this.addForm.addValue34,
-            this.addForm.addValue35,
-            this.addForm.addValue36,
-            this.goodsCountParams
-          );
-          var userData = qs.parse(sessionStorage.getItem("userData"));
-          var updateMemberData = {
-            jlx: 2,
-            jdolx: that.jdolx,
-            jSerial: this.addForm.addValue33,
-            jname: this.addForm.addValue4,
-            picUrl: this.imageUrl,
-            regSerial: userData.company_serial,
-            jlog_ip: "",
-            jgly_Serial: userData.employee_serial,
-            jtext: that.result.join(",")
-          };
-          this.dialogVisible = false;
-
-          var updateMemberParams = {
-            methodUrl: "memberManagement/memberOperation",
-            jsonParam: qs.stringify(updateMemberData)
-          };
-          this.$axios.postRequest(updateMemberParams).then(
-            function(res) {
-              //成功之后处理逻辑
-              that.find();
-              that.$refs.addForm.resetFields();
-            },
-            function(res) {
-              //失败之后处理逻辑
-              console.log("error:" + res);
-            }
-          );
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
-    },
-    //删除
-    deleteMember() {
-      var that = this;
-      var userData = qs.parse(sessionStorage.getItem("userData"));
-      if (this.multipleSelection.length > 0) {
-        this.$confirm("此操作将永久删除该会员, 是否继续？", "提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        }).then(() => {
-          
-            var arrvalue = []; //用于存放取出的数组的值
-            for (var i = 0; i < this.multipleSelection.length; i++) {
-              arrvalue.push(this.multipleSelection[i].student_serial); //数组的索引是从0开始的
-            }
-            
-            var deleteData = {
-              jlx: 2,
-              jdolx: 3,
-              jSerial: 0,
-              jname: "",
-              picUrl: "",
-              regSerial: userData.company_serial,
-              jlog_ip: "",
-              jgly_Serial: userData.employee_serial,
-              jtext: arrvalue.join(",")
-            };
-           
-            var deleteParams = {
-              methodUrl: "memberManagement/memberOperation",
-              jsonParam: qs.stringify(deleteData)
-            };
-            
-            this.$axios.postRequest(deleteParams).then(
-              function(res) {
-                //成功之后处理逻辑
-                that.find();
-                that.$message({
-                  type: "success",
-                  message: "删除成功"
-                });
-              },
-              function(res) {
-                //失败之后处理逻辑
-                console.log("error:" + res);
-                that.$message({
-                  type: "error",
-                  message: "删除失败"
-                });
-              }
-            );
-          })
-          .catch(() => {
-            this.$message({
-              type: "info",
-              message: "已取消删除"
-            });
+          var result = [];
+          this.multipleSelection.forEach(function (v) {
+            result.push(v.dep_parent_name, v.department_name, v.student_serial);
           });
-      } else {
-        this.$message({
-          message: "请选择数据",
-          showClose: true,
-          type: "warning"
-        });
-      }
-    },
-    //调动获取数据
-    transfers() {
-      if (this.multipleSelection.length < 1) {
-        this.$message({
-          message: "请选择数据",
-          showClose: true,
-          type: "warning"
-        });
-        this.dialogVisible4 = false;
-      } else if (this.multipleSelection.length > 1) {
-        this.$message({
-          message: "只能选择一条数据",
-          showClose: true,
-          type: "warning"
-        });
-        this.dialogVisible4 = false;
-      } else {
-        var result = [];
-        this.multipleSelection.forEach(function(v) {
-          result.push(v.dep_parent_name, v.department_name, v.student_serial);
-        });
-        this.ucs = result[0];
-        this.uss = result[1];
-        this.id = result[2];
-        this.dialogVisible4 = true;
-      }
-    },
-    //道馆联动
-    changes() {
-      var userData = qs.parse(sessionStorage.getItem("userData"));
-      var that = this;
-      var departments = this.value3;
-      //加载班级信息
-      var classData = {
-        regserial: userData.company_serial,
-        dep_lx: "2",
-        department_serial: departments,
-        permissions_id: userData.permissions_id
-      };
-      var classParams = {
-        methodUrl: "courseManagement/memberClass",
-        jsonParam: qs.stringify(classData)
-      };
-      this.$axios.postRequest(classParams).then(
-        function(res) {
-          //成功之后处理逻辑
-          that.classes = res.data;
-        },
-        function(res) {
-          //失败之后处理逻辑
-          console.log("error:" + res);
+          this.ucs = result[0]
+          this.uss = result[1]
+          this.id = result[2]
+          this.dialogVisible4 = true
         }
-      );
 
-      //加载教练信息
-      var coachData = {
-        regserial: this.$store.state.regserial,
-        department_serial: departments,
-        role_id: "102"
-      };
-      var coachParams = {
-        methodUrl: "courseManagement/memberTeacher",
-        jsonParam: qs.stringify(coachData)
-      };
-      this.$axios.postRequest(coachParams).then(
-        function(res) {
-          //成功之后处理逻辑
-          that.coachs = res.data;
-        },
-        function(res) {
-          //失败之后处理逻辑
-          console.log("error:" + res);
-        }
-      );
-
-      //加载老师信息
-      var teacherData = {
-        regserial: this.$store.state.regserial,
-        department_serial: departments,
-        role_id: "103"
-      };
-      var teacherParams = {
-        methodUrl: "courseManagement/memberTeacher",
-        jsonParam: qs.stringify(teacherData)
-      };
-      this.$axios.postRequest(teacherParams).then(
-        function(res) {
-          //成功之后处理逻辑
-          that.teachers = res.data;
-        },
-        function(res) {
-          //失败之后处理逻辑
-          console.log("error:" + res);
-        }
-      );
-    },
-    //班级联动
-    changess() {
-      var that = this;
-      var departmentss = this.value4;
-      //加载教练信息
-      var userData = qs.parse(sessionStorage.getItem("userData"));
-
-      var coachData = {
-        regserial: userData.company_serial,
-        department_serial: departmentss,
-        role_id: "102"
-      };
-      var coachParams = {
-        methodUrl: "courseManagement/memberTeacher",
-        jsonParam: qs.stringify(coachData)
-      };
-      this.$axios.postRequest(coachParams).then(
-        function(res) {
-          //成功之后处理逻辑
-          that.coachs = res.data;
-        },
-        function(res) {
-          //失败之后处理逻辑
-          console.log("error:" + res);
-        }
-      );
-
-      //加载老师信息
-      var teacherData = {
-        regserial: userData.company_serial,
-        department_serial: departmentss,
-        role_id: "103"
-      };
-      var teacherParams = {
-        methodUrl: "courseManagement/memberTeacher",
-        jsonParam: qs.stringify(teacherData)
-      };
-      this.$axios.postRequest(teacherParams).then(
-        function(res) {
-          //成功之后处理逻辑
-          that.teachers = res.data;
-        },
-        function(res) {
-          //失败之后处理逻辑
-          console.log("error:" + res);
-        }
-      );
-    },
-    //调动
-    chang1(value) {
-      var that = this;
-      this.obj1 = this.rooms.find(item => {
-        return item.department_serial === value;
-      });
-      var departmentsss = this.uc;
-      //加载班级信息
-      var classData = {
-        regserial: this.$store.state.regserial,
-        dep_lx: "2",
-        department_serial: departmentsss,
-        permissions_id: this.$store.state.permissions_id
-      };
-      var classParams = {
-        methodUrl: "courseManagement/memberClass",
-        jsonParam: qs.stringify(classData)
-      };
-      this.$axios.postRequest(classParams).then(
-        function(res) {
-          //成功之后处理逻辑
-          that.classes = res.data;
-        },
-        function(res) {
-          //失败之后处理逻辑
-          console.log("error:" + res);
-        }
-      );
-    },
-    changeValue(value) {
-      this.obj = this.classes.find(item => {
-        return item.department_serial === value;
-      });
-    },
-    //提交调动
-    submit1() {
-      var userData = qs.parse(sessionStorage.getItem("userData"));
-      if (this.us === "") {
-        this.$message({
-          message: "班级不能为空",
-          showClose: true,
-          type: "warning"
-        });
-      } else {
-        var coachData = {
-          dep_parent_serial: this.uc,
-          dep_parent_name: this.obj1.department_name,
-          department_serial: this.us,
-          department_name: this.obj.department_name,
-          student_serial: this.id,
+      },
+      //道馆联动
+      changes(){
+        var userData = qs.parse(sessionStorage.getItem("userData"));
+        var that = this
+        var departments = this.value3
+        //加载班级信息
+        var classData = {
           regserial: userData.company_serial,
+          dep_lx: '2',
+          department_serial: departments,
           permissions_id: userData.permissions_id
-        };
-        var params = {
-          methodUrl: "courseManagement/memberClickMove",
+        }
+        var classParams = {
+          methodUrl: 'courseManagement/memberClass',
+          jsonParam: qs.stringify(classData)
+        }
+        this.$axios.postRequest(classParams).then(function (res) {
+          //成功之后处理逻辑
+          that.classes = res.data
+        }, function (res) {
+          //失败之后处理逻辑
+          console.log("error:" + res)
+        })
+
+        //加载教练信息
+        var coachData = {
+          regserial: this.$store.state.regserial,
+          department_serial: departments,
+          role_id: '102'
+        }
+        var coachParams = {
+          methodUrl: 'courseManagement/memberTeacher',
           jsonParam: qs.stringify(coachData)
-        };
-        this.dialogVisible4 = false;
-        var coachParams = qs.parse(qs.stringify(coachData));
-        var that = this;
-        this.$axios.postRequest(params).then(
-          function(res) {
-            //成功之后处理逻辑
-            that.find();
-          },
-          function(res) {
-            //失败之后处理逻辑
-            console.log("error:" + res);
+        }
+        this.$axios.postRequest(coachParams).then(function (res) {
+          //成功之后处理逻辑
+          that.coachs = res.data
+        }, function (res) {
+          //失败之后处理逻辑
+          console.log("error:" + res)
+        })
+
+        //加载老师信息
+        var teacherData = {
+          regserial: this.$store.state.regserial,
+          department_serial: departments,
+          role_id: '103'
+        }
+        var teacherParams = {
+          methodUrl: 'courseManagement/memberTeacher',
+          jsonParam: qs.stringify(teacherData)
+        }
+        this.$axios.postRequest(teacherParams).then(function (res) {
+          //成功之后处理逻辑
+          that.teachers = res.data
+        }, function (res) {
+          //失败之后处理逻辑
+          console.log("error:" + res)
+        })
+      },
+      //班级联动
+      changess(){
+        var that = this
+        var departmentss = this.value4
+        //加载教练信息
+        var userData = qs.parse(sessionStorage.getItem("userData"));
+
+        var coachData = {
+          regserial: userData.company_serial,
+          department_serial: departmentss,
+          role_id: '102'
+        }
+        var coachParams = {
+          methodUrl: 'courseManagement/memberTeacher',
+          jsonParam: qs.stringify(coachData)
+        }
+        this.$axios.postRequest(coachParams).then(function (res) {
+          //成功之后处理逻辑
+          that.coachs = res.data
+        }, function (res) {
+          //失败之后处理逻辑
+          console.log("error:" + res)
+        })
+
+        //加载老师信息
+        var teacherData = {
+          regserial: userData.company_serial,
+          department_serial: departmentss,
+          role_id: '103'
+        }
+        var teacherParams = {
+          methodUrl: 'courseManagement/memberTeacher',
+          jsonParam: qs.stringify(teacherData)
+        }
+        this.$axios.postRequest(teacherParams).then(function (res) {
+          //成功之后处理逻辑
+          that.teachers = res.data
+        }, function (res) {
+          //失败之后处理逻辑
+          console.log("error:" + res)
+        })
+      },
+      //调动
+      chang1(value){
+        var that = this
+        this.obj1 = this.rooms.find((item) => {
+          return item.department_serial === value;
+        });
+        var departmentsss = this.uc
+        //加载班级信息
+        var classData = {
+          regserial: this.$store.state.regserial,
+          dep_lx: '2',
+          department_serial: departmentsss,
+          permissions_id: this.$store.state.permissions_id
+        }
+        var classParams = {
+          methodUrl: 'courseManagement/memberClass',
+          jsonParam: qs.stringify(classData)
+        }
+        this.$axios.postRequest(classParams).then(function (res) {
+          //成功之后处理逻辑
+          that.classes = res.data
+        }, function (res) {
+          //失败之后处理逻辑
+          console.log("error:" + res)
+        })
+      },
+      changeValue(value) {
+        this.obj = this.classes.find((item) => {
+          return item.department_serial === value;
+        });
+      },
+      //提交调动
+      submit1(){
+        var userData = qs.parse(sessionStorage.getItem("userData"));
+        if (this.us === '') {
+          this.$message({
+            message: '班级不能为空',
+            showClose: true,
+            type: 'warning'
+          });
+        } else {
+          var coachData = {
+            dep_parent_serial: this.uc,
+            dep_parent_name: this.obj1.department_name,
+            department_serial: this.us,
+            department_name: this.obj.department_name,
+            student_serial: this.id,
+            regserial: userData.company_serial,
+            permissions_id: userData.permissions_id
           }
-        );
+          var params = {
+            methodUrl: 'courseManagement/memberClickMove',
+            jsonParam: qs.stringify(coachData)
+
+          }
+          this.dialogVisible4 = false
+          var coachParams = qs.parse(qs.stringify(coachData));
+          var that = this
+          this.$axios.postRequest(params).then(function (res) {
+            //成功之后处理逻辑
+            that.find()
+          }, function (res) {
+            //失败之后处理逻辑
+            console.log("error:" + res)
+          })
+
+        }
+      },
+      //续费获取数据
+      renew(){
+        if (this.multipleSelection.length < 1) {
+          this.$message({
+            message: '请选择续费人员',
+            showClose: true,
+            type: 'warning'
+          });
+          this.dialogVisible4 = false
+        } else if (this.multipleSelection.length > 1) {
+          this.$message({
+            message: '只能选择一名人员',
+            showClose: true,
+            type: 'warning'
+          });
+          this.renewDialog = false
+        } else {
+
+          this.serial=this.multipleSelection[0].student_serial
+          this.xfcard = this.multipleSelection[0].membertype_id
+          this.xfcourse = this.multipleSelection[0].course_id
+          this.mustMoney =this.multipleSelection[0].course_price
+          this.adminName=this.multipleSelection[0].fillPerson_name
+          this.renewDialog = true
+
+
+        }
+
+      },
+      //续费提交数据
+      submitreNew(){
+        var that=this
+        var userData = qs.parse(sessionStorage.getItem("userData"));
+        var renewData={
+          lx:'1',
+          student_serial:this.serial,
+          memberType_id:this.xfcard,
+          courser_id:this.xfcourse,
+          realPayment:this.sjMoney,
+          fillPerson_serial:this.adminName,
+          regSerial:userData.company_serial
+
+        }
+        var renewParams={
+          methodUrl: 'memberManagement/memberRenew',
+          jsonParam: qs.stringify(renewData)
+        }
+        this.$axios.postRequest(renewParams).then(function (res) {
+          //成功之后处理逻辑
+          that.renewDialog=false
+          that.find()
+
+
+        }, function (res) {
+          //失败之后处理逻辑
+          console.log("error:")
+        })
       }
     },
-    //续费获取数据
-    renew() {
-      if (this.multipleSelection.length < 1) {
-        this.$message({
-          message: "请选择续费人员",
-          showClose: true,
-          type: "warning"
-        });
-        this.dialogVisible4 = false;
-      } else if (this.multipleSelection.length > 1) {
-        this.$message({
-          message: "只能选择一名人员",
-          showClose: true,
-          type: "warning"
-        });
-        this.renewDialog = false;
-      } else {
-        this.serial = this.multipleSelection[0].student_serial;
-        this.xfcard = this.multipleSelection[0].membertype_id;
-        this.xfcourse = this.multipleSelection[0].course_id;
-        this.mustMoney = this.multipleSelection[0].course_price;
-        this.adminName = this.multipleSelection[0].fillPerson_name;
-        this.renewDialog = true;
-      }
-    },
-    //续费提交数据
-    submitreNew() {
+    mounted(){
       var that = this;
       var userData = qs.parse(sessionStorage.getItem("userData"));
-      var renewData = {
-        lx: "1",
-        student_serial: this.serial,
-        memberType_id: this.xfcard,
-        courser_id: this.xfcourse,
-        realPayment: this.sjMoney,
-        fillPerson_serial: this.adminName,
-        regSerial: userData.company_serial
-      };
-      var renewParams = {
-        methodUrl: "memberManagement/memberRenew",
-        jsonParam: qs.stringify(renewData)
-      };
-      this.$axios.postRequest(renewParams).then(
-        function(res) {
-          //成功之后处理逻辑
-          that.renewDialog = false;
-          that.find();
-        },
-        function(res) {
-          //失败之后处理逻辑
-          console.log("error:");
-        }
-      );
+      var department = "";
+      if (this.value3 !== '' && this.value4 === '') {
+        department = this.value3
+      } else if (this.value4 !== '') {
+        department = this.value4
+      }
+      //加载会员信息
+      this.find();
+      //加载来源信息
+      var companyData = {
+        regserial: userData.company_serial,
+        permissions_id: userData.permissions_id
+      }
+      var mustParams = {
+        methodUrl: 'memberManagement/memberSource',
+        jsonParam: qs.stringify(companyData)
+      }
+      this.$axios.postRequest(mustParams).then(function (res) {
+        //成功之后处理逻辑
+        that.source = res.data
+
+
+      }, function (res) {
+        //失败之后处理逻辑
+        console.log("error:")
+      })
+
+      //加载卡类型
+      var cardParams = {
+        methodUrl: 'memberManagement/memberCard',
+        jsonParam: qs.stringify(companyData)
+      }
+      this.$axios.postRequest(cardParams).then(function (res) {
+        //成功之后处理逻辑
+        that.cardType = res.data
+      }, function (res) {
+        //失败之后处理逻辑
+        console.log("error:" + res)
+      })
+
+      //加载道馆信息
+      var roomData = {
+        dep_lx: '1',
+        regserial: userData.company_serial,
+        permissions_id: userData.permissions_id
+      }
+      var roomParams = {
+        methodUrl: 'memberManagement/memberClass',
+        jsonParam: qs.stringify(roomData)
+      }
+      this.$axios.postRequest(roomParams).then(function (res) {
+        //成功之后处理逻辑
+        that.rooms = res.data
+
+      }, function (res) {
+        //失败之后处理逻辑
+        console.log("error:" + res)
+      })
+
+      //加载班级信息
+      var classData = {
+
+        dep_lx: '2',
+        department_serial: this.value3,
+        regserial: userData.company_serial,
+        permissions_id: userData.permissions_id
+      }
+      var classParams = {
+        methodUrl: 'memberManagement/memberClass',
+        jsonParam: qs.stringify(classData)
+      }
+      this.$axios.postRequest(classParams).then(function (res) {
+        //成功之后处理逻辑
+        that.classes = res.data
+      }, function (res) {
+        //失败之后处理逻辑
+        console.log("error:" + res)
+      })
+
+      //加载教练信息
+      var coachData = {
+        regserial: userData.company_serial,
+        department_serial: department,
+        role_id: '102'
+      }
+      var coachParams = {
+        methodUrl: 'memberManagement/memberTeacher',
+        jsonParam: qs.stringify(coachData)
+      }
+      this.$axios.postRequest(coachParams).then(function (res) {
+        //成功之后处理逻辑
+        that.coachs = res.data
+      }, function (res) {
+        //失败之后处理逻辑
+        console.log("error:" + res)
+      })
+
+      //加载老师信息
+      var teacherData = {
+        regserial: userData.company_serial,
+        department_serial: department,
+        role_id: '103',
+      }
+      var teacherParams = {
+        methodUrl: 'memberManagement/memberTeacher',
+        jsonParam: qs.stringify(teacherData)
+      }
+      this.$axios.postRequest(teacherParams).then(function (res) {
+        //成功之后处理逻辑
+        that.teachers = res.data
+      }, function (res) {
+        //失败之后处理逻辑
+        console.log("error:" + res)
+      })
+      //加载级别信息
+      var levelData = {
+        regserial: userData.company_serial,
+      }
+      var levelParams = {
+        methodUrl: 'memberManagement/memberLevel',
+        jsonParam: qs.stringify(levelData)
+      }
+      this.$axios.postRequest(levelParams).then(function (res) {
+        //成功之后处理逻辑
+        that.levels = res.data
+      }, function (res) {
+        //失败之后处理逻辑
+        console.log("error:" + res)
+      })
+
+      //加载状态信息
+      var statusData = {
+        regserial: userData.company_serial,
+      }
+      var statusParams = {
+        methodUrl: 'memberManagement/memberState',
+        jsonParam: qs.stringify(statusData)
+      }
+      this.$axios.postRequest(statusParams).then(function (res) {
+        //成功之后处理逻辑
+        that.statuses = res.data
+      }, function (res) {
+        //失败之后处理逻辑
+        console.log("error:" + res)
+      })
+
+      //加载课程信息
+      var courseInfoData = {
+        company_serial : userData.company_serial,
+      }
+      var courseInfoParams = {
+        methodUrl: 'memberManagement/memberCourseInfo',
+        jsonParam: qs.stringify(courseInfoData)
+      }
+      this.$axios.postRequest(courseInfoParams).then(function (res) {
+        that.courseInfo = res.data
+      }, function (res) {
+        //失败之后处理逻辑
+        console.log("error:" + res)
+      })
+      //加载开票人信息
+      var coachData = {
+        regserial: userData.company_serial,
+        department_serial: department,
+        role_id: '105'
+      }
+      var coachParams = {
+        methodUrl: 'memberManagement/memberTeacher',
+        jsonParam: qs.stringify(coachData)
+      }
+      this.$axios.postRequest(coachParams).then(function (res) {
+        //成功之后处理逻辑
+        that.drawer = res.data
+      }, function (res) {
+        //失败之后处理逻辑
+        console.log("error:" + res)
+      })
     }
-  },
-  mounted() {
-    var that = this;
-    var userData = qs.parse(sessionStorage.getItem("userData"));
-    var department = "";
-    if (this.value3 !== "" && this.value4 === "") {
-      department = this.value3;
-    } else if (this.value4 !== "") {
-      department = this.value4;
-    }
-    //加载会员信息
-    this.find();
-    //加载来源信息
-    var companyData = {
-      regserial: userData.company_serial,
-      permissions_id: userData.permissions_id
-    };
-    var mustParams = {
-      methodUrl: "memberManagement/memberSource",
-      jsonParam: qs.stringify(companyData)
-    };
-    this.$axios.postRequest(mustParams).then(
-      function(res) {
-        //成功之后处理逻辑
-        that.source = res.data;
-      },
-      function(res) {
-        //失败之后处理逻辑
-        console.log("error:");
-      }
-    );
-
-    //加载卡类型
-    var cardParams = {
-      methodUrl: "memberManagement/memberCard",
-      jsonParam: qs.stringify(companyData)
-    };
-    this.$axios.postRequest(cardParams).then(
-      function(res) {
-        //成功之后处理逻辑
-        that.cardType = res.data;
-      },
-      function(res) {
-        //失败之后处理逻辑
-        console.log("error:" + res);
-      }
-    );
-
-    //加载道馆信息
-    var roomData = {
-      dep_lx: "1",
-      regserial: userData.company_serial,
-      permissions_id: userData.permissions_id
-    };
-    var roomParams = {
-      methodUrl: "memberManagement/memberClass",
-      jsonParam: qs.stringify(roomData)
-    };
-    this.$axios.postRequest(roomParams).then(
-      function(res) {
-        //成功之后处理逻辑
-        that.rooms = res.data;
-      },
-      function(res) {
-        //失败之后处理逻辑
-        console.log("error:" + res);
-      }
-    );
-
-    //加载班级信息
-    var classData = {
-      dep_lx: "2",
-      department_serial: this.value3,
-      regserial: userData.company_serial,
-      permissions_id: userData.permissions_id
-    };
-    var classParams = {
-      methodUrl: "memberManagement/memberClass",
-      jsonParam: qs.stringify(classData)
-    };
-    this.$axios.postRequest(classParams).then(
-      function(res) {
-        //成功之后处理逻辑
-        that.classes = res.data;
-      },
-      function(res) {
-        //失败之后处理逻辑
-        console.log("error:" + res);
-      }
-    );
-
-    //加载教练信息
-    var coachData = {
-      regserial: userData.company_serial,
-      department_serial: department,
-      role_id: "102"
-    };
-    var coachParams = {
-      methodUrl: "memberManagement/memberTeacher",
-      jsonParam: qs.stringify(coachData)
-    };
-    this.$axios.postRequest(coachParams).then(
-      function(res) {
-        //成功之后处理逻辑
-        that.coachs = res.data;
-      },
-      function(res) {
-        //失败之后处理逻辑
-        console.log("error:" + res);
-      }
-    );
-
-    //加载老师信息
-    var teacherData = {
-      regserial: userData.company_serial,
-      department_serial: department,
-      role_id: "103"
-    };
-    var teacherParams = {
-      methodUrl: "memberManagement/memberTeacher",
-      jsonParam: qs.stringify(teacherData)
-    };
-    this.$axios.postRequest(teacherParams).then(
-      function(res) {
-        //成功之后处理逻辑
-        that.teachers = res.data;
-      },
-      function(res) {
-        //失败之后处理逻辑
-        console.log("error:" + res);
-      }
-    );
-    //加载级别信息
-    var levelData = {
-      regserial: userData.company_serial
-    };
-    var levelParams = {
-      methodUrl: "memberManagement/memberLevel",
-      jsonParam: qs.stringify(levelData)
-    };
-    this.$axios.postRequest(levelParams).then(
-      function(res) {
-        //成功之后处理逻辑
-        that.levels = res.data;
-      },
-      function(res) {
-        //失败之后处理逻辑
-        console.log("error:" + res);
-      }
-    );
-
-    //加载状态信息
-    var statusData = {
-      regserial: userData.company_serial
-    };
-    var statusParams = {
-      methodUrl: "memberManagement/memberState",
-      jsonParam: qs.stringify(statusData)
-    };
-    this.$axios.postRequest(statusParams).then(
-      function(res) {
-        //成功之后处理逻辑
-        that.statuses = res.data;
-      },
-      function(res) {
-        //失败之后处理逻辑
-        console.log("error:" + res);
-      }
-    );
-
-    //加载课程信息
-    var courseInfoData = {
-      company_serial: userData.company_serial
-    };
-    var courseInfoParams = {
-      methodUrl: "memberManagement/memberCourseInfo",
-      jsonParam: qs.stringify(courseInfoData)
-    };
-    this.$axios.postRequest(courseInfoParams).then(
-      function(res) {
-        that.courseInfo = res.data;
-      },
-      function(res) {
-        //失败之后处理逻辑
-        console.log("error:" + res);
-      }
-    );
-    //加载开票人信息
-    var coachData = {
-      regserial: userData.company_serial,
-      department_serial: department,
-      role_id: "105"
-    };
-    var coachParams = {
-      methodUrl: "memberManagement/memberTeacher",
-      jsonParam: qs.stringify(coachData)
-    };
-    this.$axios.postRequest(coachParams).then(
-      function(res) {
-        //成功之后处理逻辑
-        that.drawer = res.data;
-      },
-      function(res) {
-        //失败之后处理逻辑
-        console.log("error:" + res);
-      }
-    );
   }
-};
 </script>
 <style scoped>
-.basicData {
-  padding: 5px;
-}
-.avatar-uploader {
-  border: 1px solid #c1c3c9;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  width: 100%;
-}
+  .basicData {
+    padding: 5px;
+  }
+  .avatar-uploader {
+    border: 1px solid #c1c3c9;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+  }
 
-.avatar-uploader .el-upload:hover {
-  border-color: #409eff;
-}
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
 
-.avatar-uploader-icon {
-  font-size: 12px;
-  color: #8c939d;
-  width: 89px;
-  height: 160px;
-  line-height: 160px;
-  text-align: center;
-}
+  .avatar-uploader-icon {
+    font-size: 12px;
+    color: #8c939d;
+    width: 89px;
+    height: 160px;
+    line-height: 160px;
+    text-align: center;
+  }
 
-.avatar {
-  width: 89px;
-  /*height: 160px;*/
-  display: block;
-}
+  .avatar {
+    width: 89px;
+    /*height: 160px;*/
+    display: block;
+  }
 
-h6 {
-  margin-left: 15px;
-}
-.size {
-  font-size: 12px;
-  color: #101010;
-  margin-right: 5px;
-}
-/*下拉选*/
-.pullDown ul {
-  float: left;
-  line-height: 20px;
-  margin: 0 0 10px 0;
-}
-.pullDown > ul > div {
-  margin-right: 5px;
-}
-/*按钮*/
-.tanchu ul {
-  float: left;
-}
+  h6 {
+    margin-left: 15px
+  }
+  .size {
+    font-size: 12px;
+    color: #101010;
+    margin-right: 5px;
 
-.studentInfo ul {
-  margin: 10px 0;
-}
+  }
+  /*下拉选*/
+  .pullDown ul {
+    float: left;
+    line-height: 20px;
+    margin: 0 0 10px 0;
+  }
+  .pullDown>ul>div{
+    margin-right: 5px;
+  }
+  /*按钮*/
+  .tanchu ul {
+    float: left;
+  }
 
-.el-form-item > label {
-  font-size: 2px;
-}
+  .studentInfo ul {
+    margin: 10px 0;
+  }
 
-.el-dialog__body {
-  font-size: 1px;
-}
-.memberDetail {
-  width: 135px;
-  background-color: #f0f0f0;
-  height: 20px;
-  line-height: 20px;
-  font-size: 12px;
-  margin-top: 10px;
-  text-align: center;
-}
-/*覆盖的样式*/
+  .el-form-item > label {
+    font-size: 2px;
+  }
+
+  .el-dialog__body {
+    font-size: 1px;
+  }
+  .memberDetail{
+    width: 135px;
+    background-color: #f0f0f0;
+    height: 20px;
+    line-height: 20px;
+    font-size: 12px;
+    margin-top: 10px;
+    text-align: center
+  }
+  /*覆盖的样式*/
+
 </style>
