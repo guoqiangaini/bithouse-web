@@ -1175,12 +1175,6 @@ export default {
   margin: 0;
 }
 
-.avatar-uploader {
-  border: 1px solid #c1c3c9;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
 
 .basicData {
   border: 1px solid #d8d8d8;
@@ -1203,6 +1197,25 @@ export default {
 .el-table .table-head-th {
   background-color: red;
   font-size: large;
+}
+
+
+.avatar {
+  width: 89px;
+  /*height: 160px;*/
+  display: block;
+}
+
+.avatar-uploader {
+  border: 1px solid #c1c3c9;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
 }
 
 .avatar-uploader-icon {

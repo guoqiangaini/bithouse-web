@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- 数值数据区开始 -->
     <div class="statisticalData">
       <el-row style="margin-bottom: 30px;">
         <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6"style="text-align: center">
@@ -102,9 +103,12 @@
         </el-col>
       </el-row>
     </div>
+    <!-- 结束 -->
+
+    <!-- 业绩收支开始 -->
     <el-row>
       <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12" style="border-top:1px solid #c1c3c9;border-left:1px solid #c1c3c9">
-        <div id="option" style="margin:0px auto;width: 507px;height:400px"></div>
+      
       </el-col>
        <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12" style="border:1px solid #c1c3c9;border-bottom: 0">
         <div style="text-align:center">
@@ -115,15 +119,26 @@
         <div id="table22"  style="margin:0px auto;width: 507px;height:400px" v-show="expenditure"></div>
       </el-col>
     </el-row>
+    <!-- 結束 -->
+
+    <!-- 消课卡型级别开始 -->
     <el-row>
       <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12" :span="12"
               style="border:1px solid #c1c3c9;border-right: 0;border-bottom: 0">
-        <div id="table7" style="margin:0px auto;width: 507px;height:400px"></div>
+         <div id="option" style="margin:40px 0 0 0;width: 507px;height:400px"></div>
       </el-col>
       <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12" :span="12" style="border:1px solid #c1c3c9;border-bottom: 0">
-        <div  id="table8" style="margin:0px auto;width: 507px;height:400px"></div>
+       <div style="text-align:center">
+        <el-button @click="cardMethod"  size="medium" class="tableButton">卡型</el-button>
+        <el-button  size="medium" @click="levelMethod" class="tableButton">级别</el-button>
+      </div>
+         <div id="table7" style="margin:0px auto;width: 507px;height:400px" v-show="cardType"></div>
+        <div  id="table8" style="margin:0px auto;width: 507px;height:400px" v-show="levelType"></div>
       </el-col>
     </el-row>
+    <!-- 结束 -->
+
+    <!-- 小区 学校 年龄 性别开始 -->
      <el-row>
     
       <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12" :span="12"    style="border:1px solid #c1c3c9;">
@@ -143,6 +158,8 @@
         <div id="table4" style="margin:0px auto;width: 507px;height:400px" v-show="gender"></div>
       </el-col>
     </el-row>
+    <!-- 结束 -->
+
   </div>
 </template>
 <script>
@@ -159,12 +176,16 @@
     name: 'hello',
     data () {
       return {
+        //tab状态
+        cardType:true,//卡型
+        levelType:false,//级别
         income:true,//收入
         expenditure:false,//支出
         village:false,//小区
         school:true,//学校
         gender:true,//性别
-        year:false,//学校        
+        year:false,//学校 
+        //结束
         corporateName: '',
         departmentList: [],
         fireClassRank: [],
@@ -426,6 +447,18 @@
     },
 
     methods: {
+      //显示卡型
+       cardMethod(){
+         
+        this.cardType=true;
+        this.levelType=false
+      },
+      //显示级别
+       levelMethod(){
+         
+        this.levelType=true;
+        this.cardType=false
+      },
        //显示收入
       inComeMethod(){
          
@@ -467,7 +500,7 @@
           title:{
             text:'消课量排名-前3名',
             y:'3%',
-            x:'center'
+            x:'left'
           },
           tooltip : {
             trigger: 'axis',
