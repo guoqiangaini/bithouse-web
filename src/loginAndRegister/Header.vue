@@ -168,6 +168,9 @@ export default {
     },
     clearFormData(formName) {
       this.$refs[formName].resetFields();
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
     }
 
   },
