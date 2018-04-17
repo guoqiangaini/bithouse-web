@@ -204,7 +204,7 @@
             center: true
           }).then(() => {
             var deleteData = {
-              id:that.multipleSelection[0].id
+              id:that.currentRow.id
             };
             var deleteParams = {
               methodUrl: "bitHouse/bitHouseDeleteTag",
@@ -333,7 +333,7 @@
             return false;
           }
         });
-
+        this.queryTags()
       },
       //获取标签
       queryTags(){
