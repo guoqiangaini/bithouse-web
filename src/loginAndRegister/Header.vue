@@ -166,7 +166,7 @@ export default {
         }
       });
     },
-    resetForm(formName) {
+    clearFormData(formName) {
       this.$refs[formName].resetFields();
     }
 
