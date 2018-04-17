@@ -1,294 +1,151 @@
 <template>
-  <div class="wai">
-    <el-dialog
-      title="注册"
-      :visible.sync="dialogVisible"
-      width="30%"
-      :close-on-click-modal="false"
-      :close-on-press-escape="false"
-    >
-      <hr style="width: 100%; height:1px;border:none;border-top:1px solid #555555;margin: -30px 0 20px 0"/>
-      <ul>
-        <span>公司名称</span>
-        <el-input v-model="value1" placeholder="请输入内容" style="margin:0 0 10px 0;width: 300px"></el-input>
-      </ul>
-      <ul>
-        <span>姓&#12288;&#12288;名</span>
-        <el-input v-model="value2" placeholder="请输入内容" style="margin:0 0 10px 0;width: 300px"></el-input>
-      </ul>
-      <ul>
-        <span>电&#12288;&#12288;话</span>
-        <el-input v-model="value3" placeholder="请输入内容" style="margin:0 0 10px 0;width: 300px"></el-input>
-      </ul>
-
-      <span slot="footer" class="dialog-footer">
-    <el-button @click="cancel">取 消</el-button>
-    <el-button type="primary" @click="determine">确 定</el-button>
-  </span>
-    </el-dialog>
-    <div class="nei" id="qrCode">
-
-      <!--<ul class="context">-->
-      <!--<li >现在登录</li>-->
-      <!--<ul class="username">-->
-      <!--<span >用户名</span><input v-model="input" placeholder="请输入内容" style="width: 200px;border: 1px solid #ccc; padding: 7px 0px;border-radius: 3px;padding-left:5px; ">-->
-      <!--</ul>-->
-      <!--<ul class="password">-->
-      <!--<span >密码</span><input v-model="input" placeholder="请输入内容" style="width: 200px;border: 1px solid #ccc; padding: 7px 0px;border-radius: 3px;padding-left:5px; ">-->
-      <!--</ul>-->
-      <!--<el-row>-->
-      <!--<el-col :span="11" style="margin: 10px 0 0 10%;color: #b3d8ff">忘记密码?</el-col>-->
-      <!--<el-col :span="5" style="margin: 5px 0 0 10%"><el-button class="btn" type="primary" plain>login</el-button></el-col>-->
-      <!--</el-row>-->
-      <!--<el-row class="weixin">-->
-      <!--<el-col><img src="http://www.iconpng.com/png/miui-sugar/mm.png" @click="show3 = !show3"> </el-col>-->
-      <!--</el-row>-->
-      <!--</ul>-->
-      <!--</div>-->
-      <!--<div style="margin-top: 20px; height: 200px;">-->
-      <!--<el-collapse-transition>-->
-      <!--<div v-show="show3">-->
-      <!--<div class="transition-box">el-collapse-transition</div>-->
-      <!--<div class="transition-box">el-collapse-transition</div>-->
-      <!--</div>-->
-      <!--</el-collapse-transition>-->
-      <!--</div>-->
-    </div>
-
+  <div>
+    <el-form :model="ruleForm2" :rules="rules2" ref="ruleForm2" label-position="left" label-width="0px" class="demo-ruleForm login-container">
+    <h3 class="title">系统登录</h3>
+    <el-form-item prop="account">
+      <el-input type="text" v-model="ruleForm2.account" auto-complete="off" placeholder="账号"></el-input>
+    </el-form-item>
+    <el-form-item prop="checkPass">
+      <el-input type="password" v-model="ruleForm2.checkPass" auto-complete="off" placeholder="密码" @keyup.enter.native="handleSubmit2"></el-input>
+    </el-form-item>
+    <el-form-item style="width:100%;">
+      <el-button type="primary" style="width:100%;"  @click.native.prevent="handleSubmit2" :loading="logining">登录</el-button>
+      <!--<el-button @click.native.prevent="handleReset2">重置</el-button>-->
+    </el-form-item>
+  </el-form>
   </div>
 </template>
 <script>
-  import axios from 'axios'
-  import qs from 'qs'
-  import {mapState} from 'vuex'
-  import ElButton from "../../node_modules/element-ui/packages/button/src/button";
-  import ElRow from "element-ui/packages/row/src/row";
-  import ElCol from "element-ui/packages/col/src/col";
+  import axios from 'axios';
+ import qs from 'qs'
   export default {
-
-    components: {
-      ElCol,
-      ElRow,
-      ElButton
-    },
     data() {
       return {
-        show3: true,
-        states: false,
-        value1: '',
-        value2: '',
-        value3: '',
-        dialogVisible: false,
+        logining: false,
+        ruleForm2: {
+          account: '',
+          checkPass: ''
+        },
+        rules2: {
+          account: [
+            { required: true, message: '请输入账号', trigger: 'blur' },
+            //{ validator: validaePass }
+          ],
+          checkPass: [
+            { required: true, message: '请输入密码', trigger: 'blur' },
+            //{ validator: validaePass2 }
+          ]
+        },
+        checked: true,
+        tableData5: []
       };
     },
-    mounted(){
-      var that = this;
-      var code = this.$utils.getUrlKey("code")
-      var reg = this.$utils.getUrlKey("reg")
-
-      if (reg) {//注册
-
-        if (code) {
-
-          if (code != -1000) {
-            this.dialogVisible = true
-          } else {
-            this.$message.error('注册失败');
-          }
-        } else {
-          var obj = new WxLogin({
-            id: 'qrCode',
-            appid: "wxd938bdd66f30cd9f",
-            scope: "snsapi_login",
-            redirect_uri: "http%3a%2f%2fwww.jiaopb.com%2fsys%2fwxLogon.do",
-            style: "white"
-
-          });
-        }
-      } else {
-        //登录
-
-        if (code) {
-          var d = {
-            code: code
-          }
-          var mustParams = {
-            methodUrl: 'admin/wxLogin',
-            jsonParam: qs.stringify(d)
-          }
-          this.$axios.postRequest(mustParams).then(function (res) {
-            //成功之后处理逻辑
-            if (res.code == 0) {
-              sessionStorage.setItem("userData", qs.stringify(res.data));
-              //重定向路由到首页
-              that.$router.push({
-                path: '../15'
-              })
-            } else {
-              //提示错误
-              that.$alert('登录失败，请联系管理员', '系统提示', {
-                confirmButtonText: '确定',
-                callback: action => {
-
-                  //刷新当前页
-                  /*that.$router.push({
-                    path: '/',
-
-                  });*/
-                  window.location.href = "../"
-                }
-              });
-
-            }
-          }, function (res) {
-            //失败之后处理逻辑
-            console.log("error:" + res)
-          })
-        }
-        var obj = new WxLogin({
-          id: 'qrCode',
-          appid: "wxd938bdd66f30cd9f",
-          scope: "snsapi_login",
-          redirect_uri: "http%3a%2f%2fwww.jiaopb.com%2fsys%2fwxLogin.do",
-          style: "white"
-
-        });
-
-      }
-
-
-    },
-
-    created(){
-
-
-    },
-    computed: {},
     methods: {
-      determine(){
-
-        this.dialogVisible = false;
-        let code = this.$utils.getUrlKey("code")
-        var share_serial = this.$utils.getUrlKey("share_serial")
-        var that = this;
-        var d = {
-          unionid: code,
-          company_name: this.value1,
-          employee_name: this.value2,
-          employee_phone: this.value3,
-          share_serial: share_serial
-
-        }
-
-        var mustParams = {
-          methodUrl: 'admin/adminLogon',
-          jsonParam: qs.stringify(d)
-        }
-        this.$axios.postRequest(mustParams).then(function (res) {
-          //成功之后处理逻辑
-          if (res.code == 0) {
-
-            sessionStorage.setItem("userData", res.data);
-
-            //重定向路由到首页
-           /* this.$router.push({
-              path: '../login'
-            })*/
-            that.$alert('注册成功，请扫码登录', '系统提示', {
-              confirmButtonText: '确定',
-              callback: action => {
-                //刷新当前页
-                window.location.href = "../"
-              }
-            });
-
-          } else {
-            that.$message.error('注册失败')
-          }
-        }, function (res) {
-          //失败之后处理逻辑
-          console.log("error:" + res)
-          that.$message.error('注册失败')
-        })
-
-
+      handleReset2() {
+        this.$refs.ruleForm2.resetFields();
       },
-      cancel(){
-        this.dialogVisible = false;
+      handleSubmit2(ev) {
+        var that = this;
+        this.$refs.ruleForm2.validate((valid) => {
+          if (valid) {
+            that.logining = true;
+            var userInfoData={
+              phone_number:that.ruleForm2.account,
+              password:that.ruleForm2.checkPass
+            }
+            var userInfoParams={
+              methodUrl:'bitHouse/bitHouseLogin',
+              jsonParam: qs.stringify(userInfoData)
+            }
+            this.$axios.postRequest(userInfoParams).then(function (res) {
+              //成功之后处理逻辑
+              that.logining = false;
+              if (res.code !==0) {
+                that.$message({
+                  message: '用户名或密码不正确',
+                  type: 'error'
+                });
+                that.$refs.ruleForm2.resetFields();
+              } else {
+
+                  sessionStorage.setItem('user', qs.stringify(res.data));
+
+                  if(qs.parse(sessionStorage.getItem("user")).role_id!=2){
+
+                    that.$router.push({ path: '/15'});
+
+                  }else {
+
+                    that.$router.push({ path: '/19'});
+
+                  }
+
+              }
+            }, function (res) {
+              //失败之后处理逻辑
+              console.log("error:" + res)
+            })
+            //
+            // var loginParams = { username: this.ruleForm2.account, password: this.ruleForm2.checkPass };
+            // requestLogin(loginParams).then(data => {
+            //   this.logining = false;
+            //   //NProgress.done();
+            //   let { msg, code, user } = data;
+            //   if (code !== 200) {
+            //     this.$message({
+            //       message: msg,
+            //       type: 'error'
+            //     });
+            //   } else {
+            //     sessionStorage.setItem('user', JSON.stringify(user));
+            //     this.$router.push({ path: '/table' });
+            //   }
+            // });
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+      },
+      //table header样式
+      headerRowStyle({ row, rowIndex}){
+          return 'color:green'
+      },
+      //table row样式
+      rowStyle({ row, rowIndex}) {
+        if (rowIndex === 0) {
+
+          return 'color:green'
+        } else {
+          return ''
+        }
       }
     }
-  };
-
-
+  }
 </script>
-<style scoped>
-  .wasder {
-    position: absolute;
-    z-index: 110;
+<style lang="scss" scoped="" type="text/css">
+  .el-form-item{
+    margin: 20px 0 !important;
   }
-
-  .wai {
-    margin: 0;
-    height: 100%;
-    background-image: url("../assets/image/background.jpg");
-    background-size: 100% 100%;
+  .login-container {
+    /*box-shadow: 0 0px 8px 0 rgba(0, 0, 0, 0.06), 0 1px 0px 0 rgba(0, 0, 0, 0.02);*/
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    background-clip: padding-box;
+    margin: 180px auto;
+    width: 350px;
+    padding: 35px 35px 15px 35px;
+    background: #fff;
+    border: 1px solid #eaeaea;
+    box-shadow: 0 0 25px #cac6c6;
   }
-
-  .nei {
-    width: 30%;
-    height: 60%;
-    background-color: black;
-    background-color: rgba(0, 0, 0, 0.5);
-
-    margin: 0 auto;
-
-    text-align: center;
-
-  }
-
-  .context {
-
-  }
-
-  .context li {
-    font-size: 25px;
-    color: #f5f5f5;
-    margin: 0 0 0 38%;
-    padding-top: 10%;
-  }
-
-  input {
-    margin: 30px 0 10px 10px;
-  }
-
-  .username {
-    margin-left: 10%;
-  }
-
-  .password {
-    margin-left: 13%;
-  }
-
-  img {
-    width: 70px;
-    height: 70px
-  }
-
-  .weixin {
-    margin: 0 0 0 18%;
-  }
-
-  .transition-box {
-    margin-bottom: 10px;
-    width: 200px;
-    height: 100px;
-    border-radius: 4px;
-    background-color: #409EFF;
-    text-align: center;
-    color: #fff;
-    padding: 40px 20px;
-    box-sizing: border-box;
-    margin-right: 20px;
-  }
-
+    .title {
+      margin: 0 auto 40px auto;
+      text-align: center;
+      color: #505458;
+    }
+    .remember {
+      margin: 0px 0px 35px 0px;
+    }
 </style>

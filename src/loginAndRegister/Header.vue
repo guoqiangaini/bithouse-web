@@ -1,35 +1,11 @@
-<template>
+<template xmlns:v-popover="http://www.w3.org/1999/xhtml">
   <el-row style="height:10%">
     <el-header class="wai" style="height:100%;overflow: hidden;">
-      <el-col :span="3" class="user" ><img src="https://pro.modao.cc/uploads3/images/1751/17519267/raw_1520225943.png">
+      <el-col :span="3" class="user" ><img src="../assets/image/house_icon.png">
       </el-col>
-      <el-col :span="13" class="font" style="font-size: 28px;font-weight: 600;">{{CorporateName}}</el-col>
-      <!--<el-col :span="7" style="width: 390px">-->
-      <!---->
-      <!--<el-button size="mini" v-show="false"><span style="color:#1b96a9;font-weight: 600; " >切换</span></el-button>-->
-      <!--</el-col>-->
-      <el-col :span="4" class="font">今天是：{{todayTime}}</el-col>
+      <el-col :span="13" class="font" style="font-size: 28px;font-weight: 600;">比特房信息录入系统</el-col>
+      <el-col :span="4" class="font"></el-col>
       <el-col :span="2" class="right_icon">
-
-        <el-popover @hide="dotCondition"
-          ref="popover3"
-          placement="bottom"
-          width="300"
-          style="background-color:#1b96a9 "
-          trigger="click">
-          <el-row type="flex" align="middle" v-for="infor in information">
-            <el-col :span="18">{{infor.name}}</el-col><el-col :span="6"><el-button type="text">忽略</el-button></el-col>
-          </el-row>
-
-        </el-popover>
-        <!--<el-badge :is-dot="infomation.length>0" class="item"><img src="https://pro.modao.cc//uploads3/images/1783/17836132/raw_1521017810.png-->
-
-        <!--" style="-->
-        <!--width: 32px;height: 32px;padding-top: 29px" v-popover:popover3></el-badge>-->
-        <img
-        src="https://pro.modao.cc//uploads3/images/1783/17836132/raw_1521017810.png"
-        style="cursor: pointer"  v-popover:popover3 @click="dotState" >
-        <div class="tip" v-show="dot" ></div>
       </el-col>
       <el-col :span="2" class="right_icon">
         <el-popover
@@ -37,15 +13,38 @@
           placement="bottom"
           width="200"
           trigger="click">
-          <el-col>
+          <el-col  style="text-align: center">
             <el-button  @click="outSystem">退出</el-button>
+            <el-button  @click="updatePassWord">修改密码</el-button>
           </el-col>
         </el-popover>
         <img src="https://pro.modao.cc//uploads3/images/1783/17836137/raw_1521017812.png" style="cursor: pointer" v-popover:popover4>
-
-
       </el-col>
-
+      <el-dialog
+        title="修改密码"
+        :close-on-click-modal="false"
+        :close-on-press-escape="false"
+        :visible.sync="dialogVisible"
+        width="450px"
+        @close="clearFormData('ruleForm2')"
+        center
+      >
+        <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="80px" class="demo-ruleForm" size="mini">
+          <el-form-item label="旧密码" prop="oldPass">
+            <el-input v-model.number="ruleForm2.oldPass"></el-input>
+          </el-form-item>
+          <el-form-item label="新密码" prop="pass">
+            <el-input type="password" v-model="ruleForm2.pass" auto-complete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="确认新密码" prop="checkPass">
+            <el-input type="password" v-model="ruleForm2.checkPass" auto-complete="off"></el-input>
+          </el-form-item >
+          <el-form-item style="text-align: center" label-width="0">
+            <el-button type="primary" @click="submitForm('ruleForm2')">提交</el-button>
+            <el-button @click="resetForm('ruleForm2')">重置</el-button>
+          </el-form-item>
+        </el-form>
+      </el-dialog>
     </el-header>
   </el-row>
 </template>
@@ -62,71 +61,117 @@ export default {
   },
   name: "hello",
   data() {
+      var checkAge = (rule, value, callback) => {
+        if (!value) {
+          return callback(new Error('密码不能为空'));
+        }
+        setTimeout(() => {
+          if (!Number.isInteger(value)) {
+            callback(new Error('请输入数字值'));
+          } else {
+              callback();
+          }
+        }, 1000);
+      };
+      var validatePass = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入密码'));
+        } else {
+          if (this.ruleForm2.checkPass !== '') {
+            this.$refs.ruleForm2.validateField('checkPass');
+          }
+          callback();
+        }
+      };
+      var validatePass2 = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请再次输入密码'));
+        } else if (value !== this.ruleForm2.pass) {
+          callback(new Error('两次输入密码不一致!'));
+        } else {
+          callback();
+        }
+      };
     return {
+      dialogVisible:false,
       CorporateName: "", //公司名称
       todayTime: "", //获取时间
       dot: false,
-      information: []
+      information: [],
+      ruleForm2: {
+        pass: '',
+        checkPass: '',
+        oldPass: ''
+      },
+      rules2: {
+        pass: [
+          { validator: validatePass, trigger: 'blur' }
+        ],
+        checkPass: [
+          { validator: validatePass2, trigger: 'blur' }
+        ],
+        oldPass: [
+          { validator: checkAge, trigger: 'blur' }
+        ]
+      }
     };
   },
   methods: {
     dotState() {
+
       this.dot = false;
     },
     dotCondition() {
       this.dot = true;
     },
+    //退出登录
     outSystem: function() {
-      sessionStorage.removeItem("userData");
+      sessionStorage.removeItem("user");
       this.$router.push("/");
+    },
+    //修改密码
+    updatePassWord(){
+      this.dialogVisible=true
+    },
+    submitForm(formName) {
+      var that=this
+
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          var user=qs.parse(sessionStorage.getItem("user"))
+          console.log("..........................")
+          console.log(user)
+          var acountData={
+           user_serial:user.user_serial,
+           old_pwd:this.ruleForm2.oldPass,
+           password:this.ruleForm2.checkPass
+          }
+          console.log(acountData)
+         var acountParams={
+           methodUrl:'bitHouse/bitHouseUpdatePwd',
+           jsonParam: qs.stringify(acountData)
+         }
+         this.$axios.postRequest(acountParams).then(function (res) {
+            //成功之后处理逻辑
+            that.dialogVisible=false
+            sessionStorage.removeItem('user')
+            that.$router.push({path:'/'})
+          }, function (res) {
+            //失败之后处理逻辑
+            console.log("error:" + res)
+          })
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+      });
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
     }
+
   },
   mounted() {
-    if (this.information != "") {
-      this.dot = true;
-    } else {
-      this.dot = false;
-    }
-    var that = this;
-    //获取时间
-    var timeParams = {
-      methodUrl: "date/getDate",
-      jsonParam: qs.stringify()
-    };
-    this.$axios.postRequest(timeParams).then(
-      function(res) {
-        //成功之后处理逻辑
-        that.todayTime = res.data.time;
-      },
-      function(res) {
-        //失败之后处理逻辑
-        console.log("error:" + res);
-      }
-    );
-
-    //请求公司名称
-    var userData = qs.parse(sessionStorage.getItem("userData"));
-    that.CorporateName = userData.company_name;
-    //请求消息
-    var infomationData = {
-      regserial: userData.company_serial,
-      news_role: "103",
-      user_serial: userData.employee_serial
-    };
-    var infomationParams = {
-      methodUrl: "adminMenu/getInformInfo",
-      jsonParam: qs.stringify(infomationData)
-    };
-    this.$axios.postRequest(infomationParams).then(
-      function(res) {
-        //成功之后处理逻辑
-        that.information = res.data;
-      },
-      function(res) {
-        //失败之后处理逻辑
-        console.log("error:" + res);
-      }
-    );
   }
 };
 </script>
@@ -157,7 +202,7 @@ export default {
 }
 .right_icon {
   height: 100%;
-  text-align: center;
+  text-align: right;
 }
 .right_icon img {
   height: 40%;

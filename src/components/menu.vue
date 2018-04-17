@@ -1,10 +1,9 @@
 <template>
-
   <el-row>
     <headly></headly>
     <el-container style="height:90%">
       <el-aside width="155px" style="background-color:rgb(242, 242, 242)">
-        <el-menu
+        <el-menu v-if="roleId!=2"
           :default-active="activeMenu"
           background-color="#f2f2f2"
           text-color="black"
@@ -15,6 +14,26 @@
           :router="true" style="text-align: center"
           ref="myMenu">
           <template v-for="(item,index) in menuInfo">
+            <el-menu-item style="padding: 0;" :index="''+item.menu_url"  v-if="item.child_menus && item.child_menus.length===0">
+              <span slot="title">{{item.menu_name}}</span>
+            </el-menu-item>
+            <el-submenu :index="''+item.menu_url" v-else="item.child_menus && item.child_menus.length>0" >
+              <span slot="title">{{item.menu_name}}</span>
+              <el-menu-item unique-opened :index="''+items.menu_url" v-for="(items,index) in item.child_menus" :key="items.menu_url" style="width:100px">{{items.menu_name}}</el-menu-item>
+            </el-submenu>
+          </template>
+        </el-menu>
+        <el-menu v-else
+                 :default-active="activeMenu"
+                 background-color="#f2f2f2"
+                 text-color="black"
+                 active-text-color="#1b96a9"
+                 class="menu"
+                 @select="handleSelect"
+                 :unique-opened="true"
+                 :router="true" style="text-align: center"
+                 ref="myMenu">
+          <template v-for="(item,index) in menuInfo1">
             <el-menu-item style="padding: 0;" :index="''+item.menu_url"  v-if="item.child_menus && item.child_menus.length===0">
               <span slot="title">{{item.menu_name}}</span>
             </el-menu-item>
@@ -43,7 +62,16 @@ export default {
   data() {
     return {
       activeMenu: "",
-      menuInfo: []
+      menuInfo: [
+        {"menu_url":"15","menu_id":"15","menu_name":"楼盘管理","child_menus":[]},
+        {"menu_url":16,"menu_id":"16","menu_name":"人员管理","child_menus":[]},
+        {"menu_url":"17","menu_id":"17","menu_name":"成交信息","child_menus":[]},
+        {"menu_url":"18","menu_id":"18","menu_name":"标签设置","child_menus":[]},
+      ],
+      menuInfo1:[
+        {"menu_url":"19","menu_id":"19","menu_name":"成交信息","child_menus":[]},
+      ],
+      role_id:'',
     };
   },
   components: {
@@ -54,47 +82,31 @@ export default {
   },
   mounted() {
     this.initMenu();
-    //加载菜单
-    var that = this;
-    var companyData = {};
-    var mustParams = {
-      methodUrl: "adminMenu/getMenuList",
-      jsonParam: qs.stringify(companyData)
-    };
-    this.$axios.postRequest(mustParams).then(
-      function(res) {
-        //成功之后处理逻辑
-        that.menuInfo = res.data;
-      },
-      function(res) {
-        //失败之后处理逻辑
-        console.log("error:");
-      }
-    );
   },
   methods: {
     initMenu() {
       this.activeMenu = this.$route.path.replace("/", "");
     },
     handleSelect(index, indexPath) {
-      console.log(this.$refs.myMenu);
       var menu = this.$refs.myMenu;
       for (var i = 0; i < menu.$children.length; i++) {
         if(menu.$children[i].$children.length!=0 && menu.$children[i].opened){
           for(var x = 0; x< menu.$children[i].$children.length; x++){
-
              if(menu.$children[i].$children[x].index!=index){
                menu.close(menu.$children[i].index);
              }
           }
         }
       }
-     
+
     }
   },
 
   computed: {
     //获取菜单
+    roleId(){
+      return qs.parse(sessionStorage.getItem("user")).role_id
+      }
   },
 
   watch: {

@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-
     <router-view/>
   </div>
 </template>
@@ -10,25 +9,13 @@
   import qs from 'qs'
   export  default{
     name: 'App',
-
     components:{
       headly,
     },
-   mounted(){
-     var userData={
-       company_name:'多维跆拳道综合管理系统',
-       employee_serial:'20000001',
-       permissions_id:'1',
-       studentDepartment_serial:'10008',
-       company_serial:'10001'
-     }
-     sessionStorage.setItem('userData',qs.stringify(userData));
-
-   }
   }
 </script>
 
-<style>
+<style lang="scss">
   ul{
     margin: 0;padding: 0;
   }
@@ -103,5 +90,8 @@ border-color: #f56c6c !important;
   .el-dialog__body{
     padding: 0 20px 30px 20px !important;
   }
-  
+  .el-upload-dragger{
+    width: 240px!important;
+    height: 180px!important;
+  }
 </style>

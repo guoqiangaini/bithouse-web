@@ -3,8 +3,6 @@ import Vuex from 'vuex'
 // 引入 axios
 import axios from 'axios'
 import qs from 'qs'
-import http from '../utils/http'
-
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
