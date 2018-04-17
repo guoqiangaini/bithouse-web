@@ -105,9 +105,6 @@
             name:'户型标签'
           }
         ],
-        total:'',
-        currentPage:1,
-        pageSize:20,
         tableObject: [
           {
             field: 'test',
@@ -264,44 +261,6 @@
           "border-color": "#c1c3c9"
         }
       },
-      selectTestDetail(column){
-        var that = this
-        //加载考级记录表
-        var userData = qs.parse(sessionStorage.getItem("userData"));
-        if (column && column.order) {
-          var index = (column.order).indexOf("ending")
-          if (column.prop == 'teacher_name') {
-            this.orderByName = "r.employee_name " + (column.order).substring(0, index)
-          } else if (column.prop == 'employee_name') {
-            this.orderByName = "w.employee_name " + (column.order).substring(0, index)
-          } else {
-            this.orderByName = column.prop + " " + (column.order).substring(0, index)
-          }
-
-        }
-        var testsData = {
-          regserial: userData.company_serial,
-          permissions_id: userData.permissions_id,
-          life: this.year,
-          examActivity_id: this.testname,
-          count: true,
-          pageindex: 1,
-          pagesize: 20,
-          orderby: this.orderByName
-        }
-        var testsParams = {
-          methodUrl: 'courseManagement/getLevelExaminationInfo',
-          jsonParam: qs.stringify(testsData)
-        }
-        this.$axios.postRequest(testsParams).then(function (res) {
-          //成功之后处理逻辑
-          that.testLevel = res.data.list
-          that.total = res.data.totalcount
-        }, function (res) {
-          //失败之后处理逻辑
-          console.log("error:" + res)
-        })
-      },
       //点击按钮触发不同流程
       addTags(type){
         var that=this
@@ -401,39 +360,15 @@
       //分页
       handleSizeChange(val) {
         this.pageSize = val
-        this.selectTestDetail()
+        this.queryTags()
       },
       handleCurrentChange(val) {
         this.currentPage = val
-        this.selectTestDetail()
+        this.queryTags()
       },
       handleSelectionChange(val) {
         this.multipleSelection = val;
       },
-      handleEdit(index, row){
-        var userData = qs.parse(sessionStorage.getItem("userData"));
-        var that = this
-        var id = row.examActivity_id
-        var roomId = row.dep_parent_serial
-        var activeMemberListData = {
-          examActivity_id: id,
-          dep_parent_serial: roomId,
-          regserial: userData.company_serial,
-        }
-        var activeMemberListParams = {
-          methodUrl: 'courseManagement/getLevelExaminationStudentInfo',
-          jsonParam: qs.stringify(activeMemberListData)
-        }
-        this.$axios.postRequest(activeMemberListParams).then(function (res) {
-          //成功之后处理逻辑
-          that.activeMemberList = res.data.list
-          that.$router.push({name: 'activeMemberList', params: {id: id, roomId: roomId, code: that.activeMemberList}})
-        }, function (res) {
-          //失败之后处理逻辑
-          console.log("error:" + res)
-        })
-
-      }
     },
     mounted(){
      this.queryTags()
