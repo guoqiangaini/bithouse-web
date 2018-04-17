@@ -175,7 +175,6 @@
 
       handleRowChange(val) {
         this.currentRow = val;
-        console.log(val)
       },
       formatValue(row, column, cellValue){
         switch(row.tag_type) {
