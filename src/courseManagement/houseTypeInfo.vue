@@ -220,6 +220,7 @@
       </el-form>
     </el-dialog>
     <!--新增户型弹框结束-->
+    <!--户型列表-->
     <el-table
       ref="multipleTable"
       :data="roomList"
@@ -513,6 +514,7 @@
             console.log("error:" + res);
           }
         );
+        that.queryRooms()
         that.addSalesCourseDialog = false;
       },
       //删除户型信息
@@ -541,7 +543,7 @@
             this.$axios.postRequest(deleteParams).then(
               function(res) {
                 //成功之后处理逻辑
-                that.getBuildingInfo();
+                that.queryRooms();
                 that.$message({
                   type: "success",
                   message: "删除成功"
@@ -641,6 +643,30 @@
       },
       back(){
         this.$router.push('/15')
+      },
+      //请求户型
+      queryRooms(){
+        var that = this
+        var id = this.buildingId
+        var roomData = {
+          estate_id:id,
+          count: true,
+          orderby:'',
+          pageindex:1,
+          pagesize:20
+        }
+        var roomParams = {
+          methodUrl: 'bitHouse/bitHouseGetRoom',
+          jsonParam: qs.stringify(roomData)
+        }
+        this.$axios.postRequest(roomParams).then(function (res) {
+          //成功之后处理逻辑
+          that.roomList = res.data.list
+          that.total=res.data.totalcount
+        }, function (res) {
+          //失败之后处理逻辑
+          console.log("error:" + res)
+        })
       }
     },
     mounted() {

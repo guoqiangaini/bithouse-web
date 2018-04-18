@@ -172,7 +172,6 @@
       };
     },
     methods: {
-
       handleRowChange(val) {
         this.currentRow = val;
       },
@@ -365,9 +364,8 @@
         this.currentPage = val
         this.queryTags()
       },
-      handleSelectionChange(val) {
-        this.multipleSelection = val;
-      },
+      //查询户型
+
     },
     mounted(){
      this.queryTags()
