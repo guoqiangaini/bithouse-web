@@ -295,7 +295,7 @@
                 <el-row>
                   <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
                     <el-form-item label="楼盘标签" prop="buildTags">
-                      <el-select v-model="newPropertyForm.buildTags" multiple placeholder="请选择" style="width:94%" clearable>
+                      <el-select v-model="newPropertyForm.buildTags" multiple placeholder="请选择标签,最多4条" style="width:94%" :multiple-limit="4" clearable>
                         <el-option
                           v-for="item in options"
                           :key="item.id"
@@ -960,8 +960,10 @@ export default {
       this.pictureE='';
       this.pictureF='';
     },
+    //点击获取行数据
     handleRowChange(val) {
       this.currentRow = val;
+      console.log(val)
     },
     addPostSet(type){
       var that=this
