@@ -445,9 +445,9 @@
           this.buttonFlag="1"
           this.addSalesCourseDialog=true
         }else{
-          if (this.currentRow==='') {
+          if (this.currentRow==null||this.currentRow==='') {
             this.$message({
-              message: '请选择楼盘',
+              message: '请选择户型',
               showClose: true,
               type: 'warning'
             });
@@ -511,7 +511,7 @@
               var that=this
               var roomData= {
                 estate_id:this.buildingId,
-                id:this.multipleSelection[0].id,
+                id:this.currentRow.id,
                 apartment_name:this.salesForm.houseTypeName,
                 apartment_brief:this.salesForm.houseTypeDesc,
                 room_sum:this.salesForm.bedroomsNumber,
