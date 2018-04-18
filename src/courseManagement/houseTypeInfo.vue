@@ -15,7 +15,7 @@
       width="900px"
       @close="clearFormData('salesForm')"
       >
-      <el-form :model="salesForm" :rules="rules" ref="salesForm">
+      <el-form :model="salesForm" :rules="rules" ref="salesForm" :show-message="false">
         <fieldset style="border: 1px solid #c1c3c9;">
           <legend style="font-weight: 600">户型信息</legend>
           <div class="basicData">
@@ -210,7 +210,7 @@
                 </el-row>
                 <el-row style="text-align: center;margin:30px 0">
                   <el-button type="info" size="mini" @click="addSalesCourseDialog = false">取 消</el-button>
-                  <el-button type="info" size="mini" @click="submitNonmembet(1)">提交</el-button>
+                  <el-button type="info" size="mini" @click="submitNonmembet('salesForm')">提交</el-button>
                 </el-row>
               </el-col>
             </el-row>
@@ -328,11 +328,11 @@
           ],
           familyArea:[
             { required: true, message: '请输入面积',trigger: 'blur'},
-            {pattern: /^[0-9]*$/,trigger: 'blur'}
+            {pattern: /(^[1-9]\d*(\.\d{1,2})?$)|(^0(\.\d{1,2})?$)/,trigger: 'blur'}
           ],
           totalPrice:[
             { required: true, message: '请输入总价',trigger: 'blur'},
-            {pattern: /^[0-9]*$/,trigger: 'blur'}
+            {pattern: /(^[1-9]\d*(\.\d{1,2})?$)|(^0(\.\d{1,2})?$)/,trigger: 'blur'}
           ],
           salesStatus:[
             { required: true, message: '请输入销售状态',trigger: 'change'},
@@ -360,7 +360,6 @@
       },
       handleRowChange(val) {
         this.currentRow = val;
-        console.log(val)
       },
       formatValue(row, column, cellValue){
         switch(row.sale_state) {
@@ -434,7 +433,6 @@
               that.pictureE=response.data.image_url
             }else if(flag==7){
               that.pictureF=response.data.image_url
-              console.log(that.pictureF)
             }
 
           });
@@ -482,64 +480,73 @@
 
       },
       //提交户型信息
-      submitNonmembet(type){
-        if(this.buttonFlag==1){
-          var that=this
-          var roomData = {
-            estate_id:this.buildingId,
-            apartment_name:this.salesForm.houseTypeName,
-            apartment_brief:this.salesForm.houseTypeDesc,
-            room_sum:this.salesForm.bedroomsNumber,
-            apartment_measure:this.salesForm.familyArea,
-            total_price:this.salesForm.totalPrice,
-            sale_state:this.salesForm.salesStatus,
-            pic_url:this.pictureCover,
-            tag_ids:this.salesForm.roomTags.join(','),
-            image_a:this.pictureA,
-            image_b:this.pictureB ,
-            image_c:this.pictureC ,
-            image_d:this.pictureD ,
-            image_e:this.pictureE ,
-            image_f:this.pictureF ,
-          };
-          var roomParams = {
-            methodUrl: "bitHouse/bitHouseAddRoom",
-            jsonParam: qs.stringify(roomData)
-          };
-        }else{
-          var that=this
-          var roomData= {
-            estate_id:this.buildingId,
-            id:this.multipleSelection[0].id,
-            apartment_name:this.salesForm.houseTypeName,
-            apartment_brief:this.salesForm.houseTypeDesc,
-            room_sum:this.salesForm.bedroomsNumber,
-            apartment_measure:this.salesForm.familyArea,
-            total_price:this.salesForm.totalPrice,
-            sale_state:this.salesForm.salesStatus,
-            pic_url:this.pictureCover,
-            tag_ids:this.salesForm.roomTags.join(','),
-            image_a:this.pictureA,
-            image_b:this.pictureB ,
-            image_c:this.pictureC ,
-            image_d:this.pictureD ,
-            image_e:this.pictureE ,
-            image_f:this.pictureF ,
-          };
-          var roomParams={
-            methodUrl: "bitHouse/bitHouseUpdateRoom",
-            jsonParam: qs.stringify(roomData)
+      submitNonmembet(formName){
+        var that=this
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            if(this.buttonFlag==1){
+              var that=this
+              var roomData = {
+                estate_id:this.buildingId,
+                apartment_name:this.salesForm.houseTypeName,
+                apartment_brief:this.salesForm.houseTypeDesc,
+                room_sum:this.salesForm.bedroomsNumber,
+                apartment_measure:this.salesForm.familyArea,
+                total_price:this.salesForm.totalPrice,
+                sale_state:this.salesForm.salesStatus,
+                pic_url:this.pictureCover,
+                tag_ids:this.salesForm.roomTags.join(','),
+                image_a:this.pictureA,
+                image_b:this.pictureB ,
+                image_c:this.pictureC ,
+                image_d:this.pictureD ,
+                image_e:this.pictureE ,
+                image_f:this.pictureF ,
+              };
+              var roomParams = {
+                methodUrl: "bitHouse/bitHouseAddRoom",
+                jsonParam: qs.stringify(roomData)
+              };
+            }else{
+              var that=this
+              var roomData= {
+                estate_id:this.buildingId,
+                id:this.multipleSelection[0].id,
+                apartment_name:this.salesForm.houseTypeName,
+                apartment_brief:this.salesForm.houseTypeDesc,
+                room_sum:this.salesForm.bedroomsNumber,
+                apartment_measure:this.salesForm.familyArea,
+                total_price:this.salesForm.totalPrice,
+                sale_state:this.salesForm.salesStatus,
+                pic_url:this.pictureCover,
+                tag_ids:this.salesForm.roomTags.join(','),
+                image_a:this.pictureA,
+                image_b:this.pictureB ,
+                image_c:this.pictureC ,
+                image_d:this.pictureD ,
+                image_e:this.pictureE ,
+                image_f:this.pictureF ,
+              };
+              var roomParams={
+                methodUrl: "bitHouse/bitHouseUpdateRoom",
+                jsonParam: qs.stringify(roomData)
+              }
+            }
+            this.$axios.postRequest(roomParams).then(
+              function(res) {
+                //成功之后处理逻辑
+              },
+              function(res) {
+                //失败之后处理逻辑
+                console.log("error:" + res);
+              }
+            );
+          } else {
+            console.log('error submit!!');
+            return false;
           }
-        }
-        this.$axios.postRequest(roomParams).then(
-          function(res) {
-            //成功之后处理逻辑
-          },
-          function(res) {
-            //失败之后处理逻辑
-            console.log("error:" + res);
-          }
-        );
+        });
+
         that.queryRooms()
         that.addSalesCourseDialog = false;
       },
@@ -616,56 +623,14 @@
           "font-size":"12px"
         }
       },
-      //打开详情
+      //分页
       handleSizeChange(val) {
-        var userData = qs.parse(sessionStorage.getItem("userData"));
-        console.log(`每页 ${val} 条`);
         this.pageSize = val
-        var postData = {
-          regserial: userData.company_serial,
-          permissions_id:userData.permissions_id,
-          count: true,
-          pageindex: this.currentPage,
-          pagesize: val
-        }
-        var params = {
-          methodUrl: 'courseManagement/getLevelExaminationInfo',
-          jsonParam: qs.stringify(postData)
-        }
-        var that = this
-        this.$axios.postRequest(params).then(function (res) {
-          //成功之后处理逻辑
-          that.testLevel = res.data.list
-          that.total = res.data.totalcount
-        }, function (res) {
-          //失败之后处理逻辑
-          console.log("error:" + res)
-        })
+        this.queryRooms()
       },
       handleCurrentChange(val) {
-        var userData = qs.parse(sessionStorage.getItem("userData"));
-        console.log(`当前页: ${val}`);
         this.currentPage = val
-        var postData = {
-          regserial: userData.company_serial,
-          permissions_id:userData.permissions_id,
-          count: true,
-          pageindex: val,
-          pagesize: this.pageSize
-        }
-        var params = {
-          methodUrl: 'courseManagement/getLevelExaminationInfo',
-          jsonParam: qs.stringify(postData)
-        }
-        var that = this
-        this.$axios.postRequest(params).then(function (res) {
-          //成功之后处理逻辑
-          that.testLevel = res.data.list
-          that.total = res.data.totalcount
-        }, function (res) {
-          //失败之后处理逻辑
-          console.log("error:" + res)
-        })
+       this.queryRooms()
       },
       back(){
         this.$router.push('/15')
@@ -673,9 +638,8 @@
       //请求户型
       queryRooms(){
         var that = this
-        var id = this.buildingId
         var roomData = {
-          estate_id:id,
+          estate_id:this.buildingId,
           count: true,
           orderby:'',
           pageindex:1,

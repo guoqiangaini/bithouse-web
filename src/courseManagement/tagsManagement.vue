@@ -95,7 +95,16 @@
         currentRow:'',
         tagsList:[],
         tagType:'',
-        tagTypes:[],
+        tagTypes:[
+          {
+            id:'1',
+            name:'楼盘标签'
+          },
+          {
+            id:'2',
+            name:'户型标签'
+          }
+        ],
         tableObject: [
           {
             field: 'test',
@@ -315,9 +324,8 @@
                 console.log("error:" + res)
               })
             }
-            that.dialogFormVisible = false
             that.queryTags()
-
+            that.dialogFormVisible = false
           } else {
             return false;
           }
