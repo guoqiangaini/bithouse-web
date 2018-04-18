@@ -40,7 +40,7 @@
                   </el-col>
                   <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
                     <el-form-item label="推荐楼盘" prop="hidding"  label-width="70px">
-                      <el-select v-model="newPropertyForm.hidding" placeholder="请选择">
+                      <el-select v-model="newPropertyForm.hidding" placeholder="请选择" clearable>
                         <el-option label="显示" value="0"></el-option>
                         <el-option label="隐藏" value="1"></el-option>
                       </el-select>
@@ -51,12 +51,12 @@
                 <el-row>
                   <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
                     <el-form-item label="楼盘名称" prop="housesName">
-                      <el-input v-model="newPropertyForm.housesName"></el-input>
+                      <el-input v-model="newPropertyForm.housesName" clearable></el-input>
                     </el-form-item>
                   </el-col>
                   <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
                     <el-form-item label="销售状态" prop="salesStatus">
-                      <el-select v-model="newPropertyForm.salesStatus" placeholder="请选择">
+                      <el-select v-model="newPropertyForm.salesStatus" placeholder="请选择" clearable>
                         <el-option label="未开盘" value="0"></el-option>
                         <el-option label="在售" value="1"></el-option>
                         <el-option label="停售" value="2"></el-option>
@@ -68,44 +68,53 @@
                 <el-row>
                   <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
                     <el-form-item label="楼盘维度" prop="coordinateX">
-                      <el-input v-model="newPropertyForm.coordinateX"></el-input>
+                      <el-input v-model="newPropertyForm.coordinateX" clearable></el-input>
                     </el-form-item>
                   </el-col>
                   <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
                     <el-form-item label="楼盘经度" prop="coordinateY">
-                        <el-input v-model="newPropertyForm.coordinateY"></el-input>
+                        <el-input v-model="newPropertyForm.coordinateY" clearable></el-input>
                       </el-form-item>
                   </el-col>
                 </el-row>
                 <!--开盘均价，开盘时间-->
                 <el-row>
-                  <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12"> <el-form-item label="开盘均价" prop="housesPrice">
-                    <el-input  v-model="newPropertyForm.housesPrice"></el-input>元/m²
-                  </el-form-item></el-col>
-                  <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12"><el-form-item label="开盘日期" prop="openTime">
-                    <el-date-picker
+                  <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+                    <el-form-item label="开盘均价" prop="housesPrice">
+                      <el-input  v-model="newPropertyForm.housesPrice" clearable></el-input>元/m²
+                  </el-form-item>
+                  </el-col>
+                  <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+                    <el-form-item label="开盘日期" prop="openTime">
+                      <el-date-picker
                       v-model="newPropertyForm.openTime"
                       type="date"
+                      clearable
                       format="yyyy-MM-dd"
                       value-format="yyyy-MM-dd"
                       placeholder="选择日期">
                     </el-date-picker>
-                  </el-form-item></el-col>
+                  </el-form-item>
+                  </el-col>
                 </el-row>
                 <!--楼盘最小面积，楼盘最大面积-->
                 <el-row>
-                  <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12"> <el-form-item label="最小面积" prop="measureMin">
-                    <el-input v-model="newPropertyForm.measureMin"></el-input>m²
-                  </el-form-item></el-col>
-                  <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12"><el-form-item label="最大面积" prop="measureMax">
-                    <el-input v-model="newPropertyForm.measureMax"></el-input>m²
-                  </el-form-item></el-col>
+                  <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+                    <el-form-item label="最小面积" prop="measureMin">
+                      <el-input v-model="newPropertyForm.measureMin" clearable></el-input>m²
+                  </el-form-item>
+                  </el-col>
+                  <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+                    <el-form-item label="最大面积" prop="measureMax">
+                      <el-input v-model="newPropertyForm.measureMax" clearable></el-input>m²
+                  </el-form-item>
+                  </el-col>
                 </el-row>
                 <!--楼盘卧室数量-->
                 <el-row>
                   <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
                     <el-form-item label="卧室数量" prop="bedroomsNumber">
-                      <el-select v-model="newPropertyForm.bedroomsNumber" multiple placeholder="请选择" style="width:94%">
+                      <el-select v-model="newPropertyForm.bedroomsNumber" multiple placeholder="请选择" style="width:94%" clearable>
                         <el-option
                           v-for="item in option"
                           :key="item.value"
@@ -120,7 +129,7 @@
                 <el-row>
                   <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
                     <el-form-item label="装修状态" prop="decorationStatus">
-                      <el-select v-model="newPropertyForm.decorationStatus" placeholder="请选择">
+                      <el-select v-model="newPropertyForm.decorationStatus" placeholder="请选择" clearable>
                         <el-option label="精装修" value="1"></el-option>
                         <el-option label="简装修" value="2"></el-option>
                         <el-option label="毛坯房" value="3"></el-option>
@@ -129,7 +138,7 @@
                   </el-col>
                   <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
                     <el-form-item label="是否推荐" prop="recommend">
-                      <el-select v-model="newPropertyForm.recommend" placeholder="请选择">
+                      <el-select v-model="newPropertyForm.recommend" placeholder="请选择" clearable>
                         <el-option label="置顶" value="1"></el-option>
                         <el-option label="推荐" value="2"></el-option>
                       </el-select>
@@ -138,56 +147,66 @@
                 </el-row>
                 <!--交房时间，物业类型-->
                 <el-row>
-                  <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12"><el-form-item label="交房日期" prop="handleTime">
+                  <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+                    <el-form-item label="交房日期" prop="handleTime">
                     <el-date-picker
                       v-model="newPropertyForm.handleTime"
                       type="date"
+                      clearable
                       format="yyyy-MM-dd"
                       value-format="yyyy-MM-dd"
                       placeholder="选择日期">
                     </el-date-picker>
                   </el-form-item>
                   </el-col>
-                  <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12"><el-form-item label="物业类型" prop="propertyType">
-                    <el-select v-model="newPropertyForm.propertyType" placeholder="请选择">
+                  <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+                    <el-form-item label="物业类型" prop="propertyType">
+                    <el-select v-model="newPropertyForm.propertyType" placeholder="请选择" clearable>
                       <el-option label="住宅" value="1"></el-option>
                       <el-option label="公寓" value="2"></el-option>
                       <el-option label="商品房" value="3"></el-option>
                     </el-select>
-                  </el-form-item></el-col>
+                  </el-form-item>
+                  </el-col>
                 </el-row>
                 <!--建筑类型，产权年限-->
                 <el-row>
-                  <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12"><el-form-item label="建筑类型" prop="buildingType">
-                    <el-input v-model="newPropertyForm.buildingType"></el-input>
+                  <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+                    <el-form-item label="建筑类型" prop="buildingType">
+                      <el-input v-model="newPropertyForm.buildingType" clearable></el-input>
                   </el-form-item></el-col>
-                  <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12"><el-form-item label="产权年限" prop="yearLimit">
-                    <el-select v-model="newPropertyForm.yearLimit" placeholder="请选择">
+                  <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+                    <el-form-item label="产权年限" prop="yearLimit">
+                      <el-select v-model="newPropertyForm.yearLimit" placeholder="请选择" clearable>
                       <el-option label="40" value="1"></el-option>
                       <el-option label="70" value="2"></el-option>
                     </el-select>
-                  </el-form-item></el-col>
+                    </el-form-item></el-col>
                 </el-row>
                 <!--主推户型，楼栋总数-->
                 <el-row>
                   <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
                     <el-form-item label="主推户型" prop="majorLayout">
-                        <el-input v-model="newPropertyForm.majorLayout"></el-input>
+                        <el-input v-model="newPropertyForm.majorLayout" clearable></el-input>
                     </el-form-item>
                   </el-col>
-                  <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12"><el-form-item label="楼栋总数" prop="buildingTotal">
-                    <el-input v-model="newPropertyForm.buildingTotal"></el-input>
-                  </el-form-item></el-col>
+                  <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+                    <el-form-item label="楼栋总数" prop="buildingTotal">
+                      <el-input v-model="newPropertyForm.buildingTotal" clearable></el-input>
+                    </el-form-item>
+                  </el-col>
                 </el-row>
                 <!--开发商，楼盘区位-->
                 <el-row>
-                  <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12"><el-form-item label="开发商" prop="developers">
-                    <el-input v-model="newPropertyForm.developers"></el-input>
-                  </el-form-item></el-col>
+                  <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+                    <el-form-item label="开发商" prop="developers">
+                      <el-input v-model="newPropertyForm.developers" clearable></el-input>
+                    </el-form-item>
+                  </el-col>
                   <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
                     <el-form-item label="楼盘位置" prop="district">
                         <el-select v-model="newPropertyForm.district" placeholder="选择区" clearable>
-                        <el-option
+                          <el-option
                           v-for="item in districts"
                           :key="item.id"
                           :label="item.area_name"
@@ -201,12 +220,12 @@
                 <el-row>
                   <el-col  :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
                     <el-form-item prop="street" label="楼盘街道">
-                      <el-input v-model="newPropertyForm.street" placeholder="输入街道路名称"></el-input>
+                      <el-input v-model="newPropertyForm.street" placeholder="输入街道路名称" clearable></el-input>
                     </el-form-item>
                   </el-col>
                   <el-col  :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
                     <el-form-item prop="detailAddress" label="详细地址">
-                      <el-input v-model="newPropertyForm.detailAddress" placeholder="输入详细地址"></el-input>
+                      <el-input v-model="newPropertyForm.detailAddress" placeholder="输入详细地址" clearable></el-input>
                     </el-form-item>
                   </el-col>
                 </el-row>
@@ -221,61 +240,83 @@
                 </el-row>
                 <!--物业费，占地面积-->
                 <el-row>
-                  <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12"><el-form-item label="物业费" prop="propertyCosts">
-                    <el-input v-model="newPropertyForm.propertyCosts"></el-input>元
-                  </el-form-item></el-col>
-                  <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12"><el-form-item label="占地面积" prop="plantArea">
-                    <el-input v-model="newPropertyForm.plantArea"></el-input>/m²
-                  </el-form-item></el-col>
+                  <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+                    <el-form-item label="物业费" prop="propertyCosts">
+                      <el-input v-model="newPropertyForm.propertyCosts" clearable></el-input>元
+                  </el-form-item>
+                  </el-col>
+                  <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+                    <el-form-item label="占地面积" prop="plantArea">
+                      <el-input v-model="newPropertyForm.plantArea" clearable></el-input>/m²
+                  </el-form-item>
+                  </el-col>
                 </el-row>
                 <!--建筑面积，容积率-->
                 <el-row>
-                  <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12"><el-form-item label="建筑面积" prop="buildingArea">
-                    <el-input v-model="newPropertyForm.buildingArea"></el-input>/m²
-                  </el-form-item></el-col>
-                  <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12"><el-form-item label="容积率" prop="plotRatio">
-                    <el-input v-model="newPropertyForm.plotRatio"></el-input>%
-                  </el-form-item></el-col>
+                  <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+                    <el-form-item label="建筑面积" prop="buildingArea">
+                      <el-input v-model="newPropertyForm.buildingArea" clearable>
+                    </el-input>/m²
+                  </el-form-item>
+                  </el-col>
+                  <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+                    <el-form-item label="容积率" prop="plotRatio">
+                      <el-input v-model="newPropertyForm.plotRatio" clearable></el-input>%
+                  </el-form-item>
+                  </el-col>
                 </el-row>
                 <!--绿化率，规划户数-->
                 <el-row>
-                  <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12"><el-form-item label="绿化率" prop="greeningRate">
-                    <el-input v-model="newPropertyForm.greeningRate"></el-input>%
-                  </el-form-item></el-col>
-                  <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12"><el-form-item label="规划户数" prop="households">
-                    <el-input v-model="newPropertyForm.households"></el-input>
-                  </el-form-item></el-col>
+                  <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+                    <el-form-item label="绿化率" prop="greeningRate">
+                      <el-input v-model="newPropertyForm.greeningRate" clearable></el-input>%
+                    </el-form-item>
+                  </el-col>
+                  <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+                    <el-form-item label="规划户数" prop="households">
+                      <el-input v-model="newPropertyForm.households" clearable></el-input>
+                    </el-form-item>
+                  </el-col>
                 </el-row>
                 <!--规划车位，交通情况-->
                 <el-row>
-                  <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12"><el-form-item label="规划车位" prop="carport">
-                    <el-input v-model="newPropertyForm.carport"></el-input>
-                  </el-form-item></el-col>
-                  <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12"><el-form-item label="周边交通" prop="trafficConditions">
-                    <el-input v-model="newPropertyForm.trafficConditions"></el-input>
-                  </el-form-item></el-col>
+                  <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+                    <el-form-item label="规划车位" prop="carport">
+                      <el-input v-model="newPropertyForm.carport" clearable></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+                    <el-form-item label="周边交通" prop="trafficConditions">
+                      <el-input v-model="newPropertyForm.trafficConditions"  clearable></el-input>
+                    </el-form-item>
+                  </el-col>
                 </el-row>
                 <!--楼盘标签-->
                 <el-row>
-                  <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24"><el-form-item label="楼盘标签" prop="buildTags">
-                    <el-select v-model="newPropertyForm.buildTags" multiple placeholder="请选择" style="width:94%">
-                      <el-option
-                        v-for="item in options"
-                        :key="item.id"
-                        :label="item.tag_name"
-                        :value="item.id">
-                      </el-option>
-                    </el-select>
-                  </el-form-item></el-col>
+                  <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
+                    <el-form-item label="楼盘标签" prop="buildTags">
+                      <el-select v-model="newPropertyForm.buildTags" multiple placeholder="请选择" style="width:94%" clearable>
+                        <el-option
+                          v-for="item in options"
+                          :key="item.id"
+                          :label="item.tag_name"
+                          :value="item.id">
+                        </el-option>
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
                 </el-row>
                 <!--商业配套，学区-->
                 <el-row>
-                  <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12"><el-form-item label="商业配套" prop="BUSINESS">
-                    <el-input v-model="newPropertyForm.BUSINESS"></el-input>
-                  </el-form-item></el-col>
-                  <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12"><el-form-item label="学区" prop="schoolDistrict">
-                    <el-input v-model="newPropertyForm.schoolDistrict"></el-input>
-                  </el-form-item></el-col>
+                  <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+                    <el-form-item label="商业配套" prop="BUSINESS">
+                      <el-input v-model="newPropertyForm.BUSINESS" clearable></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+                    <el-form-item label="学区" prop="schoolDistrict">
+                      <el-input v-model="newPropertyForm.schoolDistrict" clearable></el-input>
+                    </el-form-item></el-col>
                 </el-row>
                 <!--轮播图片上传-->
                 <el-row>
@@ -382,9 +423,9 @@
           </div>
         </fieldset>
       </el-form>
-      <div slot="footer" class="dialog-footer" style="text-align: center">
+      <div slot="footer" class="dialog-footer" style="text-align:center">
         <el-button size="mini" @click="dialogVisible = false" class="dialogCancelButton">取 消</el-button>
-        <el-button size="mini" type="primary" @click="submitPostSet('newPropertyForm')">添加</el-button>
+        <el-button size="mini" type="primary" @click="submitPostSet('newPropertyForm')">提交</el-button>
       </div>
     </el-dialog>
     <el-table
