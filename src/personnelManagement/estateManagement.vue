@@ -297,7 +297,7 @@
                     <el-form-item label="楼盘标签" prop="buildTags">
                       <el-select v-model="newPropertyForm.buildTags" multiple placeholder="请选择标签,最多4条" style="width:94%" :multiple-limit="4" clearable>
                         <el-option
-                          v-for="item in options"
+                          v-for="(item,index) in options"
                           :key="item.id"
                           :label="item.tag_name"
                           :value="item.id">
@@ -675,9 +675,11 @@ export default {
         ],
         coordinateX:[
           {required: true, message: '请填写经度', trigger: 'blur'},
+          {pattern: /(?:[0-9]|[1-9][0-9]|1[0-7][0-9]|180)\.([0-9]{6})/,trigger: 'blur'}
         ],
         coordinateY:[
           {required: true, message: '请填写维度', trigger: 'blur'},
+          {pattern: /(?:[0-9]|[1-8][0-9]|90)\.([0-9]{6})/,trigger: 'blur'}
         ],
         housesPrice:[
           { required: true, message: '请输入房价',trigger: 'blur'},
@@ -853,12 +855,10 @@ export default {
     },
     //分页
     handleSizeChange(val) {
-      var userData = qs.parse(sessionStorage.getItem("userData"));
       this.pageSize = val
       this.getBuildingInfo()
     },
     handleCurrentChange(val) {
-      var userData = qs.parse(sessionStorage.getItem("userData"));
       this.currentPage = val
       this.getBuildingInfo()
     },
