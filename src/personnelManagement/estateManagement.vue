@@ -384,7 +384,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer" style="text-align: center">
         <el-button size="mini" @click="dialogVisible = false" class="dialogCancelButton">取 消</el-button>
-        <el-button size="mini" type="primary" @click="submitPostSet()">添加</el-button>
+        <el-button size="mini" type="primary" @click="submitPostSet('newPropertyForm')">添加</el-button>
       </div>
     </el-dialog>
     <el-table
@@ -640,18 +640,18 @@ export default {
         ],
         housesPrice:[
           { required: true, message: '请输入房价',trigger: 'blur'},
-          {pattern: /^[0-9]*$/,trigger: 'blur'}
+          {pattern: /(^[1-9]\d*(\.\d{1,2})?$)|(^0(\.\d{1,2})?$)/,trigger: 'blur'}
         ],
         openTime:[
           {required: true, message: '请选择活动区域', trigger: 'change'},
         ],
         measureMin:[
           { required: true, message: '请输入面积',trigger: 'blur'},
-          {pattern: /^[0-9]*$/,trigger: 'blur'}
+          {pattern:/(^[1-9]\d*(\.\d{1,2})?$)|(^0(\.\d{1,2})?$)/,trigger: 'blur'}
         ],
         measureMax:[
           { required: true, message: '请输入面积',trigger: 'blur'},
-          {pattern: /^[0-9]*$/,trigger: 'blur'}
+          {pattern: /(^[1-9]\d*(\.\d{1,2})?$)|(^0(\.\d{1,2})?$)/,trigger: 'blur'}
         ],
         bedroomsNumber:[
           { type: 'array', required: true, message: '请至少选择一个户室', trigger: 'change' }
@@ -705,19 +705,19 @@ export default {
         ],
         plantArea:[
           { required: true, message: '请填写占地面积',trigger: 'blur'},
-          {pattern: /^[0-9]*$/,trigger: 'blur'}
+          {pattern: /(^[1-9]\d*(\.\d{1,2})?$)|(^0(\.\d{1,2})?$)/,trigger: 'blur'}
         ],
         buildingArea:[
           { required: true, message: '请填写建筑面积',trigger: 'blur'},
-          {pattern: /^[0-9]*$/,trigger: 'blur'}
+          {pattern: /(^[1-9]\d*(\.\d{1,2})?$)|(^0(\.\d{1,2})?$)/,trigger: 'blur'}
         ],
         plotRatio:[
           { required: true, message: '请填写容积率',trigger: 'blur'},
-          {pattern: /^[0-9]*$/,trigger: 'blur'}
+          {pattern: /(^[1-9]\d*(\.\d{1,2})?$)|(^0(\.\d{1,2})?$)/,trigger: 'blur'}
         ],
         greeningRate:[
           { required: true, message: '请填写绿化率',trigger: 'blur'},
-          {pattern: /^[0-9]*$/,trigger: 'blur'}
+          {pattern: /(^[1-9]\d*(\.\d{1,2})?$)|(^0(\.\d{1,2})?$)/,trigger: 'blur'}
         ],
         households:[
           { required: true, message: '请填写规划户数',trigger: 'blur'},
@@ -725,6 +725,7 @@ export default {
         ],
         carport:[
           { required: true, message: '请填写规划车位',trigger: 'blur'},
+          {pattern: /^[0-9]*$/,trigger: 'blur'}
         ],
         trafficConditions:[
           { required: true, message: '请填写交通情况',trigger: 'blur'},
@@ -744,18 +745,9 @@ export default {
       },
       //
       positionInfoList: [],
-      multipleTable: [],
-      examItemValues: [],
-      pickerOptions1: {
-        disabledDate(time) {
-          return time.getTime() > Date.now();
-        }
-      },
       dialogVisible: false,
       dialogTitle: "", //弹窗标题
       isAdd: "", //1：新增0修改
-      postSetId: "", //岗位id
-      postSetData: [] //岗位动态value
     };
   },
   computed: {
@@ -821,7 +813,6 @@ export default {
     //分页
     handleSizeChange(val) {
       var userData = qs.parse(sessionStorage.getItem("userData"));
-      console.log(`每页 ${val} 条`);
       this.pageSize = val
       this.getBuildingInfo()
     },
@@ -888,7 +879,6 @@ export default {
             that.pictureE=response.data.image_url
           }else if(flag==7){
             that.pictureF=response.data.image_url
-            console.log(that.pictureF)
           }
 
         });
@@ -931,7 +921,6 @@ export default {
     },
     handleRowChange(val) {
       this.currentRow = val;
-      console.log(val)
     },
     addPostSet(type){
       var that=this
@@ -1021,120 +1010,127 @@ export default {
       };
     },
     //提交新增、修改楼盘信息
-    submitPostSet() {
-      if(this.isAdd==1){
-        var that=this
-        var buildingData = {
-          hide_recommend:this.newPropertyForm.hidding,
-          estate_name:this.newPropertyForm.housesName ,
-          coordinate_x:this.newPropertyForm.coordinateX,
-          coordinate_y:this.newPropertyForm.coordinateY,
-          area_id:this.newPropertyForm.district,
-          area_bref:this.newPropertyForm.street,
-          area_detail:this.newPropertyForm.detailAddress,
-          rooms:this.newPropertyForm.bedroomsNumber.join(','),
-          measure_min:this.newPropertyForm.measureMin,
-          measure_max:this.newPropertyForm.measureMax ,
-          sale_state:this.newPropertyForm.salesStatus,
-          average_price:this.newPropertyForm.housesPrice,
-          open_date:this.newPropertyForm.openTime,
-          deliver_date:this.newPropertyForm.handleTime,
-          property_type:this.newPropertyForm.propertyType,
-          building_type:this.newPropertyForm.buildingType,
-          owner_year:this.newPropertyForm.yearLimit,
-          decoration_state:this.newPropertyForm.decorationStatus,
-          major_layout:this.newPropertyForm.majorLayout,
-          building_sum:this.newPropertyForm.buildingTotal,
-          developers:this.newPropertyForm.developers,
-          sale_area:this.newPropertyForm.salesLocation,
-          property_company:this.newPropertyForm.propertyName,
-          property_fee:this.newPropertyForm.propertyCosts,
-          area_covered:this.newPropertyForm.plantArea ,
-          build_covered:this.newPropertyForm.buildingArea,
-          volumetric_rate:this.newPropertyForm.plotRatio,
-          green_rate:this.newPropertyForm.greeningRate,
-          plan_households:this.newPropertyForm.households,
-          plan_parkinglot:this.newPropertyForm.carport,
-          pic_url:this.pictureCover,
-          recommend:this.newPropertyForm.recommend ,
-          commercial_matching:this.newPropertyForm.BUSINESS,
-          school_district:this.newPropertyForm.schoolDistrict,
-          peripheral_traffic:this.newPropertyForm.trafficConditions,
-          tag_ids:this.newPropertyForm.buildTags.join(','),
-          image_a:this.pictureA,
-          image_b:this.pictureB ,
-          image_c:this.pictureC ,
-          image_d:this.pictureD ,
-          image_e:this.pictureE ,
-          image_f:this.pictureF ,
-        };
-        var buildingParams = {
-          methodUrl: "bitHouse/bitHouseAddBuilding",
-          jsonParam: qs.stringify(buildingData)
-        };
-      }else{
-        var that=this
-        var id=this.currentRow.id
-        var buildingData= {
-          id:id,
-          hide_recommend:this.newPropertyForm.hidding,
-          estate_name:this.newPropertyForm.housesName ,
-          coordinate_x:this.newPropertyForm.coordinateX,
-          coordinate_y:this.newPropertyForm.coordinateY,
-          area_id:this.newPropertyForm.district,
-          area_bref:this.newPropertyForm.street,
-          area_detail:this.newPropertyForm.detailAddress,
-          rooms:this.newPropertyForm.bedroomsNumber.join(','),
-          measure_min:this.newPropertyForm.measureMin,
-          measure_max:this.newPropertyForm.measureMax ,
-          sale_state:this.newPropertyForm.salesStatus,
-          average_price:this.newPropertyForm.housesPrice,
-          open_date:this.newPropertyForm.openTime,
-          deliver_date:this.newPropertyForm.handleTime,
-          property_type:this.newPropertyForm.propertyType,
-          building_type:this.newPropertyForm.buildingType,
-          owner_year:this.newPropertyForm.yearLimit,
-          decoration_state:this.newPropertyForm.decorationStatus,
-          major_layout:this.newPropertyForm.majorLayout,
-          building_sum:this.newPropertyForm.buildingTotal,
-          developers:this.newPropertyForm.developers,
-          sale_area:this.newPropertyForm.salesLocation,
-          property_company:this.newPropertyForm.propertyName,
-          property_fee:this.newPropertyForm.propertyCosts,
-          area_covered:this.newPropertyForm.plantArea ,
-          build_covered:this.newPropertyForm.buildingArea,
-          volumetric_rate:this.newPropertyForm.plotRatio,
-          green_rate:this.newPropertyForm.greeningRate,
-          plan_households:this.newPropertyForm.households,
-          plan_parkinglot:this.newPropertyForm.carport,
-          pic_url:this.pictureCover,
-          recommend:this.newPropertyForm.recommend ,
-          commercial_matching:this.newPropertyForm.BUSINESS,
-          school_district:this.newPropertyForm.schoolDistrict,
-          peripheral_traffic:this.newPropertyForm.trafficConditions,
-          tag_ids:this.newPropertyForm.buildTags.join(','),
-          image_a:this.pictureA,
-          image_b:this.pictureB ,
-          image_c:this.pictureC ,
-          image_d:this.pictureD ,
-          image_e:this.pictureE ,
-          image_f:this.pictureF ,
-        };
-        var buildingParams={
-          methodUrl: "bitHouse/bitHouseUpdateBuilding",
-          jsonParam: qs.stringify(buildingData)
+    submitPostSet(formName) {
+      var that=this
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          if(this.isAdd==1){
+            var that=this
+            var buildingData = {
+              hide_recommend:this.newPropertyForm.hidding,
+              estate_name:this.newPropertyForm.housesName ,
+              coordinate_x:this.newPropertyForm.coordinateX,
+              coordinate_y:this.newPropertyForm.coordinateY,
+              area_id:this.newPropertyForm.district,
+              area_bref:this.newPropertyForm.street,
+              area_detail:this.newPropertyForm.detailAddress,
+              rooms:this.newPropertyForm.bedroomsNumber.join(','),
+              measure_min:this.newPropertyForm.measureMin,
+              measure_max:this.newPropertyForm.measureMax ,
+              sale_state:this.newPropertyForm.salesStatus,
+              average_price:this.newPropertyForm.housesPrice,
+              open_date:this.newPropertyForm.openTime,
+              deliver_date:this.newPropertyForm.handleTime,
+              property_type:this.newPropertyForm.propertyType,
+              building_type:this.newPropertyForm.buildingType,
+              owner_year:this.newPropertyForm.yearLimit,
+              decoration_state:this.newPropertyForm.decorationStatus,
+              major_layout:this.newPropertyForm.majorLayout,
+              building_sum:this.newPropertyForm.buildingTotal,
+              developers:this.newPropertyForm.developers,
+              sale_area:this.newPropertyForm.salesLocation,
+              property_company:this.newPropertyForm.propertyName,
+              property_fee:this.newPropertyForm.propertyCosts,
+              area_covered:this.newPropertyForm.plantArea ,
+              build_covered:this.newPropertyForm.buildingArea,
+              volumetric_rate:this.newPropertyForm.plotRatio,
+              green_rate:this.newPropertyForm.greeningRate,
+              plan_households:this.newPropertyForm.households,
+              plan_parkinglot:this.newPropertyForm.carport,
+              pic_url:this.pictureCover,
+              recommend:this.newPropertyForm.recommend ,
+              commercial_matching:this.newPropertyForm.BUSINESS,
+              school_district:this.newPropertyForm.schoolDistrict,
+              peripheral_traffic:this.newPropertyForm.trafficConditions,
+              tag_ids:this.newPropertyForm.buildTags.join(','),
+              image_a:this.pictureA,
+              image_b:this.pictureB ,
+              image_c:this.pictureC ,
+              image_d:this.pictureD ,
+              image_e:this.pictureE ,
+              image_f:this.pictureF ,
+            };
+            var buildingParams = {
+              methodUrl: "bitHouse/bitHouseAddBuilding",
+              jsonParam: qs.stringify(buildingData)
+            };
+          }else{
+            var id=this.currentRow.id
+            var buildingData= {
+              id:id,
+              hide_recommend:this.newPropertyForm.hidding,
+              estate_name:this.newPropertyForm.housesName ,
+              coordinate_x:this.newPropertyForm.coordinateX,
+              coordinate_y:this.newPropertyForm.coordinateY,
+              area_id:this.newPropertyForm.district,
+              area_bref:this.newPropertyForm.street,
+              area_detail:this.newPropertyForm.detailAddress,
+              rooms:this.newPropertyForm.bedroomsNumber.join(','),
+              measure_min:this.newPropertyForm.measureMin,
+              measure_max:this.newPropertyForm.measureMax ,
+              sale_state:this.newPropertyForm.salesStatus,
+              average_price:this.newPropertyForm.housesPrice,
+              open_date:this.newPropertyForm.openTime,
+              deliver_date:this.newPropertyForm.handleTime,
+              property_type:this.newPropertyForm.propertyType,
+              building_type:this.newPropertyForm.buildingType,
+              owner_year:this.newPropertyForm.yearLimit,
+              decoration_state:this.newPropertyForm.decorationStatus,
+              major_layout:this.newPropertyForm.majorLayout,
+              building_sum:this.newPropertyForm.buildingTotal,
+              developers:this.newPropertyForm.developers,
+              sale_area:this.newPropertyForm.salesLocation,
+              property_company:this.newPropertyForm.propertyName,
+              property_fee:this.newPropertyForm.propertyCosts,
+              area_covered:this.newPropertyForm.plantArea ,
+              build_covered:this.newPropertyForm.buildingArea,
+              volumetric_rate:this.newPropertyForm.plotRatio,
+              green_rate:this.newPropertyForm.greeningRate,
+              plan_households:this.newPropertyForm.households,
+              plan_parkinglot:this.newPropertyForm.carport,
+              pic_url:this.pictureCover,
+              recommend:this.newPropertyForm.recommend ,
+              commercial_matching:this.newPropertyForm.BUSINESS,
+              school_district:this.newPropertyForm.schoolDistrict,
+              peripheral_traffic:this.newPropertyForm.trafficConditions,
+              tag_ids:this.newPropertyForm.buildTags.join(','),
+              image_a:this.pictureA,
+              image_b:this.pictureB ,
+              image_c:this.pictureC ,
+              image_d:this.pictureD ,
+              image_e:this.pictureE ,
+              image_f:this.pictureF ,
+            };
+            var buildingParams={
+              methodUrl: "bitHouse/bitHouseUpdateBuilding",
+              jsonParam: qs.stringify(buildingData)
+            }
+          }
+          this.$axios.postRequest(buildingParams).then(
+            function(res) {
+              //成功之后处理逻辑
+            },
+            function(res) {
+              //失败之后处理逻辑
+              console.log("error:" + res);
+            }
+          );
+        } else {
+          console.log('error submit!!');
+          return false;
         }
-      }
-      this.$axios.postRequest(buildingParams).then(
-        function(res) {
-          //成功之后处理逻辑
-          that.getBuildingInfo()
-        },
-        function(res) {
-          //失败之后处理逻辑
-          console.log("error:" + res);
-        }
-      );
+      });
+      that.getBuildingInfo()
       that.dialogVisible = false;
     },
     //删除楼盘
