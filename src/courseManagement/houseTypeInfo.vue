@@ -58,7 +58,7 @@
                 <el-row >
                   <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
                     <el-form-item label="总　　价" prop="totalPrice" labelWidth="75px">
-                      <el-input v-model="salesForm.totalPrice" placeholder="" size="mini" style="width:250px" clearable></el-input>/m²
+                      <el-input v-model="salesForm.totalPrice" placeholder="" size="mini" style="width:250px" clearable></el-input>/元
                     </el-form-item>
                   </el-col><!--姓名-->
                 </el-row>
@@ -303,7 +303,7 @@
         pictureE:'',
         pictureF:'',
         addSalesCourseDialog:false,
-        //新增销售课程表单
+        //户型信息
         salesForm: {
           houseTypeName: '',
           houseTypeDesc: '',
