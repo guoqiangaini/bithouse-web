@@ -77,7 +77,7 @@
                 <el-row>
                   <el-col  :xs="12" :sm="12" :md="12" :lg="12" :xl="12" >
                     <el-form-item label="户型标签" prop="roomTags"labelWidth="75px" size="mini">
-                      <el-select v-model="salesForm.roomTags" multiple placeholder="请选择" style="width: 100%">
+                      <el-select v-model="salesForm.roomTags" multiple placeholder="请选择户型标签，最多4个" style="width: 100%" :multiple-limit="4">
                         <el-option
                           v-for="item in options"
                           :key="item.id"

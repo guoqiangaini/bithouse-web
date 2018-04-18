@@ -172,6 +172,7 @@
       };
     },
     methods: {
+
       handleRowChange(val) {
         this.currentRow = val;
       },
@@ -324,13 +325,12 @@
                 console.log("error:" + res)
               })
             }
-            that.queryTags()
-            that.dialogFormVisible = false
           } else {
             return false;
           }
         });
-        this.queryTags()
+        that.queryTags()
+        that.dialogFormVisible = false
       },
       //获取标签
       queryTags(){
@@ -363,7 +363,10 @@
         this.currentPage = val
         this.queryTags()
       },
+      handleSelectionChange(val) {
+        this.multipleSelection = val;
       },
+    },
     mounted(){
      this.queryTags()
     }
