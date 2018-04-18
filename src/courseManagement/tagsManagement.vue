@@ -95,16 +95,7 @@
         currentRow:'',
         tagsList:[],
         tagType:'',
-        tagTypes:[
-          {
-            id:'1',
-            name:'楼盘标签'
-          },
-          {
-            id:'2',
-            name:'户型标签'
-          }
-        ],
+        tagTypes:[],
         tableObject: [
           {
             field: 'test',
@@ -364,9 +355,7 @@
         this.currentPage = val
         this.queryTags()
       },
-      //查询户型
-
-    },
+      },
     mounted(){
      this.queryTags()
     }

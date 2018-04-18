@@ -11,12 +11,11 @@
       :title="dialogTitle"
       :close-on-click-modal="false"
       :close-on-press-escape="false"
-      @selection-change="handleSelectionChange"
       :visible.sync="addSalesCourseDialog"
       width="900px"
       @close="clearFormData('salesForm')"
       >
-      <el-form :model="salesForm" rules="rules" ref="salesForm">
+      <el-form :model="salesForm" :rules="rules" ref="salesForm">
         <fieldset style="border: 1px solid #c1c3c9;">
           <legend style="font-weight: 600">户型信息</legend>
           <div class="basicData">
@@ -316,6 +315,33 @@
         },
         //临时户型标签
         options: [],
+        rules:{
+          houseTypeName:[
+            { required: true, message: '请输入户型名称',trigger: 'blur'}
+          ],
+          houseTypeDesc:[
+            { required: true, message: '请输入户型详情',trigger: 'blur'}
+          ],
+          bedroomsNumber:[
+            { required: true, message: '请输入房间数',trigger: 'blur'},
+            {pattern: /^[0-9]*$/,trigger: 'blur'}
+          ],
+          familyArea:[
+            { required: true, message: '请输入面积',trigger: 'blur'},
+            {pattern: /^[0-9]*$/,trigger: 'blur'}
+          ],
+          totalPrice:[
+            { required: true, message: '请输入总价',trigger: 'blur'},
+            {pattern: /^[0-9]*$/,trigger: 'blur'}
+          ],
+          salesStatus:[
+            { required: true, message: '请输入销售状态',trigger: 'change'},
+          ],
+          roomTags:[
+            { type: 'array', required: true, message: '请选择户型标签', trigger: 'change'}
+          ]
+
+        }
 
       };
     },
