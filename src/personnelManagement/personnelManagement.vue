@@ -256,7 +256,6 @@ export default {
     //更改角色
     changeRole(){
       var that=this
-      console.log(this.currentRow);
       if(this.currentRow==null || this.currentRow==''){
         this.$message({
           message: '请选择人员',
