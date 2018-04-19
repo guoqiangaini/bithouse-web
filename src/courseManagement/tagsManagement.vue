@@ -307,7 +307,6 @@
                 console.log("error:" + res)
               })
             }else{
-
               var id=this.currentRow.id
               var tagsData = {
                 id:id,
@@ -319,7 +318,7 @@
                 jsonParam: qs.stringify(tagsData)
               }
               this.$axios.postRequest(tagsParams).then(function (res) {
-
+                that.queryTags()
               }, function (res) {
                 //失败之后处理逻辑
                 console.log("error:" + res)
@@ -329,7 +328,7 @@
             return false;
           }
         });
-        that.queryTags()
+
         that.dialogFormVisible = false
       },
       //获取标签

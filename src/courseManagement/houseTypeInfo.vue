@@ -77,7 +77,7 @@
                 <el-row>
                   <el-col  :xs="12" :sm="12" :md="12" :lg="12" :xl="12" >
                     <el-form-item label="户型标签" prop="roomTags"labelWidth="75px" size="mini">
-                      <el-select v-model="salesForm.roomTags" multiple placeholder="请选择户型标签，最多4个" style="width: 100%" :multiple-limit="4">
+                      <el-select v-model="salesForm.roomTags" multiple placeholder="请选择户型标签，最多4个" style="width:350px" :multiple-limit="4">
                         <el-option
                           v-for="item in options"
                           :key="item.id"
@@ -208,15 +208,19 @@
                     </el-upload>
                   </el-col>
                 </el-row>
-                <el-row style="text-align: center;margin:30px 0">
-                  <el-button type="info" size="mini" @click="addSalesCourseDialog = false">取 消</el-button>
-                  <el-button type="info" size="mini" @click="submitNonmembet('salesForm')">提交</el-button>
-                </el-row>
+                <!--<el-row style="text-align: center;margin:30px 0">-->
+                  <!--<el-button type="info" size="mini" @click="addSalesCourseDialog = false">取 消</el-button>-->
+                  <!--<el-button type="info" size="mini" @click="submitNonmembet('salesForm')">提交</el-button>-->
+                <!--</el-row>-->
               </el-col>
             </el-row>
           </div><!--基础资料-->
         </fieldset>
       </el-form>
+      <div slot="footer" class="dialog-footer" style="text-align:center">
+        <el-button  size="mini" @click="addSalesCourseDialog = false" class="dialogCancelButton">取 消</el-button>
+        <el-button size="mini" type="primary" @click="submitNonmembet('salesForm')">提交</el-button>
+      </div>
     </el-dialog>
     <!--新增户型弹框结束-->
     <!--户型列表-->
@@ -535,19 +539,23 @@
             this.$axios.postRequest(roomParams).then(
               function(res) {
                 //成功之后处理逻辑
+                that.queryRooms()
               },
               function(res) {
                 //失败之后处理逻辑
                 console.log("error:" + res);
               }
             );
+
           } else {
-            console.log('error submit!!');
-            return false;
+            this.$message({
+              message: '您有未填写的信息!',
+              showClose: true,
+              type: 'warning'
+            });
+            that.addSalesCourseDialog =true;
           }
         });
-
-        that.queryRooms()
         that.addSalesCourseDialog = false;
       },
       //删除户型信息
