@@ -1,4 +1,4 @@
-# dw-project
+# bithouse-project
 
 > A Vue.js project
 
