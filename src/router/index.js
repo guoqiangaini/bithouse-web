@@ -8,6 +8,7 @@ import houseTypeInfo from '../courseManagement/houseTypeInfo'
 import allTradedInfo  from '../salesManagement/allTradedInfo'
 import serviceTradedInfo from '../salesManagement/serviceTradedInfo'
 import tagsManagement from '../courseManagement/tagsManagement'
+import bargain from '../components/bargain'
 Vue.use(Router)
 export default new Router({
   routes: [
@@ -60,6 +61,12 @@ export default new Router({
           component:houseTypeInfo,
           meta: { requiresAuth: true }
         },
+        //砍价活动
+        {
+          path: '/20',
+          component:bargain,
+          meta: { requiresAuth: true }
+        }
       ]
     },
   ]

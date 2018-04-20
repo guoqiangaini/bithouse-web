@@ -67,6 +67,7 @@ export default {
         {"menu_url":16,"menu_id":"16","menu_name":"人员管理","child_menus":[]},
         {"menu_url":"17","menu_id":"17","menu_name":"成交信息","child_menus":[]},
         {"menu_url":"18","menu_id":"18","menu_name":"标签设置","child_menus":[]},
+        {"menu_url":"20","menu_id":"20","menu_name":"砍价活动","child_menus":[]},
       ],
       menuInfo1:[
         {"menu_url":"19","menu_id":"19","menu_name":"成交信息","child_menus":[]},

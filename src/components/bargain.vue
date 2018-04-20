@@ -43,8 +43,7 @@
                 <el-row>
                   <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
                     <el-form-item label="卧室数量" prop="bedroomsNumber" labelWidth="75px">
-                      <el-input v-model="bargainForm.bedroomsNumber" placeholder="" size="mini" style="width:250px"
-                                clearable></el-input>
+                      <el-input v-model="bargainForm.bedroomsNumber" placeholder="" size="mini" style="width:250px" clearable></el-input>
                     </el-form-item>
                   </el-col><!--姓名-->
                 </el-row>
@@ -52,9 +51,7 @@
                 <el-row>
                   <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
                     <el-form-item label="面　　积" prop="familyArea" labelWidth="75px">
-                      <el-input v-model="bargainForm.familyArea" placeholder="" size="mini" style="width:250px"
-                                clearable></el-input>
-                      /m²
+                      <el-input v-model="bargainForm.familyArea" placeholder="" size="mini" style="width:250px" clearable></el-input>/m²
                     </el-form-item>
                   </el-col><!--姓名-->
                 </el-row>

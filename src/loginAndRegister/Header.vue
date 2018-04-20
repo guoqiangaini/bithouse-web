@@ -1,9 +1,10 @@
 <template xmlns:v-popover="http://www.w3.org/1999/xhtml">
   <el-row style="height:10%">
     <el-header class="wai" style="height:100%;overflow: hidden;">
-      <el-col :span="3" class="user" ><img src="../assets/image/house_icon.png">
+      <el-col :span="2" class="user" >
+        <img src="../assets/image/house_icon.png">
       </el-col>
-      <el-col :span="13" class="font" style="font-size: 28px;font-weight: 600;">比特房信息录入系统</el-col>
+      <el-col :span="14" class="font" style="font-size: 28px;font-weight: 600;">比特房信息录入系统</el-col>
       <el-col :span="4" class="font"></el-col>
       <el-col :span="2" class="right_icon">
       </el-col>
