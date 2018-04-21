@@ -12,15 +12,17 @@
         <el-popover
           ref="popover4"
           placement="bottom"
-          width="200"
+          width="300"
           trigger="click">
           <el-col  style="text-align: center">
-            <el-button  @click="outSystem">退出</el-button>
-            <el-button  @click="updatePassWord">修改密码</el-button>
+            <el-button  size="mini" @click="outSystem">退出</el-button>
+            <el-button  size="mini"@click="updatePassWord">修改密码</el-button>
+            <el-button  size=mini @click="updateSelfInfo">完善个人信息</el-button>
           </el-col>
         </el-popover>
         <img src="https://pro.modao.cc//uploads3/images/1783/17836137/raw_1521017812.png" style="cursor: pointer" v-popover:popover4>
       </el-col>
+      <!--修改密码弹框-->
       <el-dialog
         title="修改密码"
         :close-on-click-modal="false"
@@ -43,6 +45,26 @@
           <el-form-item style="text-align: center" label-width="0">
             <el-button type="primary" @click="submitForm('ruleForm2')">提交</el-button>
             <el-button @click="resetForm('ruleForm2')">重置</el-button>
+          </el-form-item>
+        </el-form>
+      </el-dialog>
+      <!--完善个人信息弹框-->
+      <el-dialog
+        title="完善信息"
+        :close-on-click-modal="false"
+        :close-on-press-escape="false"
+        :visible.sync="briefDialogVisible"
+        width="450px"
+        @close="clearFormData('ruleForm')"
+        center
+      >
+        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="80px" class="demo-ruleForm" size="mini">
+          <el-form-item label="个人简介" prop="brief">
+            <el-input v-model="ruleForm.brief" type="textarea"></el-input>
+          </el-form-item>
+          <el-form-item style="text-align: center;margin-top: 20px" label-width="0">
+            <el-button  @click="briefDialogVisible=false">取消</el-button>
+            <el-button type="primary" @click="submitInfoForm('ruleForm2')">提交</el-button>
           </el-form-item>
         </el-form>
       </el-dialog>
@@ -94,6 +116,7 @@ export default {
         }
       };
     return {
+      briefDialogVisible:false,
       dialogVisible:false,
       CorporateName: "", //公司名称
       todayTime: "", //获取时间
@@ -103,6 +126,12 @@ export default {
         pass: '',
         checkPass: '',
         oldPass: ''
+      },
+      ruleForm:{
+        brief:''
+      },
+      rules:{
+
       },
       rules2: {
         pass: [
@@ -130,24 +159,45 @@ export default {
       sessionStorage.removeItem("user");
       this.$router.push("/");
     },
+    //完善个人信息
+    updateSelfInfo(){
+      this.briefDialogVisible=true
+    },
+    submitInfoForm(){
+      var that=this
+      var user=qs.parse(sessionStorage.getItem("user"))
+      var InfoData={
+        user_serial:user.user_serial,
+        brief_introduction:this.ruleForm.brief
+      }
+      var InfoParams={
+        methodUrl:'bitHouse/bitHouseUpdateBrief',
+        jsonParam: qs.stringify(InfoData)
+      }
+      this.$axios.postRequest(InfoParams).then(function (res) {
+        //成功之后处理逻辑
+        that.briefDialogVisible=false
+      }, function (res) {
+        //失败之后处理逻辑
+        console.log("error:" + res)
+      })
+
+    },
+
     //修改密码
     updatePassWord(){
       this.dialogVisible=true
     },
     submitForm(formName) {
       var that=this
-
       this.$refs[formName].validate((valid) => {
         if (valid) {
           var user=qs.parse(sessionStorage.getItem("user"))
-          console.log("..........................")
-          console.log(user)
           var acountData={
            user_serial:user.user_serial,
            old_pwd:this.ruleForm2.oldPass,
            password:this.ruleForm2.checkPass
           }
-          console.log(acountData)
          var acountParams={
            methodUrl:'bitHouse/bitHouseUpdatePwd',
            jsonParam: qs.stringify(acountData)
@@ -167,6 +217,7 @@ export default {
         }
       });
     },
+    //清空输入框
     clearFormData(formName) {
       this.$refs[formName].resetFields();
     },
