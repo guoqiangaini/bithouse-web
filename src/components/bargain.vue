@@ -1,16 +1,16 @@
 <template>
   <el-row>
     <ul>
-      <el-button size="mini" type="info" @click="addbargainActivity">新增砍价活动</el-button>
-      <el-button size="mini" type="info" @click="addbargainActivity">修改砍价活动</el-button>
-      <el-button size="mini" type="info" @click="addbargainActivity">删除砍价活动</el-button>
+      <el-button size="mini" type="info" @click="addbargainActivity(1)">新增砍价活动</el-button>
+      <el-button size="mini" type="info" @click="addbargainActivity(2)">修改砍价活动</el-button>
+      <el-button size="mini" type="info" @click="delectbargainActivity">删除砍价活动</el-button>
     </ul>
     <!--新增砍价活动弹框开始-->
     <el-dialog
       :title="dialogTitle"
       :close-on-click-modal="false"
       :close-on-press-escape="false"
-      :visible.sync="addSalesCourseDialog"
+      :visible.sync="addBargainDialog"
       width="900px"
       @close="clearFormData('bargainForm')"
     >
@@ -19,198 +19,105 @@
           <legend style="font-weight: 600">活动信息</legend>
           <div class="basicData">
             <el-row type="flex" justify="center">
-              <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
+              <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
                 <!--活动名称-->
                 <el-row>
                   <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
-                    <el-form-item label="活动名称" prop="houseTypeName" labelWidth="75px">
-                      <el-input v-model="bargainForm.bargainName" placeholder="例：0元得蓬莱欧乐宝门票" size="mini" style="width:250px"
-                                clearable>
+                    <el-form-item label="活动名称" prop="name" labelWidth="75px">
+                      <el-input v-model="bargainForm.name" placeholder="例：0元得蓬莱欧乐宝门票" size="mini" style="width:320px" clearable>
                       </el-input>
                     </el-form-item>
                   </el-col><!--姓名-->
                 </el-row>
-                <!--户型简介-->
+                <!--原价-->
                 <el-row>
                   <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
-                    <el-form-item label="户型简介" prop="houseTypeDesc" labelWidth="75px">
-                      <el-input v-model="bargainForm.houseTypeDesc" placeholder="例:2室2厅2卫" size="mini"
-                                style="width:250px" clearable></el-input>
+                    <el-form-item label="原始价格" prop="originPrice" labelWidth="75px">
+                      <el-input v-model="bargainForm.originPrice" placeholder="例:100" size="mini" style="width:320px" clearable></el-input>
                     </el-form-item>
                   </el-col><!--姓名-->
                 </el-row>
-                <!--卧室数量-->
+                <!--目标价-->
                 <el-row>
                   <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
-                    <el-form-item label="卧室数量" prop="bedroomsNumber" labelWidth="75px">
-                      <el-input v-model="bargainForm.bedroomsNumber" placeholder="" size="mini" style="width:250px" clearable></el-input>
+                    <el-form-item label="目标价格" prop="targetPrice" labelWidth="75px">
+                      <el-input v-model="bargainForm.targetPrice" placeholder="例:0" size="mini" style="width:320px" clearable></el-input>
                     </el-form-item>
                   </el-col><!--姓名-->
                 </el-row>
-                <!--户型面积-->
+                <!--目标人数-->
                 <el-row>
                   <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
-                    <el-form-item label="面　　积" prop="familyArea" labelWidth="75px">
-                      <el-input v-model="bargainForm.familyArea" placeholder="" size="mini" style="width:250px" clearable></el-input>/m²
+                    <el-form-item label="目标人数" prop="targetNumber" labelWidth="75px">
+                      <el-input v-model="bargainForm.targetNumber" placeholder="例:0" size="mini" style="width:320px" clearable></el-input>
                     </el-form-item>
                   </el-col><!--姓名-->
                 </el-row>
-                <!--总价-->
+                <!--库存-->
                 <el-row>
                   <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
-                    <el-form-item label="总　　价" prop="totalPrice" labelWidth="75px">
-                      <el-input v-model="bargainForm.totalPrice" placeholder="" size="mini" style="width:250px"
-                                clearable></el-input>
-                      /元
+                    <el-form-item label="库　　存" prop="inventory" labelWidth="75px">
+                      <el-input v-model="bargainForm.inventory" placeholder="例:15" size="mini" style="width:320px" clearable></el-input>
                     </el-form-item>
                   </el-col><!--姓名-->
                 </el-row>
-                <!--销售状态-->
+                <!--简介-->
                 <el-row>
                   <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
-                    <el-form-item label="销售状态" prop="salesStatus" label-width="75px">
-                      <el-select v-model="bargainForm.salesStatus" placeholder="请选择" size="mini" style="width:250px">
-                        <el-option label="待售" value="0"></el-option>
-                        <el-option label="在售" value="1"></el-option>
-                        <el-option label="售完" value="2"></el-option>
-                      </el-select>
+                    <el-form-item label="简　　介" prop="prief" labelWidth="75px">
+                      <el-input v-model="bargainForm.prief" placeholder=""  type="textarea" size="mini" style="width:320px" clearable></el-input>
+                    </el-form-item>
+                  </el-col><!--姓名-->
+                </el-row>
+                <!--开始时间-->
+                <el-row>
+                  <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+                    <el-form-item label="开始时间" prop="startTime" label-width="75px" size="mini">
+                      <el-date-picker
+                        style="width:320px"
+                        v-model="bargainForm.startTime"
+                        type="date"
+                        clearable
+                        format="yyyy-MM-dd"
+                        value-format="yyyy-MM-dd"
+                        placeholder="选择日期">
+                      </el-date-picker>
                     </el-form-item>
                   </el-col><!--教练-->
                 </el-row>
-                <!--户型标签-->
+                <!--结束时间-->
                 <el-row>
                   <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
-                    <el-form-item label="户型标签" prop="roomTags" labelWidth="75px" size="mini">
-                      <el-select v-model="bargainForm.roomTags" multiple placeholder="请选择户型标签，最多4个" style="width:350px"
-                                 :multiple-limit="4">
-                        <el-option
-                          v-for="item in options"
-                          :key="item.id"
-                          :label="item.tag_name"
-                          :value="item.id">
-                        </el-option>
-                      </el-select>
+                    <el-form-item label="结束时间" prop="endTime" labelWidth="75px" size="mini">
+                      <el-date-picker
+                        style="width:320px"
+                        v-model="bargainForm.endTime"
+                        type="date"
+                        clearable
+                        format="yyyy-MM-dd"
+                        value-format="yyyy-MM-dd"
+                        placeholder="选择日期">
+                      </el-date-picker>
                     </el-form-item>
                   </el-col>
                 </el-row>
-                <!--户型封面图片-->
+                <!--活动图片-->
                 <el-row>
-                  <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
-                    <el-form-item label="封面图片" label-width="75px">
+                  <el-col>
+                    <el-form-item label="活动图片" label-width="75px">
                       <el-upload
                         class="upload-demo"
                         action="string"
                         :http-request='submitUploadBanner'
-                        :show-file-list="false"
+                        :show-file-list="true"
                         :on-success="handleAvatarSuccess"
                         :before-upload="beforeAvatarUpload"
-                      >
+                        :limit="1"
+                        :file="pictureCover">
                         <el-button size="small" type="primary">点击上传</el-button>
-                        <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                        <div slot="tip" class="el-upload__tip">格式为jpg、png且不超过500kb</div>
                       </el-upload>
                     </el-form-item>
-                  </el-col>
-                </el-row>
-                <!--户型轮播图片-->
-                <!--操作按钮-->
-                <!--轮播图片上传-->
-                <el-row>
-                  <el-col>上传轮播图片</el-col>
-                  <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-                    <el-upload
-                      class="upload-demo"
-                      drag
-                      action="string"
-                      :http-request='submitUploadpictureA'
-                      :show-file-list="false"
-                      :on-success="handleAvatarSuccess"
-                      :before-upload="beforeAvatarUpload"
-                      multiple>
-                      <img v-if="pictureA" :src="pictureA" class="avatar">
-                      <i v-else class="el-icon-upload"></i>
-                      <div class="el-upload__text">将图片拖到此处，或<em>点击上传</em></div>
-                      <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
-                    </el-upload>
-                  </el-col>
-                  <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-                    <el-upload
-                      class="upload-demo"
-                      drag
-                      action="string"
-                      :http-request='submitUploadpictureB'
-                      :show-file-list="false"
-                      :on-success="handleAvatarSuccess"
-                      :before-upload="beforeAvatarUpload"
-                      multiple>
-                      <img v-if="pictureB" :src="pictureB" class="avatar">
-                      <i v-else class="el-icon-upload"></i>
-                      <div class="el-upload__text">将图片拖到此处，或<em>点击上传</em></div>
-                      <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
-                    </el-upload>
-                  </el-col>
-                  <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-                    <el-upload
-                      class="upload-demo"
-                      drag
-                      action="string"
-                      :http-request='submitUploadpictureC'
-                      :show-file-list="false"
-                      :on-success="handleAvatarSuccess"
-                      :before-upload="beforeAvatarUpload"
-                      multiple>
-                      <img v-if="pictureC" :src="pictureC" class="avatar">
-                      <i v-else class="el-icon-upload"></i>
-                      <div class="el-upload__text">将图片拖到此处，或<em>点击上传</em></div>
-                      <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
-                    </el-upload>
-                  </el-col>
-                  <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-                    <el-upload
-                      class="upload-demo"
-                      drag
-                      action="string"
-                      :http-request='submitUploadpictureD'
-                      :show-file-list="false"
-                      :on-success="handleAvatarSuccess"
-                      :before-upload="beforeAvatarUpload"
-                      multiple>
-                      <img v-if="pictureD" :src="pictureD" class="avatar">
-                      <i v-else class="el-icon-upload"></i>
-                      <div class="el-upload__text">将图片拖到此处，或<em>点击上传</em></div>
-                      <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
-                    </el-upload>
-                  </el-col>
-                  <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-                    <el-upload
-                      class="upload-demo"
-                      drag
-                      action="string"
-                      :http-request='submitUploadpictureE'
-                      :show-file-list="false"
-                      :on-success="handleAvatarSuccess"
-                      :before-upload="beforeAvatarUpload"
-                      multiple>
-                      <img v-if="pictureE" :src="pictureE" class="avatar">
-                      <i v-else class="el-icon-upload"></i>
-                      <div class="el-upload__text">将图片拖到此处，或<em>点击上传</em></div>
-                      <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
-                    </el-upload>
-                  </el-col>
-                  <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-                    <el-upload
-                      class="upload-demo"
-                      drag
-                      action="string"
-                      :http-request='submitUploadpictureF'
-                      :show-file-list="false"
-                      :on-success="handleAvatarSuccess"
-                      :before-upload="beforeAvatarUpload"
-                      multiple>
-                      <img v-if="pictureF" :src="pictureF" class="avatar">
-                      <i v-else class="el-icon-upload"></i>
-                      <div class="el-upload__text">将图片拖到此处，或<em>点击上传</em></div>
-                      <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
-                    </el-upload>
                   </el-col>
                 </el-row>
               </el-col>
@@ -219,15 +126,15 @@
         </fieldset>
       </el-form>
       <div slot="footer" class="dialog-footer" style="text-align:center">
-        <el-button size="mini" @click="addSalesCourseDialog = false" class="dialogCancelButton">取 消</el-button>
-        <el-button size="mini" type="primary" @click="submitNonmembet('salesForm')">提交</el-button>
+        <el-button size="mini" @click="addBargainDialog = false" class="dialogCancelButton">取 消</el-button>
+        <el-button size="mini" type="primary" @click="submitNonmembet('bargainForm')">提交</el-button>
       </div>
     </el-dialog>
     <!--新增砍价活动弹框结束-->
     <!--砍价活动列表-->
     <el-table
       ref="multipleTable"
-      :data="roomList"
+      :data="activityList"
       border
       tooltip-effect="dark"
       size="mini"
@@ -236,45 +143,76 @@
       @current-change="handleRowChange"
       :headerCellStyle="headerSetStyle"
       :cellStyle="cellSetStyle"
-      class="elTableBorder">
+      >
       <el-table-column
         align="center"
-        prop="apartment_name"
+        prop="name"
         label="活动名称"
       >
       </el-table-column>
       <el-table-column
         align="center"
-        prop="apartment_brief"
-        label="户型简介"
+        prop="origin_price"
+        label="原始价格"
       >
       </el-table-column>
       <el-table-column
         align="center"
-        prop="room_sum"
-        label="卧室数量"
+        prop="target_price"
+        label="目标价格"
       >
       </el-table-column>
       <el-table-column
         align="center"
-        prop="apartment_measure"
-        label="户型面积"
+        prop="target_number"
+        label="目标人数"
       >
       </el-table-column>
       <el-table-column
         align="center"
-        prop="total_price"
-        label="总价"
+        prop="inventory"
+        label="库存"
       >
       </el-table-column>
       <el-table-column
         align="center"
-        prop="sale_state"
-        label="销售状态"
-        :formatter="formatValue"
+        prop="prief"
+        label="简介"
       >
+      </el-table-column>
+      <el-table-column
+        align="center"
+        prop="start_date"
+        label="开始时间"
+      >
+      </el-table-column>
+      <el-table-column
+        align="center"
+        prop="end_date"
+        label="结束时间"
+      >
+      </el-table-column>
+      <el-table-column
+        align="center"
+        prop="property_type"
+        label="操作">
+        <template slot-scope="scope">
+          <el-button
+            size="mini"
+            type="text"
+            @click="openDetails(scope.$index, scope.row)">查看发起人员</el-button>
+        </template>
       </el-table-column>
     </el-table>
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="currentPage"
+      :page-sizes="[20, 40, 60]"
+      :page-size="pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total" class="page" style="text-align: right;margin-top: 20px">
+    </el-pagination>
   </el-row>
 </template>
 
@@ -284,79 +222,96 @@
   export default {
     data() {
       return {
-        roomList: [],
-        //楼盘Id
-        buildingId: '',
+        personInfo:[],
+        //分页字段
+        total:0,
+        currentPage:1,
+        pageSize:20,
+        activityList: [],
         currentRow: '',
         buttonFlag: '',
         dialogTitle: '',
         // 封面图片
         pictureCover: '',
-        // 轮播图片
-        pictureA: '',
-        pictureB: '',
-        pictureC: '',
-        pictureD: '',
-        pictureE: '',
-        pictureF: '',
-        addSalesCourseDialog: false,
+        addBargainDialog: false,
         //砍价活动信息
         bargainForm: {
-          bargainName: '',
-          houseTypeDesc: '',
-          bedroomsNumber: '',
-          familyArea: '',
-          totalPrice: '',
-          salesStatus: '',
-          roomTags: [],
+          name: '',
+          originPrice: '',
+          targetPrice: '',
+          targetNumber:'',
+          inventory: '',
+          prief: '',
+          startTime: '',
+          endTime: '',
         },
-        //临时户型标签
-        options: [],
         rules: {
-          bargainName: [
+          name: [
             {required: true, message: '请输入砍价活动名称', trigger: 'blur'}
           ],
-          houseTypeDesc: [
-            {required: true, message: '请输入户型详情', trigger: 'blur'}
+          originPrice: [
+            {required: true, message: '请输入原价', trigger: 'blur'},
+            {pattern: /(^[1-9]\d*(\.\d{1,2})?$)|(^0(\.\d{1,2})?$)/, trigger: 'blur'}
           ],
-          bedroomsNumber: [
-            {required: true, message: '请输入房间数', trigger: 'blur'},
+          targetPrice: [
+            {required: true, message: '请输入目标价', trigger: 'blur'},
+            {pattern: /(^[1-9]\d*(\.\d{1,2})?$)|(^0(\.\d{1,2})?$)/, trigger: 'blur'}
+          ],
+          targetNumber: [
+            {required: true, message: '请输入参与人数', trigger: 'blur'},
             {pattern: /^[0-9]*$/, trigger: 'blur'}
           ],
-          familyArea: [
-            {required: true, message: '请输入面积', trigger: 'blur'},
-            {pattern: /(^[1-9]\d*(\.\d{1,2})?$)|(^0(\.\d{1,2})?$)/, trigger: 'blur'}
+          inventory: [
+            {required: true, message: '填写库存', trigger: 'blur'},
+            {pattern: /^[0-9]*$/, trigger: 'blur'}
           ],
-          totalPrice: [
-            {required: true, message: '请输入总价', trigger: 'blur'},
-            {pattern: /(^[1-9]\d*(\.\d{1,2})?$)|(^0(\.\d{1,2})?$)/, trigger: 'blur'}
+          prief: [
+            {required: true, message: '请输入简介', trigger: 'blur'},
           ],
-          salesStatus: [
-            {required: true, message: '请输入销售状态', trigger: 'change'},
+          startTime: [
+            {required: true, message: '请输入开始时间', trigger: 'change'},
           ],
-          roomTags: [
-            {type: 'array', required: true, message: '请选择户型标签', trigger: 'change'}
+          endTime: [
+            {required: true, message: '请输入结束时间', trigger: 'change'}
           ]
 
         }
-
       };
     },
     methods: {
+      //查看发起砍价人员信息
+      openDetails(index,row){
+        var that = this
+        var id = row.id
+        var roomData = {
+          bargain_id:id,
+          is_done:'',
+          count: true,
+          orderby:'',
+          pageindex:1,
+          pagesize:20
+        }
+        var roomParams = {
+          methodUrl: 'bitHouse/bitHouseGetBargainById',
+          jsonParam: qs.stringify(roomData)
+        }
+        this.$axios.postRequest(roomParams).then(function (res) {
+          //成功之后处理逻辑
+          that.personInfo = res.data.list
+          that.$router.push({name: 'initiatingPersonnel',params:{personInfo:that.personInfo}})
+        }, function (res) {
+          //失败之后处理逻辑
+          console.log("error:" + res)
+        })
+
+      },
       clearFormData(formName) {
         this.$refs[formName].resetFields();
         this.pictureCover = '';
-        this.pictureA = '';
-        this.pictureB = '';
-        this.pictureC = '';
-        this.pictureD = '';
-        this.pictureE = '';
-        this.pictureF = '';
-
-
       },
       handleRowChange(val) {
         this.currentRow = val;
+        console.log(val)
       },
       formatValue(row, column, cellValue) {
         switch (row.sale_state) {
@@ -383,24 +338,6 @@
       submitUploadBanner(file) {
         this.submitUpload(file, 1)
       },
-      submitUploadpictureA(file) {
-        this.submitUpload(file, 2)
-      },
-      submitUploadpictureB(file) {
-        this.submitUpload(file, 3)
-      },
-      submitUploadpictureC(file) {
-        this.submitUpload(file, 4)
-      },
-      submitUploadpictureD(file) {
-        this.submitUpload(file, 5)
-      },
-      submitUploadpictureE(file) {
-        this.submitUpload(file, 6)
-      },
-      submitUploadpictureF(file) {
-        this.submitUpload(file, 7)
-      },
       //上传图片函数
       submitUpload(file, flag) {
         var that = this
@@ -418,29 +355,38 @@
           .then(response => {
             if (flag == 1) {
               that.pictureCover = response.data.image_url
-            } else if (flag == 2) {
-              that.pictureA = response.data.image_url
-            } else if (flag == 3) {
-              that.pictureB = response.data.image_url
-            } else if (flag == 4) {
-              that.pictureC = response.data.image_url
-            } else if (flag == 5) {
-              that.pictureD = response.data.image_url
-            } else if (flag == 6) {
-              that.pictureE = response.data.image_url
-            } else if (flag == 7) {
-              that.pictureF = response.data.image_url
             }
-
           });
       },
       //添加砍价活动信息
-      addbargainActivity() {
+      addbargainActivity(type) {
         var that = this
-        if (type == 1) {
-          this.dialogTitle = "新增砍价活动";
-          this.buttonFlag = "1"
-          this.addSalesCourseDialog = true
+        if (type==1) {
+          that.dialogTitle = "新增砍价活动";
+          that.buttonFlag = "1"
+          that.addBargainDialog = true
+        }else{
+          if (this.currentRow==null || this.currentRow=='') {
+            this.$message({
+              message: '请选择活动',
+              showClose: true,
+              type: 'warning'
+            })}else{
+            setTimeout(function() {
+              that.dialogTitle = "修改砍价活动";
+              that.buttonFlag = "2"
+              that.bargainForm.name= that.currentRow.name,
+              that.bargainForm.originPrice=that.currentRow.origin_price,
+              that.bargainForm.targetPrice=that.currentRow.target_price,
+              that.bargainForm.targetNumber=that.currentRow.target_number,
+              that.bargainForm.inventory=that.currentRow.inventory,
+              that.bargainForm.prief=that.currentRow.prief,
+              that.bargainForm.startTime=that.currentRow.start_date,
+              that.bargainForm.endTime=that.currentRow.end_date,
+              that.pictureCover=that.currentRow.pic_url
+            },0 )
+            this.addBargainDialog =true;
+          }
         }
       },
       //提交砍价信息
@@ -450,56 +396,44 @@
           if (valid) {
             if (this.buttonFlag == 1) {
               var that = this
-              var roomData = {
-                estate_id: this.buildingId,
-                apartment_name: this.salesForm.houseTypeName,
-                apartment_brief: this.salesForm.houseTypeDesc,
-                room_sum: this.salesForm.bedroomsNumber,
-                apartment_measure: this.salesForm.familyArea,
-                total_price: this.salesForm.totalPrice,
-                sale_state: this.salesForm.salesStatus,
+              var activityData = {
+                name: this.bargainForm.name,
+                origin_price: this.bargainForm.originPrice,
+                target_price: this.bargainForm.targetPrice,
+                target_number: this.bargainForm.targetNumber,
+                inventory: this.bargainForm.inventory,
+                prief: this.bargainForm.prief,
+                start_date: this.bargainForm.startTime,
+                end_date:this.bargainForm.endTime,
                 pic_url: this.pictureCover,
-                tag_ids: this.salesForm.roomTags.join(','),
-                image_a: this.pictureA,
-                image_b: this.pictureB,
-                image_c: this.pictureC,
-                image_d: this.pictureD,
-                image_e: this.pictureE,
-                image_f: this.pictureF,
               };
-              var roomParams = {
-                methodUrl: "bitHouse/bitHouseAddRoom",
-                jsonParam: qs.stringify(roomData)
+              var activityParams = {
+                methodUrl: "bitHouse/bitHouseAddBargain",
+                jsonParam: qs.stringify(activityData)
               };
             } else {
               var that = this
-              var roomData = {
-                estate_id: this.buildingId,
+              var activityData = {
                 id: this.currentRow.id,
-                apartment_name: this.salesForm.houseTypeName,
-                apartment_brief: this.salesForm.houseTypeDesc,
-                room_sum: this.salesForm.bedroomsNumber,
-                apartment_measure: this.salesForm.familyArea,
-                total_price: this.salesForm.totalPrice,
-                sale_state: this.salesForm.salesStatus,
+                name: this.bargainForm.name,
+                origin_price: this.bargainForm.originPrice,
+                target_price: this.bargainForm.targetPrice,
+                target_number: this.bargainForm.targetNumber,
+                inventory: this.bargainForm.inventory,
+                prief: this.bargainForm.prief,
+                start_date: this.bargainForm.startTime,
+                end_date:this.bargainForm.endTime,
                 pic_url: this.pictureCover,
-                tag_ids: this.salesForm.roomTags.join(','),
-                image_a: this.pictureA,
-                image_b: this.pictureB,
-                image_c: this.pictureC,
-                image_d: this.pictureD,
-                image_e: this.pictureE,
-                image_f: this.pictureF,
               };
-              var roomParams = {
-                methodUrl: "bitHouse/bitHouseUpdateRoom",
-                jsonParam: qs.stringify(roomData)
+              var activityParams = {
+                methodUrl: "bitHouse/bitHouseUpdateBargain",
+                jsonParam: qs.stringify(activityData)
               }
             }
-            this.$axios.postRequest(roomParams).then(
+            this.$axios.postRequest(activityParams).then(
               function (res) {
                 //成功之后处理逻辑
-                that.queryRooms()
+                that.queryactivitys()
               },
               function (res) {
                 //失败之后处理逻辑
@@ -513,22 +447,22 @@
               showClose: true,
               type: 'warning'
             });
-            that.addSalesCourseDialog = true;
+            that.addBargainDialog = true;
           }
         });
-        that.addSalesCourseDialog = false;
+        that.addBargainDialog= false;
       },
-      //删除户型信息
-      deleteRoomInfo() {
+      //删除活动信息
+      delectbargainActivity() {
         var that = this;
         if (this.currentRow == null || this.currentRow == '') {
           this.$message({
-            message: '请选择户型',
+            message: '请选择砍价活动',
             showClose: true,
             type: 'warning'
           });
         } else if (this.currentRow != '') {
-          this.$confirm('此操作将永久删除户型数据, 是否继续?', '提示', {
+          this.$confirm('此操作将永久删除活动, 是否继续?', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning',
@@ -538,13 +472,13 @@
               id: that.currentRow.id
             };
             var deleteParams = {
-              methodUrl: "bitHouse/bitHouseDeleteRoom",
+              methodUrl: "bitHouse/bitHouseDeleteBargain",
               jsonParam: qs.stringify(deleteData)
             };
             this.$axios.postRequest(deleteParams).then(
               function (res) {
                 //成功之后处理逻辑
-                that.queryRooms();
+                that.queryactivitys();
                 that.$message({
                   type: "success",
                   message: "删除成功"
@@ -594,32 +528,31 @@
       //分页
       handleSizeChange(val) {
         this.pageSize = val
-        this.queryRooms()
+        this.queryactivitys()
       },
       handleCurrentChange(val) {
         this.currentPage = val
-        this.queryRooms()
+        this.queryactivitys()
       },
       back() {
         this.$router.push('/15')
       },
-      //请求户型
-      queryRooms() {
+      //请求活动列表
+      queryactivitys() {
         var that = this
-        var roomData = {
-          estate_id: this.buildingId,
+        var activityData = {
           count: true,
           orderby: '',
-          pageindex: 1,
-          pagesize: 20
+          pageindex:this.currentPage,
+          pagesize:this.pageSize
         }
-        var roomParams = {
-          methodUrl: 'bitHouse/bitHouseGetRoom',
-          jsonParam: qs.stringify(roomData)
+        var activityParams = {
+          methodUrl: 'bitHouse/bitHouseGetBargain',
+          jsonParam: qs.stringify(activityData)
         }
-        this.$axios.postRequest(roomParams).then(function (res) {
+        this.$axios.postRequest(activityParams).then(function (res) {
           //成功之后处理逻辑
-          that.roomList = res.data.list
+          that.activityList = res.data.list
           that.total = res.data.totalcount
         }, function (res) {
           //失败之后处理逻辑
@@ -628,37 +561,7 @@
       }
     },
     mounted() {
-      //获取户型标签
-      var that = this
-      var tagsData = {
-        tag_type: 2
-      }
-      var tagsParams = {
-        methodUrl: 'bitHouse/bitHouseGetTags',
-        jsonParam: qs.stringify(tagsData)
-      }
-      this.$axios.postRequest(tagsParams).then(
-        function (res) {
-          //成功之后处理逻辑
-          that.options = res.data
-        },
-        function (res) {
-          //失败之后处理逻辑
-          console.log("error:" + res);
-        }
-      );
-      //获取上一页传递的参数，并保存到本地
-      if (this.$route.params.roomData != null) {
-        var roomTables = this.$route.params.roomData
-        var buildingId = this.$route.params.buildingId
-        sessionStorage.setItem("roomDataList", JSON.stringify(roomTables));
-        sessionStorage.setItem("buildingId", JSON.stringify(buildingId));
-        that.roomList = roomTables
-        that.buildingId = buildingId
-      } else {
-        this.roomList = JSON.parse(sessionStorage.getItem("roomDataList"))
-        this.buildingId = JSON.parse(sessionStorage.getItem("buildingId"))
-      }
+       this.queryactivitys()
     }
   }
 </script>
@@ -668,5 +571,8 @@
     float: left;
     margin: 0 0 10px 0;
 
+  }
+  .el-form-item{
+    margin:10px 0 !important;
   }
 </style>

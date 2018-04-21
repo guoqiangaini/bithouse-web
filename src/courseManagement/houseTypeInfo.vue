@@ -291,6 +291,10 @@
     },
     data() {
       return {
+        //分页字段
+        total:0,
+        currentPage:1,
+        pageSize:20,
         roomList:[],
         //楼盘Id
         buildingId:'',
@@ -650,8 +654,8 @@
           estate_id:this.buildingId,
           count: true,
           orderby:'',
-          pageindex:1,
-          pagesize:20
+          pageindex:this.currentPage,
+          pagesize:this.pageSize
         }
         var roomParams = {
           methodUrl: 'bitHouse/bitHouseGetRoom',

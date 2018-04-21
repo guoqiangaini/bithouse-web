@@ -60,7 +60,8 @@
       </el-table-column>
       <el-table-column
         align="center"
-        prop="role_name"
+        prop="role_id"
+        :formatter="formatValue"
         label="角色名称">
       </el-table-column>
     </el-table>
@@ -104,20 +105,6 @@ export default {
         }
       ],
       rooms: "",
-      medicalHistory: [
-        {
-          label: "未知",
-          value: 1
-        },
-        {
-          label: "男",
-          value: 2
-        },
-        {
-          label: "女",
-          value: 3
-        }
-      ],
       asd: "",
       classes: [],
       imageUrl: "",
@@ -141,6 +128,17 @@ export default {
     };
   },
   methods: {
+    //处理角色
+    formatValue(row, column, cellValue){
+      switch(row.role_id) {
+        case '0':
+          return '客户';
+          break;
+        case '2':
+          return '客服';
+          break;
+      }
+    },
     //变更客服密码
     changeCustomerPwd() {
       var that = this
@@ -234,8 +232,8 @@ export default {
         role_id:this.role,
         count:true,
         orderby:'',
-        pageindex:1,
-        pagesize:20
+        pageindex:this.currentPage,
+        pagesize:this.pageSize
       }
       var userParams={
         methodUrl:'bitHouse/bitHouseGetAllUser',

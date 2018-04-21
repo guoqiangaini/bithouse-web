@@ -965,7 +965,6 @@ export default {
     //点击获取行数据
     handleRowChange(val) {
       this.currentRow = val;
-      console.log(val)
     },
     addPostSet(type){
       var that=this
@@ -1036,7 +1035,7 @@ export default {
               that.pictureE=that.currentRow.image_e,
               that.pictureF=that.currentRow.image_f
           },0 )
-          this.dialogVisible = true;
+            this.dialogVisible = true;
         }
       }
 
@@ -1053,6 +1052,32 @@ export default {
         color: "#606266",
         "border-color": "#c1c3c9"
       };
+    },
+    //获取楼盘信息
+    getBuildingInfo(){
+      var that=this
+      var getBuildingInfoData={
+        recommend:this.suggested,
+        count:true,
+        orderby:'',
+        pageindex:this.currentPage,
+        pagesize:this.pageSize,
+      }
+      var getBuildingInfoParams={
+        methodUrl:'bitHouse/bitHouseGetBuilding',
+        jsonParam: qs.stringify(getBuildingInfoData)
+      }
+      this.$axios.postRequest(getBuildingInfoParams).then(
+        function(res) {
+          //成功之后处理逻辑
+          that.buildingInfo=res.data.list
+          that.total=res.data.totalcount
+        },
+        function(res) {
+          //失败之后处理逻辑
+          console.log("error:" + res);
+        }
+      );
     },
     //提交新增、修改楼盘信息
     submitPostSet(formName) {
@@ -1164,7 +1189,7 @@ export default {
           this.$axios.postRequest(buildingParams).then(
             function(res) {
               //成功之后处理逻辑
-              that.getBuildingInfo()
+
             },
             function(res) {
               //失败之后处理逻辑
@@ -1180,6 +1205,7 @@ export default {
           that.dialogVisible =true ;
         }
       });
+      that.getBuildingInfo()
       that.dialogVisible = false;
     },
     //删除楼盘
@@ -1234,32 +1260,6 @@ export default {
         });
       }
     },
-    //获取楼盘信息
-    getBuildingInfo(){
-      var that=this
-      var getBuildingInfoData={
-        recommend:this.suggested,
-        count:true,
-        orderby:'',
-        pageindex:1,
-        pagesize:20,
-      }
-      var getBuildingInfoParams={
-        methodUrl:'bitHouse/bitHouseGetBuilding',
-        jsonParam: qs.stringify(getBuildingInfoData)
-      }
-      this.$axios.postRequest(getBuildingInfoParams).then(
-        function(res) {
-          //成功之后处理逻辑
-          that.buildingInfo=res.data.list
-          that.total=res.data.totalcount
-        },
-        function(res) {
-          //失败之后处理逻辑
-          console.log("error:" + res);
-        }
-      );
-    }
   },
   mounted() {
     this.getBuildingInfo();

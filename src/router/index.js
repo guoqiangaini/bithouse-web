@@ -9,6 +9,8 @@ import allTradedInfo  from '../salesManagement/allTradedInfo'
 import serviceTradedInfo from '../salesManagement/serviceTradedInfo'
 import tagsManagement from '../courseManagement/tagsManagement'
 import bargain from '../components/bargain'
+import initiatingPersonnel from '../components/initiatingPersonnel'
+import participants from '../components/participants'
 Vue.use(Router)
 export default new Router({
   routes: [
@@ -65,6 +67,18 @@ export default new Router({
         {
           path: '/20',
           component:bargain,
+          meta: { requiresAuth: true }
+        },
+        {
+          path: '/initiatingPersonnel',
+          name:'initiatingPersonnel',
+          component:initiatingPersonnel,
+          meta: { requiresAuth: true }
+        },
+        {
+          path:'participants',
+          name:'participants',
+          component:participants,
           meta: { requiresAuth: true }
         }
       ]

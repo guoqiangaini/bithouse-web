@@ -362,9 +362,6 @@
         this.currentPage = val
         this.queryTags()
       },
-      handleSelectionChange(val) {
-        this.multipleSelection = val;
-      },
     },
     mounted(){
      this.queryTags()
