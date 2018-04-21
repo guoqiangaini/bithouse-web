@@ -375,13 +375,12 @@
       },
       //分页
       handleSizeChange(val) {
-        var userData = qs.parse(sessionStorage.getItem("userData"));
-        console.log(`每页 ${val} 条`);
         this.pageSize = val
+        this.queryCustomerList()
       },
       handleCurrentChange(val) {
-        var userData = qs.parse(sessionStorage.getItem("userData"));
         this.currentPage = val
+        this.queryCustomerList()
       },
       //新增客户打开弹窗
       bindCustomer(){
@@ -416,8 +415,8 @@
         var tradedData = {
           service_serial:customer.user_serial,
           count: true,
-          pageindex: 1,
-          pagesize: 20,
+          pageindex:this.currentPage,
+          pagesize: this.currentPage,
         }
         var tradedParams = {
           methodUrl: 'bitHouse/bitHouseGetBindCustom',
