@@ -11,6 +11,7 @@ import tagsManagement from '../courseManagement/tagsManagement'
 import bargain from '../components/bargain'
 import initiatingPersonnel from '../components/initiatingPersonnel'
 import participants from '../components/participants'
+import myTemplate from '../components/myTemplate'
 Vue.use(Router)
 export default new Router({
   routes: [
@@ -67,6 +68,12 @@ export default new Router({
         {
           path: '/20',
           component:bargain,
+          meta: { requiresAuth: true }
+        },
+        //砍价活动
+        {
+          path: '/21',
+          component:myTemplate,
           meta: { requiresAuth: true }
         },
         {
