@@ -1,5 +1,9 @@
 <template>
-  <!--人员列表-->
+  <!--帮砍人员列表-->
+  <el-row>
+    <ul>
+      <el-button size="mini" type="info" @click="previousPage">返回</el-button>
+    </ul>
   <el-table
     ref="multipleTable"
     :data="allPersonInfo"
@@ -7,7 +11,6 @@
     tooltip-effect="dark"
     size="mini"
     style="width: 100% ;"
-    :row-click="rowClick"
     :headerCellStyle="headerSetStyle"
     :cellStyle="cellSetStyle"
     class="elTableBorder">
@@ -48,13 +51,24 @@
     >
     </el-table-column>
   </el-table>
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="currentPage"
+      :page-sizes="[20, 40, 60]"
+      :page-size="pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total" class="page" style="text-align: right;margin-top: 20px">
+    </el-pagination>
+  </el-row>
 </template>
-
 <script>
+  import qs from 'qs'
   export default {
 
     data(){
       return{
+        createId:'',
         allPersonInfo:[],
         //分页字段
         total:0,
@@ -63,6 +77,9 @@
       }
     },
     methods:{
+      previousPage(){
+        this.$router.push({name: 'initiatingPersonnel'})
+      },
       //表头样式
       headerSetStyle(){
         return {
@@ -80,29 +97,64 @@
           "font-size":"12px"
         }
       },
-      //分页
+      //分页查询
       handleSizeChange(val) {
         this.pageSize = val
-        this.queryRooms()
+        this.queryParticipants()
       },
       handleCurrentChange(val) {
         this.currentPage = val
-        this.queryRooms()
+        this.queryParticipants()
       },
+      //查询帮砍人员
+      queryParticipants(){
+        var that=this
+        var allPersonData={
+          create_id:this.createId,
+          count:true,
+          orderby:"",
+          pageindex:this.currentPage,
+          pagesize:this.pageSize,
+        }
+        var allPersonParams={
+          methodUrl: 'bitHouse/bitHouseGetBargainByCreateId',
+          jsonParam: qs.stringify(allPersonData)
+        }
+        this.$axios.postRequest(allPersonParams).then(function (res) {
+          //成功之后处理逻辑
+          that.allPersonInfo = res.data.list
+        }, function (res) {
+          //失败之后处理逻辑
+          console.log("error:" + res)
+        })
+      }
     },
     mounted() {
       //获取上一页传递的参数，并保存到本地
-      if (this.$route.params.allPrsonInfo!= null) {
+      var that=this
+      if (this.$route.params.allPersonInfo!= null) {
         var allPersonTables = this.$route.params.allPersonInfo
+        var createIds = this.$route.params.createId
+        var lastTotals=this.$route.params.lastTotal
         sessionStorage.setItem("allPersonDataList", JSON.stringify(allPersonTables));
-        that.allPersonInfo = personTables
+        sessionStorage.setItem("createIds", JSON.stringify(createIds));
+        sessionStorage.setItem("lastTotals", JSON.stringify(lastTotals));
+        that.allPersonInfo = allPersonTables
+        that.createId = createIds
+        that.total=lastTotals
       } else {
         this.allPersonInfo = JSON.parse(sessionStorage.getItem("allPersonDataList"))
+        this.createId = JSON.parse(sessionStorage.getItem("createIds"))
+        this.total = JSON.parse(sessionStorage.getItem("lastTotals"))
       }
+      that.queryParticipants()
     }
   }
 </script>
 
 <style scoped>
-
+  ul {
+    float: left;
+    margin: 0 0 10px 0;
+  }
 </style>

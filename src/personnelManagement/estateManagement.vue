@@ -1189,7 +1189,6 @@ export default {
           this.$axios.postRequest(buildingParams).then(
             function(res) {
               //成功之后处理逻辑
-
             },
             function(res) {
               //失败之后处理逻辑
@@ -1212,7 +1211,11 @@ export default {
     deleteBuildingInfo() {
       var that = this;
       if(this.currentRow==null || this.currentRow==''){
-
+        this.$message({
+          message: '请选择楼盘',
+          showClose: true,
+          type: 'warning'
+        });
       } else if (this.currentRow!='') {
         this.$confirm('此操作将永久删除数据, 是否继续?', '提示', {
           confirmButtonText: '确定',

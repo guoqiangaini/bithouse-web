@@ -78,8 +78,7 @@
                         v-model="bargainForm.startTime"
                         type="date"
                         clearable
-                        format="yyyy-MM-dd"
-                        value-format="yyyy-MM-dd"
+                        :picker-options="pickerBeginDateBefore"
                         placeholder="选择日期">
                       </el-date-picker>
                     </el-form-item>
@@ -94,8 +93,7 @@
                         v-model="bargainForm.endTime"
                         type="date"
                         clearable
-                        format="yyyy-MM-dd"
-                        value-format="yyyy-MM-dd"
+                        :picker-options="pickerBeginDateAfter"
                         placeholder="选择日期">
                       </el-date-picker>
                     </el-form-item>
@@ -111,7 +109,6 @@
                         :http-request='submitUploadBanner'
                         :show-file-list="true"
                         :on-success="handleAvatarSuccess"
-                        :before-upload="beforeAvatarUpload"
                         :limit="1"
                         :file="pictureCover">
                         <el-button size="small" type="primary">点击上传</el-button>
@@ -215,14 +212,32 @@
     </el-pagination>
   </el-row>
 </template>
-
 <script>
   import axios from "axios";
   import qs from "qs";
   export default {
     data() {
       return {
+        bargainId:'',
+        pickerBeginDateBefore:{
+          disabledDate: (time) => {
+            let beginDateVal = this.bargainForm.endTime;
+            if (beginDateVal) {
+              return time.getTime() >= beginDateVal;
+            }
+          }
+        },
+        pickerBeginDateAfter:{
+          disabledDate: (time) => {
+            let beginDateVal = this.bargainForm.startTime;
+            if (beginDateVal) {
+              return time.getTime() <= beginDateVal;
+            }
+          }
+        },
         personInfo:[],
+        //第二页总条数
+        twoPageTotal:0,
         //分页字段
         total:0,
         currentPage:1,
@@ -259,7 +274,7 @@
           ],
           targetNumber: [
             {required: true, message: '请输入参与人数', trigger: 'blur'},
-            {pattern: /^[0-9]*$/, trigger: 'blur'}
+            {pattern: /^(1\d{2}|[1-9]\d?|200)$/, trigger: 'blur'}
           ],
           inventory: [
             {required: true, message: '填写库存', trigger: 'blur'},
@@ -282,14 +297,14 @@
       //查看发起砍价人员信息
       openDetails(index,row){
         var that = this
-        var id = row.id
+        that.bargainId = row.id
         var roomData = {
-          bargain_id:id,
+          bargain_id:this.bargainId,
           is_done:'',
           count: true,
           orderby:'',
-          pageindex:1,
-          pagesize:20
+          pageindex:this.currentPage,
+          pagesize:this.pageSize
         }
         var roomParams = {
           methodUrl: 'bitHouse/bitHouseGetBargainById',
@@ -298,7 +313,8 @@
         this.$axios.postRequest(roomParams).then(function (res) {
           //成功之后处理逻辑
           that.personInfo = res.data.list
-          that.$router.push({name: 'initiatingPersonnel',params:{personInfo:that.personInfo}})
+          that.twoPageTotal=res.data.totalcount
+          that.$router.push({name: 'initiatingPersonnel',params:{personInfo:that.personInfo,bargainId:that.bargainId,twoPageTotal:that.twoPageTotal}})
         }, function (res) {
           //失败之后处理逻辑
           console.log("error:" + res)
@@ -311,7 +327,6 @@
       },
       handleRowChange(val) {
         this.currentRow = val;
-        console.log(val)
       },
       formatValue(row, column, cellValue) {
         switch (row.sale_state) {
@@ -331,9 +346,6 @@
 
       },
       //上传图片前处理函数
-      beforeAvatarUpload() {
-
-      },
       //上传图片
       submitUploadBanner(file) {
         this.submitUpload(file, 1)
@@ -393,54 +405,76 @@
       submitNonmembet(formName) {
         var that = this
         this.$refs[formName].validate((valid) => {
+          var that=this
           if (valid) {
-            if (this.buttonFlag == 1) {
-              var that = this
-              var activityData = {
-                name: this.bargainForm.name,
-                origin_price: this.bargainForm.originPrice,
-                target_price: this.bargainForm.targetPrice,
-                target_number: this.bargainForm.targetNumber,
-                inventory: this.bargainForm.inventory,
-                prief: this.bargainForm.prief,
-                start_date: this.bargainForm.startTime,
-                end_date:this.bargainForm.endTime,
-                pic_url: this.pictureCover,
-              };
-              var activityParams = {
-                methodUrl: "bitHouse/bitHouseAddBargain",
-                jsonParam: qs.stringify(activityData)
-              };
-            } else {
-              var that = this
-              var activityData = {
-                id: this.currentRow.id,
-                name: this.bargainForm.name,
-                origin_price: this.bargainForm.originPrice,
-                target_price: this.bargainForm.targetPrice,
-                target_number: this.bargainForm.targetNumber,
-                inventory: this.bargainForm.inventory,
-                prief: this.bargainForm.prief,
-                start_date: this.bargainForm.startTime,
-                end_date:this.bargainForm.endTime,
-                pic_url: this.pictureCover,
-              };
-              var activityParams = {
-                methodUrl: "bitHouse/bitHouseUpdateBargain",
-                jsonParam: qs.stringify(activityData)
+            // if(that.bargainForm.targetNumber>200){
+            //   that.$message({
+            //     message: '目标人数不能超过200',
+            //     showClose: true,
+            //     type: 'warning'
+            //   });
+            //   that.addBargainDialog = true;
+            //   return;
+            // }
+            // else if(that.bargainForm.targetNumber-(that.bargainForm.originPrice-that.bargainForm.targetPrice)>0){
+            //   that.$message({
+            //     message: '目标人数不能多于优惠',
+            //     showClose: true,
+            //     type: 'warning'
+            //   });
+            //   that.addBargainDialog = true;
+            //   return;
+            // }else{
+              if (this.buttonFlag == 1) {
+                var that = this
+                var activityData = {
+                  name: this.bargainForm.name,
+                  origin_price: this.bargainForm.originPrice,
+                  target_price: this.bargainForm.targetPrice,
+                  target_number: this.bargainForm.targetNumber,
+                  inventory: this.bargainForm.inventory,
+                  prief: this.bargainForm.prief,
+                  start_date: this.bargainForm.startTime,
+                  end_date:this.bargainForm.endTime,
+                  pic_url: this.pictureCover,
+                };
+                var activityParams = {
+                  methodUrl: "bitHouse/bitHouseAddBargain",
+                  jsonParam: qs.stringify(activityData)
+                };
+              } else {
+                var that = this
+                var activityData = {
+                  id: this.currentRow.id,
+                  name: this.bargainForm.name,
+                  origin_price: this.bargainForm.originPrice,
+                  target_price: this.bargainForm.targetPrice,
+                  target_number: this.bargainForm.targetNumber,
+                  inventory: this.bargainForm.inventory,
+                  prief: this.bargainForm.prief,
+                  start_date: this.bargainForm.startTime,
+                  end_date:this.bargainForm.endTime,
+                  pic_url: this.pictureCover,
+                };
+                var activityParams = {
+                  methodUrl: "bitHouse/bitHouseUpdateBargain",
+                  jsonParam: qs.stringify(activityData)
+                }
               }
-            }
+            // }
+
             this.$axios.postRequest(activityParams).then(
               function (res) {
                 //成功之后处理逻辑
+
                 that.queryactivitys()
+                that.addBargainDialog= false;
               },
               function (res) {
                 //失败之后处理逻辑
                 console.log("error:" + res);
               }
             );
-
           } else {
             this.$message({
               message: '您有未填写的信息!',
@@ -450,7 +484,6 @@
             that.addBargainDialog = true;
           }
         });
-        that.addBargainDialog= false;
       },
       //删除活动信息
       delectbargainActivity() {

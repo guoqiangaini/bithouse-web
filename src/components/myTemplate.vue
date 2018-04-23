@@ -45,16 +45,6 @@
             </template>
           </el-table-column>
         </el-table>
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="currentPage"
-          :page-sizes="[20, 40, 60]"
-          :page-size="pageSize"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="total"
-          style="text-align: right;margin-top: 20px">
-        </el-pagination>
     <!--编辑房源消息模板弹框开始-->
     <el-dialog
       title="发送模板消息"
@@ -282,7 +272,7 @@
            }
 
          },
-         //发送模板信息
+         //发送房源信息模板信息
          submitNonmembet(formName) {
            var that = this
            this.$refs[formName].validate((valid) => {
@@ -327,7 +317,7 @@
                this.$axios.postRequest(templateParams).then(
                  function (res) {
                    //成功之后处理逻辑
-                   this.$message({
+                   that.$message({
                      message: '发送成功',
                      showClose: true,
                      type: 'success'
@@ -340,7 +330,7 @@
                  }
                );
              } else {
-               this.$message({
+               that.$message({
                  message: '您有未填写的信息!',
                  showClose: true,
                  type: 'warning'
@@ -349,7 +339,7 @@
              }
            });
          },
-         //发送模板信息
+         //发送砍价成功模板信息
          submitNonmembet1(formName) {
            var that = this
            this.$refs[formName].validate((valid) => {
@@ -406,7 +396,7 @@
                this.$axios.postRequest(templateParams).then(
                  function (res) {
                    //成功之后处理逻辑
-                   this.$message({
+                   that.$message({
                      message: '发送成功',
                      showClose: true,
                      type: 'success'
@@ -419,7 +409,7 @@
                  }
                );
              } else {
-               this.$message({
+               that.$message({
                  message: '您有未填写的信息!',
                  showClose: true,
                  type: 'warning'
@@ -434,7 +424,6 @@
          clearFormData1(formName) {
            this.$refs[formName].resetFields();
          },
-
          handleClick(tab, event) {
            console.log(tab, event);
          },
