@@ -166,7 +166,6 @@
       </el-dialog>
       <!--成交信息弹框结束-->
         <el-row class="wai">
-
           <ul>
             <el-button size="mini"  type="info" @click="bindCustomer">绑定客户</el-button>
           </ul>
@@ -188,6 +187,12 @@
             prop="user_serial"
             align="center"
             label="客户序号"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="photo_url"
+            align="center"
+            label="客户头像"
           >
           </el-table-column>
           <el-table-column

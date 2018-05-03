@@ -189,7 +189,6 @@ export default {
     //选择
     handleRowChange(val) {
       this.currentRow = val;
-      console.log(val)
     },
     //分页
     handleSizeChange(val) {

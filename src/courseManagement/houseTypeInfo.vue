@@ -124,7 +124,7 @@
                       <img v-if="pictureA" :src="pictureA" class="avatar">
                       <i v-else class="el-icon-upload"></i>
                       <div class="el-upload__text">将图片拖到此处，或<em>点击上传</em></div>
-                      <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+                      <div class="el-upload__tip" slot="tip">上传jpg/png文件不超过500kb<el-button  type="text" style="margin-left: 10px" @click="clearPictrue(1)">删除图片</el-button></div>
                     </el-upload>
                   </el-col>
                   <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
@@ -140,7 +140,7 @@
                       <img v-if="pictureB" :src="pictureB" class="avatar">
                       <i v-else class="el-icon-upload"></i>
                       <div class="el-upload__text">将图片拖到此处，或<em>点击上传</em></div>
-                      <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+                      <div class="el-upload__tip" slot="tip">上传jpg/png文件不超过500kb<el-button  type="text" style="margin-left: 10px" @click="clearPictrue(2)">删除图片</el-button></div>
                     </el-upload>
                   </el-col>
                   <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
@@ -156,7 +156,7 @@
                       <img v-if="pictureC" :src="pictureC" class="avatar">
                       <i v-else class="el-icon-upload"></i>
                       <div class="el-upload__text">将图片拖到此处，或<em>点击上传</em></div>
-                      <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+                      <div class="el-upload__tip" slot="tip">上传jpg/png文件不超过500kb<el-button  type="text" style="margin-left: 10px" @click="clearPictrue(3)">删除图片</el-button></div>
                     </el-upload>
                   </el-col>
                   <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
@@ -172,7 +172,7 @@
                       <img v-if="pictureD" :src="pictureD" class="avatar">
                       <i v-else class="el-icon-upload"></i>
                       <div class="el-upload__text">将图片拖到此处，或<em>点击上传</em></div>
-                      <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+                      <div class="el-upload__tip" slot="tip">上传jpg/png文件不超过500kb<el-button  type="text" style="margin-left: 10px" @click="clearPictrue(4)">删除图片</el-button></div>
                     </el-upload>
                   </el-col>
                   <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
@@ -188,7 +188,7 @@
                       <img v-if="pictureE" :src="pictureE" class="avatar">
                       <i v-else class="el-icon-upload"></i>
                       <div class="el-upload__text">将图片拖到此处，或<em>点击上传</em></div>
-                      <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+                      <div class="el-upload__tip" slot="tip">上传jpg/png文件不超过500kb<el-button  type="text" style="margin-left: 10px" @click="clearPictrue(5)">删除图片</el-button></div>
                     </el-upload>
                   </el-col>
                   <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
@@ -204,14 +204,11 @@
                       <img v-if="pictureF" :src="pictureF" class="avatar">
                       <i v-else class="el-icon-upload"></i>
                       <div class="el-upload__text">将图片拖到此处，或<em>点击上传</em></div>
-                      <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+                      <div class="el-upload__tip" slot="tip">上传jpg/png文件不超过500kb<el-button  type="text" style="margin-left: 10px" @click="clearPictrue(6)">删除图片</el-button></div>
                     </el-upload>
                   </el-col>
                 </el-row>
-                <!--<el-row style="text-align: center;margin:30px 0">-->
-                  <!--<el-button type="info" size="mini" @click="addSalesCourseDialog = false">取 消</el-button>-->
-                  <!--<el-button type="info" size="mini" @click="submitNonmembet('salesForm')">提交</el-button>-->
-                <!--</el-row>-->
+
               </el-col>
             </el-row>
           </div><!--基础资料-->
@@ -369,6 +366,23 @@
       handleRowChange(val) {
         this.currentRow = val;
       },
+      // 清除图片
+      clearPictrue(type){
+        var that=this
+        if(type==1){
+          that.pictureA=''
+        }else if(type==2){
+          that.pictureB=''
+        }else if(type==3){
+          that.pictureC=''
+        }else if(type==4){
+          that.pictureD=''
+        }else if(type==5){
+          that.pictureE=''
+        }else if(type==6){
+          that.pictureF=''
+        }
+      },
       formatValue(row, column, cellValue){
         switch(row.sale_state) {
           case '1':
@@ -491,8 +505,15 @@
       submitNonmembet(formName){
         var that=this
         this.$refs[formName].validate((valid) => {
+          var that=this
           if (valid) {
-            if(this.buttonFlag==1){
+            if(that.pictureCover==null||that.pictureCover==''){
+              that.$message({
+                message: '封面图片未上传',
+                showClose: true,
+                type: 'warning'
+              });
+            }else if(this.buttonFlag==1){
               var that=this
               var roomData = {
                 estate_id:this.buildingId,

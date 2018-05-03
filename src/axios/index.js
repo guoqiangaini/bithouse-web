@@ -1,7 +1,7 @@
 import axios from 'axios'
 import qs from 'qs'
 // axios 配置
-axios.defaults.timeout = 5000;
+axios.defaults.timeout = 60000;
 // axios.defaults.headers.post['Content-Type'] = 'application/json; charset=UTF-8';
 // axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
 axios.defaults.baseURL = 'https://bit.jpbvip.com/captainbitsysws/services/';

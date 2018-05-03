@@ -59,6 +59,20 @@
         center
       >
         <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="80px" class="demo-ruleForm" size="mini">
+          <el-form-item label="上传头像">
+            <el-upload
+              class="upload-demo"
+              action="string"
+              :http-request='submitUploadBanner'
+              :show-file-list="false"
+              :on-success="handleAvatarSuccess"
+              :before-upload="beforeAvatarUpload"
+            >
+              <el-button size="small" type="primary">点击上传</el-button>
+              <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+            </el-upload>
+
+          </el-form-item>
           <el-form-item label="个人简介" prop="brief">
             <el-input v-model="ruleForm.brief" type="textarea"></el-input>
           </el-form-item>
@@ -84,6 +98,7 @@ export default {
   },
   name: "hello",
   data() {
+
       var checkAge = (rule, value, callback) => {
         if (!value) {
           return callback(new Error('密码不能为空'));
@@ -116,6 +131,7 @@ export default {
         }
       };
     return {
+      pictureCover:'',
       briefDialogVisible:false,
       dialogVisible:false,
       CorporateName: "", //公司名称
@@ -164,26 +180,98 @@ export default {
       this.briefDialogVisible=true
     },
     submitInfoForm(){
-      var that=this
-      var user=qs.parse(sessionStorage.getItem("user"))
-      var InfoData={
-        user_serial:user.user_serial,
-        brief_introduction:this.ruleForm.brief
+      if(this.pictureCover==null||this.pictureCover==''){
+        this.$message({
+          message: '请上传头像',
+          showClose: true,
+          type: 'warning'
+        });
+      }else{
+        var that=this
+        var user=qs.parse(sessionStorage.getItem("user"))
+        var InfoData={
+          user_serial:user.user_serial,
+          brief_introduction:this.ruleForm.brief,
+          head_image:this.pictureCover
+        }
+        var InfoParams={
+          methodUrl:'bitHouse/bitHouseUpdateBrief',
+          jsonParam: qs.stringify(InfoData)
+        }
+        this.$axios.postRequest(InfoParams).then(function (res) {
+          //成功之后处理逻辑
+          that.briefDialogVisible=false
+        }, function (res) {
+          //失败之后处理逻辑
+          console.log("error:" + res)
+        })
       }
-      var InfoParams={
-        methodUrl:'bitHouse/bitHouseUpdateBrief',
-        jsonParam: qs.stringify(InfoData)
-      }
-      this.$axios.postRequest(InfoParams).then(function (res) {
-        //成功之后处理逻辑
-        that.briefDialogVisible=false
-      }, function (res) {
-        //失败之后处理逻辑
-        console.log("error:" + res)
-      })
+
 
     },
+    //上传图片成功处理函数
+    handleAvatarSuccess(){
 
+    },
+    //上传图片前处理函数
+    beforeAvatarUpload(){
+
+    },
+    //上传图片
+    submitUploadBanner(file){
+      this.submitUpload(file,1)
+    },
+    submitUploadpictureA(file){
+      this.submitUpload(file,2)
+    },
+    submitUploadpictureB(file){
+      this.submitUpload(file,3)
+    },
+    submitUploadpictureC(file){
+      this.submitUpload(file,4)
+    },
+    submitUploadpictureD(file){
+      this.submitUpload(file,5)
+    },
+    submitUploadpictureE(file){
+      this.submitUpload(file,6)
+    },
+    submitUploadpictureF(file){
+      this.submitUpload(file,7)
+    },
+    //上传图片函数
+    submitUpload(file,flag) {
+      var that=this
+      let param = new FormData(); // 创建 form 对象
+      param.append("file", file.file, file.file.name); // 通过 append 向 form 对象添加数据
+      let config = {
+        headers: { "Content-Type": "multipart/form-data" }
+      }; // 添加请求头
+      this.$axios
+        .postImageRequest(
+          "bitHouse/bitHouseUploadImage",
+          param,
+          config
+        )
+        .then(response => {
+          if(flag==1){
+            that.pictureCover=response.data.image_url
+          }else if(flag==2){
+            that.pictureA=response.data.image_url
+          }else if(flag==3){
+            that.pictureB=response.data.image_url
+          }else if(flag==4){
+            that.pictureC=response.data.image_url
+          }else if(flag==5){
+            that.pictureD=response.data.image_url
+          }else if(flag==6){
+            that.pictureE=response.data.image_url
+          }else if(flag==7){
+            that.pictureF=response.data.image_url
+          }
+
+        });
+    },
     //修改密码
     updatePassWord(){
       this.dialogVisible=true
