@@ -19,7 +19,7 @@
           <legend style="font-weight: 600">活动信息</legend>
           <div class="basicData">
             <el-row type="flex" justify="center">
-              <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+              <el-col :xs="18" :sm="18" :md="18" :lg="18" :xl="18">
                 <!--活动名称-->
                 <el-row>
                   <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
@@ -76,7 +76,8 @@
                       <el-date-picker
                         style="width:320px"
                         v-model="bargainForm.startTime"
-                        type="date"
+                        type="datetime"
+                        value-format="yyyy-MM-dd HH:mm:ss"
                         clearable
                         :picker-options="pickerBeginDateBefore"
                         placeholder="选择日期">
@@ -91,9 +92,10 @@
                       <el-date-picker
                         style="width:320px"
                         v-model="bargainForm.endTime"
-                        type="date"
+                        type="datetime"
                         clearable
                         :picker-options="pickerBeginDateAfter"
+                        value-format="yyyy-MM-dd HH:mm:ss"
                         placeholder="选择日期">
                       </el-date-picker>
                     </el-form-item>
@@ -112,12 +114,81 @@
                         :limit="1"
                         :file="pictureCover">
                         <el-button size="small" type="primary">点击上传</el-button>
-                        <div slot="tip" class="el-upload__tip">格式为jpg、png且不超过500kb</div>
+                        <div class="el-upload__tip" slot="tip">上传jpg/png文件不超过500kb</div>
                       </el-upload>
                     </el-form-item>
                   </el-col>
                 </el-row>
+                <!--轮播图片上传-->
+                <el-row>
+                  <el-col>上传轮播图片</el-col>
+                  <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+                    <el-upload
+                      class="upload-demo"
+                      drag
+                      action="string"
+                      :http-request='submitUploadpictureA'
+                      :show-file-list="false"
+                      :on-success="handleAvatarSuccess"
+                      :before-upload="beforeAvatarUpload"
+                      multiple>
+                      <img v-if="pictureA" :src="pictureA" class="avatar">
+                      <i v-else class="el-icon-upload"></i>
+                      <div class="el-upload__text">将图片拖到此处，或<em>点击上传</em></div>
+                      <div class="el-upload__tip" slot="tip">上传jpg/png文件不超过500kb<el-button  type="text" style="margin-left: 10px" @click="clearPictrue(2)">删除图片</el-button></div>
+                    </el-upload>
+                  </el-col>
+                  <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+                    <el-upload
+                      class="upload-demo"
+                      drag
+                      action="string"
+                      :http-request='submitUploadpictureB'
+                      :show-file-list="false"
+                      :on-success="handleAvatarSuccess"
+                      :before-upload="beforeAvatarUpload"
+                      multiple>
+                      <img v-if="pictureB" :src="pictureB" class="avatar">
+                      <i v-else class="el-icon-upload"></i>
+                      <div class="el-upload__text">将图片拖到此处，或<em>点击上传</em></div>
+                      <div class="el-upload__tip" slot="tip">上传jpg/png文件不超过500kb<el-button  type="text" style="margin-left: 10px" @click="clearPictrue(3)">删除图片</el-button></div>
+                    </el-upload>
+                  </el-col>
+                  <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+                    <el-upload
+                      class="upload-demo"
+                      drag
+                      action="string"
+                      :http-request='submitUploadpictureC'
+                      :show-file-list="false"
+                      :on-success="handleAvatarSuccess"
+                      :before-upload="beforeAvatarUpload"
+                      multiple>
+                      <img v-if="pictureC" :src="pictureC" class="avatar">
+                      <i v-else class="el-icon-upload"></i>
+                      <div class="el-upload__text">将图片拖到此处，或<em>点击上传</em></div>
+                      <div class="el-upload__tip" slot="tip">上传jpg/png文件不超过500kb<el-button  type="text" style="margin-left: 10px" @click="clearPictrue(4)">删除图片</el-button></div>
+                    </el-upload>
+                  </el-col>
+                  <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
+                    <el-upload
+                      class="upload-demo"
+                      drag
+                      action="string"
+                      :http-request='submitUploadpictureD'
+                      :show-file-list="false"
+                      :on-success="handleAvatarSuccess"
+                      :before-upload="beforeAvatarUpload"
+                      multiple>
+                      <img v-if="pictureD" :src="pictureD" class="avatar">
+                      <i v-else class="el-icon-upload"></i>
+                      <div class="el-upload__text">将图片拖到此处，或<em>点击上传</em></div>
+                      <div class="el-upload__tip" slot="tip">上传jpg/png文件不超过500kb<el-button  type="text" style="margin-left: 10px" @click="clearPictrue(5)">删除图片</el-button></div>
+                    </el-upload>
+                  </el-col>
+                </el-row>
               </el-col>
+
             </el-row>
           </div><!--基础资料-->
         </fieldset>
@@ -219,6 +290,35 @@
     data() {
       return {
         bargainId:'',
+        personInfo:[],
+        //第二页总条数
+        twoPageTotal:0,
+        //分页字段
+        total:0,
+        currentPage:1,
+        pageSize:20,
+        activityList: [],
+        currentRow: '',
+        buttonFlag: '',
+        dialogTitle: '',
+        // 封面图片
+        pictureCover: '',
+        pictureA:'',
+        pictureB:'',
+        pictureC:'',
+        pictureD:'',
+        addBargainDialog: false,
+        //砍价活动信息
+        bargainForm: {
+          name: '',
+          originPrice: '',
+          targetPrice: '',
+          targetNumber:'',
+          inventory: '',
+          prief: '',
+          startTime: '',
+          endTime: '',
+        },
         pickerBeginDateBefore:{
           disabledDate: (time) => {
             let beginDateVal = this.bargainForm.endTime;
@@ -234,31 +334,6 @@
               return time.getTime() <= beginDateVal;
             }
           }
-        },
-        personInfo:[],
-        //第二页总条数
-        twoPageTotal:0,
-        //分页字段
-        total:0,
-        currentPage:1,
-        pageSize:20,
-        activityList: [],
-        currentRow: '',
-        buttonFlag: '',
-        dialogTitle: '',
-        // 封面图片
-        pictureCover: '',
-        addBargainDialog: false,
-        //砍价活动信息
-        bargainForm: {
-          name: '',
-          originPrice: '',
-          targetPrice: '',
-          targetNumber:'',
-          inventory: '',
-          prief: '',
-          startTime: '',
-          endTime: '',
         },
         rules: {
           name: [
@@ -294,6 +369,19 @@
       };
     },
     methods: {
+      // 清除图片
+      clearPictrue(type){
+        var that=this
+         if(type==2){
+          that.pictureA=''
+        }else if(type==3){
+          that.pictureB=''
+        }else if(type==4){
+          that.pictureC=''
+        }else if(type==5){
+          that.pictureD=''
+        }
+      },
       //查看发起砍价人员信息
       openDetails(index,row){
         var that = this
@@ -324,6 +412,11 @@
       clearFormData(formName) {
         this.$refs[formName].resetFields();
         this.pictureCover = '';
+        this.pictureA='';
+        this.pictureB='',
+        this.pictureC='';
+        this.pictureD=''
+
       },
       handleRowChange(val) {
         this.currentRow = val;
@@ -345,10 +438,25 @@
       handleAvatarSuccess() {
 
       },
+      beforeAvatarUpload(){
+
+      },
       //上传图片前处理函数
       //上传图片
-      submitUploadBanner(file) {
-        this.submitUpload(file, 1)
+      submitUploadBanner(file){
+        this.submitUpload(file,1)
+      },
+      submitUploadpictureA(file){
+        this.submitUpload(file,2)
+      },
+      submitUploadpictureB(file){
+        this.submitUpload(file,3)
+      },
+      submitUploadpictureC(file){
+        this.submitUpload(file,4)
+      },
+      submitUploadpictureD(file){
+        this.submitUpload(file,5)
       },
       //上传图片函数
       submitUpload(file, flag) {
@@ -365,8 +473,16 @@
             config
           )
           .then(response => {
-            if (flag == 1) {
-              that.pictureCover = response.data.image_url
+            if(flag==1){
+              that.pictureCover=response.data.image_url
+            }else if(flag==2){
+              that.pictureA=response.data.image_url
+            }else if(flag==3){
+              that.pictureB=response.data.image_url
+            }else if(flag==4){
+              that.pictureC=response.data.image_url
+            }else if(flag==5){
+              that.pictureD=response.data.image_url
             }
           });
       },
@@ -396,6 +512,10 @@
               that.bargainForm.startTime=that.currentRow.start_date,
               that.bargainForm.endTime=that.currentRow.end_date,
               that.pictureCover=that.currentRow.pic_url
+              that.pictureA=that.currentRow.image_a
+              that.pictureB=that.currentRow.image_b
+              that.pictureC=that.currentRow.image_c
+              that.pictureD=that.currentRow.image_d
             },0 )
             this.addBargainDialog =true;
           }
@@ -407,24 +527,27 @@
         this.$refs[formName].validate((valid) => {
           var that=this
           if (valid) {
-            // if(that.bargainForm.targetNumber>200){
-            //   that.$message({
-            //     message: '目标人数不能超过200',
-            //     showClose: true,
-            //     type: 'warning'
-            //   });
-            //   that.addBargainDialog = true;
-            //   return;
-            // }
-            // else if(that.bargainForm.targetNumber-(that.bargainForm.originPrice-that.bargainForm.targetPrice)>0){
-            //   that.$message({
-            //     message: '目标人数不能多于优惠',
-            //     showClose: true,
-            //     type: 'warning'
-            //   });
-            //   that.addBargainDialog = true;
-            //   return;
-            // }else{
+            if(that.bargainForm.originPrice/that.bargainForm.targetNumber>200){
+              that.$message({
+                message: '单人砍价不能超过200元',
+                showClose: true,
+                type: 'warning'
+              });
+              that.addBargainDialog = true;
+              return;
+            }else if(that.bargainForm.startTime>=that.bargainForm.endTime){
+              that.$message({
+                message: '开始时间不能晚于等于结束时间',
+                showClose: true,
+                type: 'warning'
+              });
+            }else if(that.pictureCover==null||that.pictureCover==''){
+              that.$message({
+                message: '封面图片未上传',
+                showClose: true,
+                type: 'warning'
+              });
+            }else{
               if (this.buttonFlag == 1) {
                 var that = this
                 var activityData = {
@@ -437,6 +560,10 @@
                   start_date: this.bargainForm.startTime,
                   end_date:this.bargainForm.endTime,
                   pic_url: this.pictureCover,
+                  image_a:this.pictureA,
+                  image_b:this.pictureB,
+                  image_c:this.pictureC,
+                  image_d:this.pictureD
                 };
                 var activityParams = {
                   methodUrl: "bitHouse/bitHouseAddBargain",
@@ -455,14 +582,25 @@
                   start_date: this.bargainForm.startTime,
                   end_date:this.bargainForm.endTime,
                   pic_url: this.pictureCover,
+                  image_a:this.pictureA,
+                  image_b:this.pictureB,
+                  image_c:this.pictureC,
+                  image_d:this.pictureD
                 };
                 var activityParams = {
                   methodUrl: "bitHouse/bitHouseUpdateBargain",
                   jsonParam: qs.stringify(activityData)
                 }
               }
-            // }
-
+            }
+            // else if(that.bargainForm.targetNumber-(that.bargainForm.originPrice-that.bargainForm.targetPrice)>0){
+            //   that.$message({
+            //     message: '目标人数不能多于优惠',
+            //     showClose: true,
+            //     type: 'warning'
+            //   });
+            //   that.addBargainDialog = true;
+            //   return;
             this.$axios.postRequest(activityParams).then(
               function (res) {
                 //成功之后处理逻辑
@@ -607,5 +745,9 @@
   }
   .el-form-item{
     margin:10px 0 !important;
+  }
+  .el-upload-dragger{
+    width: 240px;
+    height: 180px;
   }
 </style>

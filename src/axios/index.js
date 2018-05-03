@@ -48,7 +48,10 @@ export function fetchImage(url, params, config) {
 }
 
 export default {
-  postRequest(params) {
+  postRequest(params,timeout) {
+    if(timeout){
+      axios.defaults.timeout = timeout;
+    }
     var methodParams = qs.parse(params.jsonParam);
     return fetch(params.methodUrl, methodParams)
   },

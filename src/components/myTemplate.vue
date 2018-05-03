@@ -308,13 +308,13 @@
                }
                var templateData={
                  template_id:that.templateId,
-                 dataMap:qs.stringify(data)
+                 dMap:data
                }
                var templateParams = {
                  methodUrl: "bitHouse/bitHouseSendMessage",
                  jsonParam: qs.stringify(templateData)
                };
-               this.$axios.postRequest(templateParams).then(
+               this.$axios.postRequest(templateParams,600000).then(
                  function (res) {
                    //成功之后处理逻辑
                    that.$message({
@@ -383,9 +383,8 @@
 
                var templateData={
                  template_id:that.templateIdInfo,
-                 dataMap:qs.stringify(data)
+                 dMap:qs.stringify(data)
                }
-               console.log(templateData);
 
                var templateParams = {
                  methodUrl: "bitHouse/bitHouseSendMessage",

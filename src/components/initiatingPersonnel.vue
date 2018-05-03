@@ -90,6 +90,7 @@
     <el-table-column
       align="center"
       prop="address"
+      width="260"
       label="收货地址"
     >
     </el-table-column>
